@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criador de Cartões Estilo RPG</title>
+    <!-- Adicionando a fonte Inter do Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <!-- Adicionando o Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- CSS do Swiper para o carrossel -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to bottom right, #f3f4f6, #e5e7eb);
+        }
+        input:focus, textarea:focus {
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.5);
+            border-color: #8b5cf6;
+            outline: none;
+        }
+        .btn-gradient-pulse {
+            background-size: 200% 200%;
+            animation: pulse-gradient 2s linear infinite;
+        }
+        @keyframes pulse-gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        /* Estilos do cartão - Atualizados para o novo design */
+        .rpg-card {
+            background-image: url('https://placehold.co/400x600/1e293b/d1d5db?text=Fundo+do+Cartão');
+            background-size: cover;
+            background-position: center;
+            border: 4px solid #1f2937;
+            position: relative;
+        }
+        /* Estilo para a moldura do cartão, com fundo transparente e efeito de blur */
+        .rpg-card-frame {
+            backdrop-filter: blur(8px);
+            border: 2px solid var(--border-color, #4b5563);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease-in-out;
+            background-color: var(--card-bg-color, rgba(31, 41, 55, 0.9));
+            color: var(--text-color, #f3f4f6);
+        }
+        /* Estilos para o modo tela cheia */
+        .rpg-card:fullscreen {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .rpg-card:fullscreen .rpg-card-frame {
+            position: absolute;
+            bottom: 20px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .rpg-card:fullscreen button, .rpg-card:fullscreen .swiper-navigation {
+            display: none;
+        }
+        /* Divisor de título com estilo personalizado e gradiente */
+        .rpg-card-title-divider {
+            height: 2px;
+            width: 80%;
+            background: linear-gradient(to right, transparent, var(--border-color, #6b7280), transparent);
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Divisor de estatísticas com estilo personalizado */
+        .rpg-card-stat-divider {
+            height: 1px;
+            width: 100%;
+            background-color: var(--border-color, #4b5563);
+        }
+
+        /* Classes de upload de arquivo existentes */
+        .file-upload-input {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            margin-top: 0.25rem;
+            background-color: #4b5563; /* bg-gray-700 */
+            color: white;
+            border-radius: 0.5rem; /* rounded-lg */
+            border: 1px solid #4b5563; /* border-gray-600 */
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 200ms;
+        }
+        .file-upload-input:hover {
+            border-color: #6b7280; /* hover:border-gray-500 */
+        }
+        .file-upload-input::-webkit-file-upload-button {
+            background-color: #6366f1; /* bg-indigo-500 */
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 9999px; /* rounded-full */
+            font-weight: 600; /* font-semibold */
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+        .file-upload-input::-webkit-file-upload-button:hover {
+            background-color: #4f46e5; /* hover:bg-indigo-600 */
+        }
+        .swiper-button-next:after, .swiper-button-prev:after {
+            color: #4f46e5;
+        }
+        .swiper-slide {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center p-2">
+    <div class="w-full max-w-5xl">
+        <!-- Título principal -->
+        <header class="text-center my-8">
+            <h1 class="text-4xl font-bold text-gray-800">Crie seus próprios Cartões</h1>
+            <p class="text-lg text-gray-600 mt-2">Personalize e adicione novos cartões à sua coleção.</p>
+        </header>
+
+        <!-- Seção do formulário para criar/editar cartões -->
+        <div class="bg-slate-800 text-white p-4 rounded-3xl shadow-2xl mb-8">
+            <h2 class="text-2xl font-bold mb-6 text-indigo-300">Novo Cartão</h2>
+            <form id="cardForm" class="space-y-6">
+                <div>
+                    <label for="cardTitle" class="block text-sm font-semibold mb-1">Título</label>
+                    <input type="text" id="cardTitle" placeholder="Ex: Guerreiro Lendário" required
+                           class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
+                </div>
+                <div>
+                    <label for="cardSubTitle" class="block text-sm font-semibold mb-1">Sub-título</label>
+                    <input type="text" id="cardSubTitle" placeholder="Ex: Humano Mago" required
+                           class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
+                </div>
+                <div>
+                    <label for="cardLevel" class="block text-sm font-semibold mb-1">Nível</label>
+                    <input type="number" id="cardLevel" placeholder="1" required
+                           class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
+                </div>
+
+                <!-- Seção para upload da imagem do personagem com pré-visualização -->
+                <div>
+                    <h3 class="text-xl font-bold text-indigo-300 mb-2">Imagem do Personagem</h3>
+                    <div class="mt-4 text-center">
+                        <label for="characterImageUpload" class="block text-sm font-semibold mb-1 cursor-pointer">
+                            Faça upload de uma imagem do seu PC:
+                        </label>
+                        <input type="file" id="characterImageUpload" accept="image/*" class="file-upload-input">
+                        <img id="characterImagePreview" class="mt-4 mx-auto w-32 h-32 object-cover rounded-full border-4 border-gray-600 hidden" alt="Pré-visualização do Personagem">
+                    </div>
+                </div>
+
+                <!-- Seção para upload da imagem de fundo com pré-visualização -->
+                <div>
+                    <h3 class="text-xl font-bold text-indigo-300 mb-2">Imagem de Fundo</h3>
+                    <div class="mt-4 text-center">
+                        <label for="backgroundImageUpload" class="block text-sm font-semibold mb-1 cursor-pointer">
+                            Faça upload de uma imagem do seu PC:
+                        </label>
+                        <input type="file" id="backgroundImageUpload" accept="image/*" class="file-upload-input">
+                        <div id="backgroundImagePreview" class="mt-4 mx-auto w-full h-48 rounded-lg border-4 border-gray-600 hidden bg-cover bg-center"></div>
+                    </div>
+                </div>
+                
+                <!-- Seção para Atributos -->
+                <div class="grid grid-cols-2 gap-4">
+                    <h3 class="col-span-2 text-xl font-bold text-indigo-300">Atributos</h3>
+                    <div>
+                        <label for="agilidade" class="block text-sm font-semibold mb-1">Agilidade (AGI)</label>
+                        <input type="number" id="agilidade" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
+                    </div>
+                    <div>
+                        <label for="carisma" class="block text-sm font-semibold mb-1">Carisma (CAR)</label>
+                        <input type="number" id="carisma" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
+                    </div>
+                    <div>
+                        <label for="forca" class="block text-sm font-semibold mb-1">Força (FOR)</label>
+                        <input type="number" id="forca" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
+                    </div>
+                    <div>
+                        <label for="inteligencia" class="block text-sm font-semibold mb-1">Inteligência (INT)</label>
+                        <input type="number" id="inteligencia" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
+                    </div>
+                    <div>
+                        <label for="sabedoria" class="block text-sm font-semibold mb-1">Sabedoria (SAB)</label>
+                        <input type="number" id="sabedoria" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
+                    </div>
+                    <div>
+                        <label for="vigor" class="block text-sm font-semibold mb-1">Vigor (VIG)</label>
+                        <input type="number" id="vigor" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
+                    </div>
+                </div>
+
+                <button type="submit" id="submitButton"
+                        class="w-full py-3 px-4 rounded-full text-lg font-bold text-white bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 focus:outline-none transition duration-300 ease-in-out transform hover:scale-105 shadow-xl btn-gradient-pulse">
+                    Criar Cartão
+                </button>
+            </form>
+        </div>
+        
+        <!-- Lista de miniaturas para carregamento -->
+        <h2 class="text-2xl font-bold text-gray-800 text-center mt-12 mb-4">Seus Cartões Salvos</h2>
+        <div id="thumbnail-list" class="flex flex-wrap justify-center gap-4 p-4 bg-gray-100 rounded-xl shadow-inner mb-8">
+            <p class="text-gray-500">Nenhum cartão salvo ainda. Crie um para começar!</p>
+        </div>
+
+        <!-- Carrossel de cartões -->
+        <div class="cards-container w-full max-w-lg mx-auto mb-12">
+            <h2 class="text-2xl font-bold text-gray-800 text-center mb-4">Visualização dos Cartões</h2>
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper" id="cardsContainer">
+                    <!-- Cards serão injetados aqui -->
+                </div>
+                <!-- Botões de navegação do Swiper -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script do Swiper -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Referências para elementos do DOM
+            const cardForm = document.getElementById('cardForm');
+            const cardsContainer = document.getElementById('cardsContainer');
+            const submitButton = document.getElementById('submitButton');
+            const thumbnailList = document.getElementById('thumbnail-list');
+
+            const cardTitleInput = document.getElementById('cardTitle');
+            const cardSubTitleInput = document.getElementById('cardSubTitle');
+            const cardLevelInput = document.getElementById('cardLevel');
+
+            const characterImageUpload = document.getElementById('characterImageUpload');
+            const backgroundImageUpload = document.getElementById('backgroundImageUpload');
+            const characterImagePreview = document.getElementById('characterImagePreview');
+            const backgroundImagePreview = document.getElementById('backgroundImagePreview');
+            
+            const agilidadeInput = document.getElementById('agilidade');
+            const carismaInput = document.getElementById('carisma');
+            const forcaInput = document.getElementById('forca');
+            const inteligenciaInput = document.getElementById('inteligencia');
+            const sabedoriaInput = document.getElementById('sabedoria');
+            const vigorInput = document.getElementById('vigor');
+            
+            let currentEditingCardId = null;
+            let mySwiper = null;
+            let db; // Variável para o banco de dados IndexedDB
+
+            // Nomes e versões do banco de dados
+            const DB_NAME = 'rpgCardCreatorDB';
+            const DB_VERSION = 1;
+            const STORE_NAME = 'rpgCards';
+
+            // URLs temporárias para pré-visualização de imagens no formulário
+            let characterImageUrl = '';
+            let backgroundImageUrl = '';
+            let characterImageFile = null;
+            let backgroundImageFile = null;
+
+            // Função para converter ArrayBuffer para Blob
+            function bufferToBlob(buffer, mimeType) {
+                return new Blob([buffer], { type: mimeType });
+            }
+
+            // Função para converter RGB para HSL (necessário para manipulação de cores)
+            function rgbToHsl(r, g, b) {
+                r /= 255; g /= 255; b /= 255;
+                let max = Math.max(r, g, b), min = Math.min(r, g, b);
+                let h, s, l = (max + min) / 2;
+
+                if (max === min) {
+                    h = s = 0; // achromatic
+                } else {
+                    let d = max - min;
+                    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                    switch (max) {
+                        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                        case g: h = (b - r) / d + 2; break;
+                        case b: h = (r - g) / d + 4; break;
+                    }
+                    h /= 6;
+                }
+                return [h, s, l];
+            }
+
+            // Função para converter HSL para RGB
+            function hslToRgb(h, s, l) {
+                let r, g, b;
+                if (s === 0) {
+                    r = g = b = l; // achromatic
+                } else {
+                    const hue2rgb = (p, q, t) => {
+                        if (t < 0) t += 1;
+                        if (t > 1) t -= 1;
+                        if (t < 1 / 6) return p + (q - p) * 6 * t;
+                        if (t < 1 / 2) return q;
+                        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                        return p;
+                    };
+                    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                    const p = 2 * l - q;
+                    r = hue2rgb(p, q, h + 1 / 3);
+                    g = hue2rgb(p, q, h);
+                    b = hue2rgb(p, q, h - 1 / 3);
+                }
+                return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+            }
+
+            // Função para extrair a cor principal de uma imagem e gerar uma paleta com contraste
+            function getPredominantColorAndPalette(imageUrl) {
+                return new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.crossOrigin = "Anonymous"; // Essencial para evitar problemas de CORS
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        ctx.drawImage(img, 0, 0, img.width, img.height);
+                        
+                        try {
+                            const imageData = ctx.getImageData(0, 0, img.width, img.height).data;
+                            let r = 0, g = 0, b = 0, count = 0;
+
+                            // Percorre os pixels para calcular a cor média
+                            const step = 4 * 10; // Pega um pixel a cada 10 para otimizar
+                            for (let i = 0; i < imageData.length; i += step) {
+                                r += imageData[i];
+                                g += imageData[i + 1];
+                                b += imageData[i + 2];
+                                count++;
+                            }
+
+                            const avgR = Math.floor(r / count);
+                            const avgG = Math.floor(g / count);
+                            const avgB = Math.floor(b / count);
+
+                            // Converte a cor média para HSL para manipulação
+                            let [h, s, l] = rgbToHsl(avgR, avgG, avgB);
+
+                            // Lógica de contraste:
+                            // Se a cor de fundo for clara (l > 0.5), o texto deve ser escuro.
+                            // Se a cor de fundo for escura (l <= 0.5), o texto deve ser claro.
+                            const isLightBackground = l > 0.5;
+                            const textColor = isLightBackground ? 'rgb(31, 41, 55)' : 'rgb(243, 244, 246)'; // Dark gray or light gray
+                            const cardBg = isLightBackground ? 'rgba(255, 255, 255, 0.8)' : 'rgba(31, 41, 55, 0.9)'; // White or dark gray with transparency
+
+                            // Gera a paleta de cores
+                            const palette = {
+                                cardBg: cardBg,
+                                highlightColor: hslToRgb(h, Math.min(s * 1.5, 1), isLightBackground ? Math.max(l * 0.7, 0.3) : Math.min(l * 1.5, 0.7)),
+                                textColor: textColor,
+                                borderColor: hslToRgb(h, s, isLightBackground ? Math.max(l * 0.7, 0.3) : Math.min(l * 1.5, 0.7)),
+                            };
+                            
+                            resolve(palette);
+                        } catch (e) {
+                            console.error('Erro ao processar imagem para paleta:', e);
+                            reject(e);
+                        }
+                    };
+                    img.onerror = (e) => reject(e);
+                    img.src = imageUrl;
+                });
+            }
+
+            // Função para inicializar o IndexedDB
+            function openDatabase() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+                    // Evento de sucesso: o banco de dados foi aberto com sucesso
+                    request.onsuccess = (event) => {
+                        db = event.target.result;
+                        console.log('IndexedDB aberto com sucesso');
+                        resolve(db);
+                    };
+
+                    // Evento de erro: falha ao abrir o banco de dados
+                    request.onerror = (event) => {
+                        console.error('Erro ao abrir o IndexedDB:', event.target.error);
+                        reject(event.target.error);
+                    };
+
+                    // Evento de atualização: usado para criar/modificar a estrutura do banco de dados
+                    request.onupgradeneeded = (event) => {
+                        db = event.target.result;
+                        if (!db.objectStoreNames.contains(STORE_NAME)) {
+                            // Cria um novo object store (tabela)
+                            db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+                            console.log('Object store criado com sucesso.');
+                        }
+                    };
+                });
+            }
+
+            // Função para salvar um cartão no IndexedDB
+            async function saveCard(cardData) {
+                const transaction = db.transaction([STORE_NAME], 'readwrite');
+                const store = transaction.objectStore(STORE_NAME);
+                
+                return new Promise((resolve, reject) => {
+                    const request = store.put(cardData);
+                    
+                    request.onsuccess = () => {
+                        console.log('Cartão salvo no IndexedDB.');
+                        resolve();
+                    };
+                    
+                    request.onerror = (event) => {
+                        console.error('Erro ao salvar cartão:', event.target.error);
+                        reject(event.target.error);
+                    };
+                });
+            }
+
+            // Função para obter todos os cartões do IndexedDB
+            async function getCards() {
+                const transaction = db.transaction([STORE_NAME], 'readonly');
+                const store = transaction.objectStore(STORE_NAME);
+
+                return new Promise((resolve, reject) => {
+                    const request = store.getAll();
+                    
+                    request.onsuccess = (event) => {
+                        resolve(event.target.result);
+                    };
+
+                    request.onerror = (event) => {
+                        console.error('Erro ao obter cartões:', event.target.error);
+                        reject(event.target.error);
+                    };
+                });
+            }
+
+            // Função para remover um cartão do IndexedDB
+            async function removeCardFromDB(cardId) {
+                const transaction = db.transaction([STORE_NAME], 'readwrite');
+                const store = transaction.objectStore(STORE_NAME);
+
+                return new Promise((resolve, reject) => {
+                    const request = store.delete(cardId);
+                    
+                    request.onsuccess = () => {
+                        console.log('Cartão removido do IndexedDB.');
+                        resolve();
+                    };
+
+                    request.onerror = (event) => {
+                        console.error('Erro ao remover cartão:', event.target.error);
+                        reject(event.target.error);
+                    };
+                });
+            }
+
+            // Função para inicializar o carrossel Swiper
+            function initSwiper() {
+                if (mySwiper) {
+                    mySwiper.destroy(true, true);
+                }
+                mySwiper = new Swiper('.mySwiper', {
+                    slidesPerView: 1,
+                    spaceBetween: 30,
+                    loop: false,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                });
+            }
+
+            // Função para preencher o formulário para edição
+            async function editCard(cardId) {
+                const allCards = await getCards();
+                const cardData = allCards.find(card => card.id === cardId);
+                if (!cardData) return;
+                
+                currentEditingCardId = cardId;
+                
+                // Preenche os campos do formulário
+                cardTitleInput.value = cardData.title;
+                cardSubTitleInput.value = cardData.subTitle;
+                cardLevelInput.value = cardData.level;
+                agilidadeInput.value = cardData.attributes.agilidade;
+                carismaInput.value = cardData.attributes.carisma;
+                forcaInput.value = cardData.attributes.forca;
+                inteligenciaInput.value = cardData.attributes.inteligencia;
+                sabedoriaInput.value = cardData.attributes.sabedoria;
+                vigorInput.value = cardData.attributes.vigor;
+
+                // Cria as URLs para as imagens salvas no IndexedDB para pré-visualização
+                if (cardData.image) {
+                    const imageBlob = bufferToBlob(cardData.image, cardData.imageMimeType);
+                    characterImageUrl = URL.createObjectURL(imageBlob);
+                    showImagePreview(characterImagePreview, characterImageUrl, true);
+                    characterImageFile = null;
+                } else {
+                    characterImageUrl = '';
+                    showImagePreview(characterImagePreview, null, true);
+                }
+
+                if (cardData.backgroundImage) {
+                    const backgroundBlob = bufferToBlob(cardData.backgroundImage, cardData.backgroundMimeType);
+                    backgroundImageUrl = URL.createObjectURL(backgroundBlob);
+                    showImagePreview(backgroundImagePreview, backgroundImageUrl, false);
+                } else {
+                    backgroundImageUrl = '';
+                    showImagePreview(backgroundImagePreview, null, false);
+                }
+
+                // Limpa os inputs de arquivo
+                characterImageUpload.value = null;
+                backgroundImageUpload.value = null;
+
+                // Muda o texto do botão para indicar que estamos em modo de edição
+                submitButton.textContent = 'Salvar Edição';
+                submitButton.classList.remove('btn-gradient-pulse');
+            }
+
+            // Função para renderizar os cartões e as miniaturas
+            async function renderCardsAndThumbnails() {
+                const allCards = await getCards();
+                cardsContainer.innerHTML = '';
+                thumbnailList.innerHTML = '';
+
+                if (allCards.length === 0) {
+                    thumbnailList.innerHTML = '<p class="text-gray-500 text-center w-full">Nenhum cartão salvo ainda. Crie um para começar!</p>';
+                } else {
+                    for (const cardData of allCards) {
+                        // Converte ArrayBuffers de imagem para URLs temporárias
+                        let imageURL = 'https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';
+                        let backgroundURL = 'https://placehold.co/400x600/1e293b/d1d5db?text=Fundo+do+Cartão';
+
+                        if (cardData.image && cardData.imageMimeType) {
+                            const imageBlob = bufferToBlob(cardData.image, cardData.imageMimeType);
+                            imageURL = URL.createObjectURL(imageBlob);
+                        }
+                        if (cardData.backgroundImage && cardData.backgroundMimeType) {
+                            const backgroundBlob = bufferToBlob(cardData.backgroundImage, cardData.backgroundMimeType);
+                            backgroundURL = URL.createObjectURL(backgroundBlob);
+                        }
+
+                        // Cria e adiciona o card no carrossel
+                        const cardWrapper = await createCardElement({...cardData, imageURL, backgroundURL});
+                        cardsContainer.appendChild(cardWrapper);
+
+                        // Cria e adiciona a miniatura
+                        const thumbnail = createThumbnailElement({...cardData, imageURL, backgroundURL});
+                        thumbnailList.appendChild(thumbnail);
+                    }
+                }
+                // Reinicializa o Swiper para incluir os novos cartões
+                initSwiper();
+            }
+
+            // Função assíncrona para criar o elemento HTML do cartão com paleta de cores dinâmica
+            async function createCardElement(cardData) {
+                const cardWrapper = document.createElement('div');
+                cardWrapper.className = 'swiper-slide card-wrapper flex flex-col items-center gap-4';
+                
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'w-full h-auto rounded-3xl overflow-hidden shadow-2xl rpg-card';
+                cardDiv.dataset.cardId = cardData.id;
+                cardDiv.style.backgroundImage = `url(${cardData.backgroundURL})`;
+
+                let palette = {
+                    cardBg: 'rgba(31, 41, 55, 0.9)',
+                    highlightColor: '#6366f1',
+                    textColor: '#e5e7eb',
+                    borderColor: '#4b5563'
+                };
+
+                // Tenta extrair a paleta de cores da imagem de fundo se houver
+                if (cardData.backgroundURL && !cardData.backgroundURL.includes('placehold.co')) {
+                    try {
+                        palette = await getPredominantColorAndPalette(cardData.backgroundURL);
+                    } catch (e) {
+                        console.error('Falha ao gerar paleta de cores, usando padrão.', e);
+                    }
+                }
+
+                cardDiv.innerHTML = `
+                    <div class="relative w-full h-full p-4">
+                        <div class="absolute top-4 left-4 rounded-full w-12 h-12 flex items-center justify-center font-bold"
+                             style="background-color: ${palette.cardBg};">
+                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
+                                  style="color: ${palette.highlightColor};">
+                                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.1 1.447H17.78a1 1 0 001.1-1.447l-7-14z"></path>
+                             </svg>
+                        </div>
+                        <div class="absolute top-4 right-4 rounded-full w-12 h-12 flex items-center justify-center font-bold text-2xl"
+                             style="background-color: ${palette.cardBg}; color: ${palette.textColor};">
+                            ${cardData.level || '?'}
+                        </div>
+                        <div class="flex justify-center mt-12">
+                            <img src="${cardData.imageURL}" onerror="this.onerror=null;this.src='https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';" alt="Imagem do personagem" class="w-40 h-40 object-cover rounded-full border-4 border-white shadow-lg">
+                        </div>
+                        <!-- Bloco de informações do cartão estilizado e minimalista -->
+                        <div class="mt-8 p-3 rounded-3xl text-center w-full rpg-card-frame"
+                             style="--card-bg-color: ${palette.cardBg}; --text-color: ${palette.textColor}; --border-color: ${palette.borderColor};">
+                            <!-- Título e subtítulo do personagem -->
+                            <h3 class="text-2xl font-extrabold" style="color: ${palette.highlightColor};">${cardData.title || 'Novo Cartão'}</h3>
+                            <p class="text-sm mt-1" style="color: ${palette.textColor};">${cardData.subTitle || 'Subtítulo'}</p>
+                            
+                            <!-- Divisor estilizado para separar o título -->
+                            <div class="flex items-center justify-center w-full">
+                                <div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent);"></div>
+                            </div>
+                            
+                            <!-- Nível do personagem -->
+                            <h4 class="text-base font-bold" style="color: ${palette.textColor};">Nível: <span style="color: ${palette.highlightColor};">${cardData.level || '?'}</span></h4>
+                            
+                            <!-- Divisor para separar o nível dos atributos -->
+                            <div class="rpg-card-stat-divider my-2" style="background-color: ${palette.borderColor};"></div>
+                            
+                            <!-- SEÇÃO DE ATRIBUTOS COM LAYOUT DE DUAS LINHAS -->
+                            <div class="flex flex-col gap-2">
+                                <!-- Primeira linha de atributos: AGI, CAR, FOR -->
+                                <div class="grid grid-cols-3 gap-2">
+                                    <!-- Agilidade -->
+                                    <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
+                                         style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
+                                        <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">AGI</span>
+                                        <span class="font-extrabold text-lg block">${cardData.attributes.agilidade}</span>
+                                    </div>
+                                    <!-- Carisma -->
+                                    <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
+                                         style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
+                                        <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">CAR</span>
+                                        <span class="font-extrabold text-lg block">${cardData.attributes.carisma}</span>
+                                    </div>
+                                    <!-- Força -->
+                                    <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
+                                         style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
+                                        <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">FOR</span>
+                                        <span class="font-extrabold text-lg block">${cardData.attributes.forca}</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Segunda linha de atributos: INT, SAB, VIG -->
+                                <div class="grid grid-cols-3 gap-2">
+                                    <!-- Inteligência -->
+                                    <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
+                                         style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
+                                        <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">INT</span>
+                                        <span class="font-extrabold text-lg block">${cardData.attributes.inteligencia}</span>
+                                    </div>
+                                    <!-- Sabedoria -->
+                                    <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
+                                         style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
+                                        <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">SAB</span>
+                                        <span class="font-extrabold text-lg block">${cardData.attributes.sabedoria}</span>
+                                    </div>
+                                    <!-- Vigor -->
+                                    <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
+                                         style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
+                                        <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">VIG</span>
+                                        <span class="font-extrabold text-lg block">${cardData.attributes.vigor}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                const buttonsDiv = document.createElement('div');
+                buttonsDiv.className = 'flex justify-center space-x-2 w-full max-w-xs mt-4';
+                buttonsDiv.innerHTML = `
+                    <button class="w-1/3 py-2 px-4 rounded-full text-sm font-bold text-white bg-indigo-500 hover:bg-indigo-600 transition-colors duration-200 edit-btn" data-card-id="${cardData.id}">
+                        Editar
+                    </button>
+                    <button class="w-1/3 py-2 px-4 rounded-full text-sm font-bold text-white bg-red-500 hover:bg-red-600 transition-colors duration-200 remove-btn" data-card-id="${cardData.id}">
+                        Remover
+                    </button>
+                    <!-- Novo botão de tela cheia -->
+                    <button class="w-1/3 py-2 px-4 rounded-full text-sm font-bold text-white bg-purple-500 hover:bg-purple-600 transition-colors duration-200 fullscreen-btn" data-card-id="${cardData.id}">
+                        Tela Cheia
+                    </button>
+                `;
+
+                cardWrapper.appendChild(cardDiv);
+                cardWrapper.appendChild(buttonsDiv);
+                
+                return cardWrapper;
+            }
+
+            // Função para criar o elemento HTML da miniatura
+            function createThumbnailElement(cardData) {
+                const thumbnailWrapper = document.createElement('div');
+                thumbnailWrapper.className = 'relative w-20 h-24 rounded-lg overflow-hidden shadow-lg border-2 border-gray-400 cursor-pointer hover:border-indigo-500 transition-colors duration-200';
+                thumbnailWrapper.dataset.cardId = cardData.id;
+                thumbnailWrapper.style.backgroundImage = `url(${cardData.backgroundURL})`;
+                thumbnailWrapper.style.backgroundSize = 'cover';
+                thumbnailWrapper.style.backgroundPosition = 'center';
+
+                thumbnailWrapper.innerHTML = `
+                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                        <img src="${cardData.imageURL}" onerror="this.onerror=null;this.src='https://placehold.co/40x40/E5E7EB/4B5563?text=P';" alt="Miniatura do personagem" class="w-10 h-10 object-cover rounded-full border-2 border-white">
+                    </div>
+                    <div class="absolute bottom-1 left-1 bg-gray-800 text-white text-xs px-2 py-1 rounded-full font-bold">
+                        Lv.${cardData.level || '?'}
+                    </div>
+                `;
+
+                // Evento de clique para carregar o cartão para edição
+                thumbnailWrapper.addEventListener('click', async () => {
+                    await editCard(cardData.id);
+                    // Navega para o slide do card correspondente
+                    const allCards = await getCards();
+                    const cardIndex = allCards.findIndex(c => c.id === cardData.id);
+                    if (cardIndex !== -1) {
+                        mySwiper.slideTo(cardIndex);
+                    }
+                });
+
+                return thumbnailWrapper;
+            }
+
+            // Event listener para os botões dentro do carrossel
+            cardsContainer.addEventListener('click', async (e) => {
+                const target = e.target;
+                const buttonsDiv = target.closest('.buttons-div');
+                const cardWrapper = target.closest('.card-wrapper');
+                const cardDiv = cardWrapper ? cardWrapper.querySelector('.rpg-card') : null;
+                const cardId = cardDiv ? cardDiv.dataset.cardId : null;
+
+                if (!cardId) return;
+
+                if (target.classList.contains('edit-btn')) {
+                    await editCard(cardId);
+                } else if (target.classList.contains('remove-btn')) {
+                    await removeCard(cardId);
+                } else if (target.classList.contains('fullscreen-btn')) {
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    } else {
+                        cardDiv.requestFullscreen().catch(err => {
+                            console.error(`Erro ao entrar em modo de tela cheia: ${err.message}`);
+                        });
+                    }
+                }
+            });
+
+            async function removeCard(cardId) {
+                await removeCardFromDB(cardId);
+                renderCardsAndThumbnails();
+            }
+
+            // Event listener para os inputs de arquivo para pré-visualização
+            characterImageUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    characterImageFile = file;
+                    characterImageUrl = URL.createObjectURL(file);
+                    showImagePreview(characterImagePreview, characterImageUrl, true);
+                }
+            });
+
+            backgroundImageUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    backgroundImageFile = file;
+                    backgroundImageUrl = URL.createObjectURL(file);
+                    showImagePreview(backgroundImagePreview, backgroundImageUrl, false);
+                }
+            });
+
+            function showImagePreview(element, url, isImageElement) {
+                if (url) {
+                    if (isImageElement) {
+                        element.src = url;
+                    } else {
+                        element.style.backgroundImage = `url(${url})`;
+                    }
+                    element.classList.remove('hidden');
+                } else {
+                    element.classList.add('hidden');
+                }
+            }
+
+            // Função para ler um arquivo como ArrayBuffer
+            function readFileAsArrayBuffer(file) {
+                return new Promise((resolve, reject) => {
+                    if (!file) {
+                        resolve(null);
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.onerror = (e) => reject(e.target.error);
+                    reader.readAsArrayBuffer(file);
+                });
+            }
+
+            cardForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const title = cardTitleInput.value;
+                const subTitle = cardSubTitleInput.value;
+                const level = cardLevelInput.value;
+
+                const attributes = {
+                    agilidade: agilidadeInput.value || '-',
+                    carisma: carismaInput.value || '-',
+                    forca: forcaInput.value || '-',
+                    inteligencia: inteligenciaInput.value || '-',
+                    sabedoria: sabedoriaInput.value || '-',
+                    vigor: vigorInput.value || '-',
+                };
+                
+                let allCards = await getCards();
+                let cardData;
+
+                if (currentEditingCardId) {
+                    // Atualiza o cartão existente
+                    cardData = allCards.find(card => card.id === currentEditingCardId);
+                    if (!cardData) return; // Cartão não encontrado
+
+                    cardData.title = title;
+                    cardData.subTitle = subTitle;
+                    cardData.level = level;
+                    cardData.attributes = attributes;
+
+                    // Se novos arquivos foram selecionados, atualiza
+                    if (characterImageFile) {
+                        cardData.image = await readFileAsArrayBuffer(characterImageFile);
+                        cardData.imageMimeType = characterImageFile.type;
+                    }
+                    if (backgroundImageFile) {
+                        cardData.backgroundImage = await readFileAsArrayBuffer(backgroundImageFile);
+                        cardData.backgroundMimeType = backgroundImageFile.type;
+                    }
+                    
+                    await saveCard(cardData);
+
+                    // Reseta o estado de edição
+                    currentEditingCardId = null;
+                    submitButton.textContent = 'Criar Cartão';
+                    submitButton.classList.add('btn-gradient-pulse');
+                } else {
+                    // Cria um novo cartão
+                    const newCardId = Date.now().toString();
+                    const newCardData = { 
+                        id: newCardId, 
+                        title, 
+                        subTitle, 
+                        level, 
+                        attributes 
+                    };
+                    
+                    // Lê e salva os arquivos das imagens
+                    if (characterImageFile) {
+                        newCardData.image = await readFileAsArrayBuffer(characterImageFile);
+                        newCardData.imageMimeType = characterImageFile.type;
+                    }
+                    if (backgroundImageFile) {
+                        newCardData.backgroundImage = await readFileAsArrayBuffer(backgroundImageFile);
+                        newCardData.backgroundMimeType = backgroundImageFile.type;
+                    }
+
+                    await saveCard(newCardData);
+                }
+
+                cardForm.reset();
+                // Limpa as URLs temporárias e os arquivos para o próximo uso
+                if (characterImageUrl) URL.revokeObjectURL(characterImageUrl);
+                if (backgroundImageUrl) URL.revokeObjectURL(backgroundImageUrl);
+                characterImageUrl = '';
+                backgroundImageFile = null;
+                backgroundImageFile = null;
+
+                showImagePreview(characterImagePreview, null, true);
+                showImagePreview(backgroundImagePreview, null, false);
+                
+                renderCardsAndThumbnails();
+            });
+
+            // Inicia o IndexedDB e depois renderiza os cartões
+            openDatabase().then(() => {
+                renderCardsAndThumbnails();
+            }).catch(e => {
+                console.error("Falha ao inicializar o app:", e);
+            });
+        });
+    </script>
+</body>
+</html>
