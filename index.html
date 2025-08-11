@@ -11,6 +11,41 @@
     <!-- CSS do Swiper para o carrossel -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
+
+.rpg-card .ex-max{ background-color: rgb(0 0 0 / 60%);
+    background-size: cover;
+    background-blend-mode: multiply; }
+    
+
+        .rpg-card:fullscreen .ex-max
+        {
+                transform: scale(.8);
+            display: flex;
+            border-radius: 10px;
+            /* background: #1b1b1be0; */
+            justify-content: center;
+            box-shadow: 0px 0px 6px 0px #0f1908;
+            background-size: cover !important;
+        }
+
+        .rpg-card:fullscreen .img-max
+        {
+            width: 200px !important;
+            height: 200px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+            margin-top: 80px;
+        }
+
+        .rpg-card:fullscreen .img-max img
+        {
+            width: 100%;
+            height: 100%;
+           
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(to bottom right, #f3f4f6, #e5e7eb);
@@ -56,6 +91,12 @@
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
+            border: 0;
+            border-radius: 0;
+
+            background-color: rgb(0 0 0 / 60%);
+            background-size: cover;
+            background-blend-mode: multiply;
         }
         .rpg-card:fullscreen .rpg-card-frame {
             position: absolute;
@@ -223,8 +264,8 @@
                     <!-- Cards serão injetados aqui -->
                 </div>
                 <!-- Botões de navegação do Swiper -->
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next" style="opacity: 0;"></div>
+                <div class="swiper-button-prev" style="opacity: 0;"></div>
             </div>
         </div>
 
@@ -599,7 +640,7 @@
                 }
 
                 cardDiv.innerHTML = `
-                    <div class="relative w-full h-full p-4">
+                    <div class="relative w-full h-full p-4 ex-max" style="background:url(${cardData.backgroundURL}) !important; background-size: cover !important;">
                         <div class="absolute top-4 left-4 rounded-full w-12 h-12 flex items-center justify-center font-bold"
                              style="background-color: ${palette.cardBg};">
                              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
@@ -611,7 +652,7 @@
                              style="background-color: ${palette.cardBg}; color: ${palette.textColor};">
                             ${cardData.level || '?'}
                         </div>
-                        <div class="flex justify-center mt-12">
+                        <div class="flex justify-center mt-12 img-max">
                             <img src="${cardData.imageURL}" onerror="this.onerror=null;this.src='https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';" alt="Imagem do personagem" class="w-40 h-40 object-cover rounded-full border-4 border-white shadow-lg">
                         </div>
                         <!-- Bloco de informações do cartão estilizado e minimalista -->
