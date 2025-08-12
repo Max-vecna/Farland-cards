@@ -8,12 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
     <!-- Adicionando o Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <!-- CSS do Swiper para o carrossel -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7-icons/css/framework7-icons.css">
-<!-- CSS do Swiper para o carrossel
-    <link rel="stylesheet" href="particulas.css">
-    <script src="particulas.js"></script> -->
+
     <style>
 
         .rpg-card .ex-max
@@ -659,12 +657,7 @@
                              style="background-color: ${palette.cardBg}; color: ${palette.textColor};">
                             ${cardData.level || '?'}
                         </div>
-                        <div class="wave-container flex justify-center mt-12 img-max">
-                            <!-- As três ondas giratórias são adicionadas aqui 
-                            <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>
-                            <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>
-                            <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>-->
-            
+                        <div class="flex justify-center mt-12 img-max">
                             <img style="border-color: ${palette.borderColor};" src="${cardData.imageURL}" onerror="this.onerror=null;this.src='https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';" alt="Imagem do personagem" class="w-40 h-40 object-cover rounded-full border-4 border-white shadow-lg">
                         </div>
                         <!-- Bloco de informações do cartão estilizado e minimalista -->
