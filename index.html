@@ -30,7 +30,7 @@
             display: flex;
             border-radius: 10px;
             /* background: #1b1b1be0; */
-            max-height: 700px;
+            max-height: 600px;
             justify-content: center;
             box-shadow: 0px 0px 6px 0px #0f1908;
             background-size: cover !important;
@@ -661,12 +661,15 @@
 
                 cardDiv.innerHTML = `
                     <div class="relative w-full h-full p-4 ex-max" style="background:url(${cardData.backgroundURL}) !important; background-size: cover !important;">
-                        <div class="absolute top-4 left-4 rounded-full w-12 h-12 flex items-center justify-center font-bold"
-                             style="background-color: ${palette.cardBg}; color: ${palette.textColor};">
+                        <div class="absolute top-4 left-4 rounded-full w-14 h-14 flex items-center justify-center font-bold" style="background-color: ${palette.highlightColor}; color: ${palette.textColor};    display: flex
+; flex-direction: column; justify-content: center; padding: 5px; align-content: center; align-items: center;">
+                             <small>PM</small>
                             ${cardData.attributes.mana || '?'} 
                         </div>
-                        <div class="absolute top-4 right-4 rounded-full w-12 h-12 flex items-center justify-center font-bold"
-                             style="background-color: ${palette.cardBg}; color: ${palette.textColor};">
+                        <div class="absolute top-4 right-4 rounded-full w-14 h-14 flex items-center justify-center font-bold"
+                             style="background-color: ${palette.highlightColor}; color: ${palette.textColor};    display: flex
+; flex-direction: column; justify-content: center; padding: 5px; align-content: center; align-items: center;">
+<small>LV</small>
                             ${cardData.level || '?'}
                         </div>
                         <div class="wave-container flex justify-center mt-12 img-max" style="position: relative;">
@@ -674,8 +677,10 @@
                             <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>
                             <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>
                             <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>-->
-                            <div class="absolute right-1 bottom-1 rounded-full w-12 h-12 flex items-center justify-center font-bold"
-                             style="background-color: ${palette.cardBg}; color: ${palette.textColor};">
+                            <div class="absolute right-1 bottom-1 rounded-full w-14 h-14 flex items-center justify-center font-bold"
+                             style="background-color: ${palette.highlightColor}; color: ${palette.textColor};    display: flex
+; flex-direction: column; justify-content: center; padding: 5px; align-content: center; align-items: center;">
+<small>PV</small>
                             ${cardData.attributes.vida || '?'} 
                         </div>
                             <img style="border-color: ${palette.borderColor};" src="${cardData.imageURL}" onerror="this.onerror=null;this.src='https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';" alt="Imagem do personagem" class="w-40 h-40 object-cover rounded-full border-4 border-white shadow-lg">
@@ -972,4 +977,3 @@
     </script>
 </body>
 </html>
-
