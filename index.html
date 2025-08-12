@@ -8,9 +8,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
     <!-- Adicionando o Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- CSS do Swiper para o carrossel -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+   
+<!-- CSS do Swiper para o carrossel <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7-icons/css/framework7-icons.css">
+    <link rel="stylesheet" href="particulas.css">
+    <script src="particulas.js"></script> -->
     <style>
 
         .rpg-card .ex-max
@@ -27,6 +30,7 @@
             display: flex;
             border-radius: 10px;
             /* background: #1b1b1be0; */
+            max-height: 600px;
             justify-content: center;
             box-shadow: 0px 0px 6px 0px #0f1908;
             background-size: cover !important;
@@ -222,6 +226,14 @@
                 <div class="grid grid-cols-2 gap-4">
                     <h3 class="col-span-2 text-xl font-bold text-indigo-300">Atributos</h3>
                     <div>
+                        <label for="vida" class="block text-sm font-semibold mb-1">Vida (PV)</label>
+                        <input type="number" id="vida" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
+                    </div>
+                    <div>
+                        <label for="mana" class="block text-sm font-semibold mb-1">Mana (PM)</label>
+                        <input type="number" id="mana" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
+                    </div>
+                    <div>
                         <label for="agilidade" class="block text-sm font-semibold mb-1">Agilidade (AGI)</label>
                         <input type="number" id="agilidade" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
                     </div>
@@ -296,6 +308,8 @@
             const backgroundImagePreview = document.getElementById('backgroundImagePreview');
             
             const agilidadeInput = document.getElementById('agilidade');
+            const manaInput = document.getElementById('mana');
+            const vidaInput = document.getElementById('vida');
             const carismaInput = document.getElementById('carisma');
             const forcaInput = document.getElementById('forca');
             const inteligenciaInput = document.getElementById('inteligencia');
@@ -546,6 +560,8 @@
                 cardSubTitleInput.value = cardData.subTitle;
                 cardLevelInput.value = cardData.level;
                 agilidadeInput.value = cardData.attributes.agilidade;
+                manaInput.value = cardData.attributes.mana;
+                vidaInput.value = cardData.attributes.vida;
                 carismaInput.value = cardData.attributes.carisma;
                 forcaInput.value = cardData.attributes.forca;
                 inteligenciaInput.value = cardData.attributes.inteligencia;
@@ -646,17 +662,22 @@
                 cardDiv.innerHTML = `
                     <div class="relative w-full h-full p-4 ex-max" style="background:url(${cardData.backgroundURL}) !important; background-size: cover !important;">
                         <div class="absolute top-4 left-4 rounded-full w-12 h-12 flex items-center justify-center font-bold"
-                             style="background-color: ${palette.cardBg};">
-                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
-                                  style="color: ${palette.highlightColor};">
-                                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.1 1.447H17.78a1 1 0 001.1-1.447l-7-14z"></path>
-                             </svg>
+                             style="background-color: ${palette.cardBg}; color: ${palette.textColor};">
+                            ${cardData.attributes.mana || '?'} 
                         </div>
-                        <div class="absolute top-4 right-4 rounded-full w-12 h-12 flex items-center justify-center font-bold text-2xl"
+                        <div class="absolute top-4 right-4 rounded-full w-12 h-12 flex items-center justify-center font-bold"
                              style="background-color: ${palette.cardBg}; color: ${palette.textColor};">
                             ${cardData.level || '?'}
                         </div>
-                        <div class="flex justify-center mt-12 img-max">
+                        <div class="wave-container flex justify-center mt-12 img-max" style="position: relative;">
+                            <!-- As três ondas giratórias são adicionadas aqui 
+                            <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>
+                            <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>
+                            <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>-->
+                            <div class="absolute right-1 bottom-1 rounded-full w-12 h-12 flex items-center justify-center font-bold"
+                             style="background-color: ${palette.cardBg}; color: ${palette.textColor};">
+                            ${cardData.attributes.vida || '?'} 
+                        </div>
                             <img style="border-color: ${palette.borderColor};" src="${cardData.imageURL}" onerror="this.onerror=null;this.src='https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';" alt="Imagem do personagem" class="w-40 h-40 object-cover rounded-full border-4 border-white shadow-lg">
                         </div>
                         <!-- Bloco de informações do cartão estilizado e minimalista -->
@@ -730,15 +751,15 @@
                 const buttonsDiv = document.createElement('div');
                 buttonsDiv.className = 'flex justify-center space-x-2 w-full';
                 buttonsDiv.innerHTML = `
-                    <button class="w-1/3 py-2 px-4 rounded-full text-sm font-bold text-white bg-indigo-500 hover:bg-indigo-600 transition-colors duration-200 edit-btn" data-card-id="${cardData.id}" style="border-radius: 50px 0px 0px 50px; background-color: ${palette.cardBg};">
-                        <i class="f7-icons">pencil</i>
+                    <button class="w-1/3 py-3 px-4 rounded-full text-sm font-bold text-white bg-indigo-500 hover:bg-indigo-600 transition-colors duration-200 edit-btn" data-card-id="${cardData.id}" style="border-radius: 50px 0px 0px 50px; background-color: ${palette.cardBg};">
+                        Editar
                     </button>
-                    <button class="w-1/3 py-2 px-4 rounded-full text-sm font-bold text-white bg-red-500 hover:bg-red-600 transition-colors duration-200 remove-btn" data-card-id="${cardData.id}"  style="border-radius: 0; background-color: ${palette.highlightColor};">
-                        <i class="f7-icons">trash</i>
+                    <button class="w-1/3 py-3 px-4 rounded-full text-sm font-bold text-white bg-red-500 hover:bg-red-600 transition-colors duration-200 remove-btn" data-card-id="${cardData.id}"  style="border-radius: 0; background-color: ${palette.highlightColor};">
+                        Excluir
                     </button>
                     <!-- Novo botão de tela cheia -->
-                    <button class="w-1/3 py-2 px-4 rounded-full text-sm font-bold text-white bg-purple-500 hover:bg-purple-600 transition-colors duration-200 fullscreen-btn" data-card-id="${cardData.id}" style="border-radius: 0px 50px 50px 0px; background-color: ${palette.cardBg};">
-                        <i class="f7-icons">expand</i>
+                    <button class="w-1/3 py-3 px-4 rounded-full text-sm font-bold text-white bg-purple-500 hover:bg-purple-600 transition-colors duration-200 fullscreen-btn" data-card-id="${cardData.id}" style="border-radius: 0px 50px 50px 0px; background-color: ${palette.cardBg};">
+                        Expandir
                     </button>
                 `;
 
@@ -865,6 +886,8 @@
 
                 const attributes = {
                     agilidade: agilidadeInput.value || '-',
+                    mana: manaInput.value || '-',
+                    vida: vidaInput.value || '-',
                     carisma: carismaInput.value || '-',
                     forca: forcaInput.value || '-',
                     inteligencia: inteligenciaInput.value || '-',
@@ -949,4 +972,3 @@
     </script>
 </body>
 </html>
-
