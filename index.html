@@ -15,40 +15,40 @@
     <link rel="stylesheet" href="particulas.css">
      -->
     <style>
-.card-3d-container {
-    perspective: 1500px; /* profundidade do efeito 3D */
-    width: 100%;
-    height: 550px;
-}
+        .card-3d-container {
+            perspective: 1500px; /* profundidade do efeito 3D */
+            width: 100%;
+            height: 550px;
+        }
 
-.card-3d {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform-style: preserve-3d; /* habilita o 3D */
-    transition: transform 0.6s;
-    cursor: pointer;
-    
-}
+        .card-3d {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d; /* habilita o 3D */
+            transition: transform 0.6s;
+            cursor: pointer;
+            
+        }
 
-/* Faces do card */
-.card-front, .card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden; /* oculta o verso quando não está virado */
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0px 0px 6px 0px #0f1908;
-}
+        /* Faces do card */
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* oculta o verso quando não está virado */
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0px 0px 6px 0px #0f1908;
+        }
 
-.card-back {
-    transform: rotateY(180deg); /* virada para trás */
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        .card-back {
+            transform: rotateY(180deg); /* virada para trás */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
         .rpg-card .ex-max
         {
@@ -706,105 +706,104 @@
                     }
                 }
 
-                cardDiv.innerHTML = `<div class="card-3d-container">
-    <div class="card-3d">
-        <!-- Face frontal -->
-        <div class="card-front">
-             <div class="relative w-full h-full p-4 ex-max" style="background:url(${cardData.backgroundURL}) !important; background-size: cover !important;">
-                        <div class="absolute top-4 left-4 rounded-full w-14 h-14 flex items-center justify-center font-bold" style=" border: 2px solid ${palette.highlightColor}; background-color: #1f2937; color: ${palette.textColor}; display: flex; flex-direction: column; justify-content: center; padding: 5px; align-content: center; align-items: center;">
-                             <small style="background: #1f2937; border: 2px solid ${palette.highlightColor}; border-bottom: 0; border-right: 0;">PM</small>
-                            ${cardData.attributes.mana || '?'} 
-                        </div>
-                        <div class="absolute top-4 right-4 rounded-full w-14 h-14 flex items-center justify-center font-bold" style="border: 2px solid ${palette.highlightColor}; background-color: #1f2937; color: ${palette.textColor}; display: flex; flex-direction: column; justify-content: center; padding: 5px; align-content: center; align-items: center;">
-                            <small  style="background: #1f2937; left: auto; right: -10px;  border: 2px solid ${palette.highlightColor}; border-bottom: 0; border-left: 0;"">PV</small>
-                            ${cardData.attributes.vida || '?'} 
-                        </div>
-                        <div class="wave-container flex justify-center mt-12 img-max" style="position: relative; width: 200px !important; height: 200px; left: 0; right: 0; margin: auto; margin-top: 40px;">
-                            <!-- As três ondas giratórias são adicionadas aqui 
-                            <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>
-                            <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>
-                            <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>  -->                         
-                            <img style="border-color: ${palette.borderColor}; height: 200px" src="${cardData.imageURL}" onerror="this.onerror=null;this.src='https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';" alt="Imagem do personagem" class="object-cover rounded-full border-4 border-white shadow-lg w-full h-full">
-                        </div>
-                        <!-- Bloco de informações do cartão estilizado e minimalista -->
-                        <div class="mt-8 p-3 rounded-3xl text-center w-full rpg-card-frame"
-                             style="--card-bg-color: ${palette.cardBg}; --text-color: ${palette.textColor}; --border-color: ${palette.borderColor};">
-                            <!-- Título e subtítulo do personagem -->
-                            <h3 class="text-2xl font-extrabold" style="color: ${palette.highlightColor};">${cardData.title || 'Novo Cartão'}</h3>
-                            <p class="text-sm mt-1" style="color: ${palette.textColor};">${cardData.subTitle || 'Subtítulo'}</p>
-                            
-                            <!-- Divisor estilizado para separar o título -->
-                            <div class="flex items-center justify-center w-full">
-                                <div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent);"></div>
-                            </div>
-                            
-                            <!-- Nível do personagem -->
-                            <h4 class="text-base font-bold" style="color: ${palette.textColor};">Nível: <span style="color: ${palette.highlightColor};">${cardData.level || '?'}</span></h4>
-                            
-                            <!-- Divisor para separar o nível dos atributos -->
-                            <div class="rpg-card-stat-divider my-2" style="background-color: ${palette.borderColor};"></div>
-                            
-                            <!-- SEÇÃO DE ATRIBUTOS COM LAYOUT DE DUAS LINHAS -->
-                            <div class="flex flex-col gap-2">
-                                <!-- Primeira linha de atributos: AGI, CAR, FOR -->
-                                <div class="grid grid-cols-3 gap-2">
-                                    <!-- Agilidade -->
-                                    <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
-                                         style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
-                                        <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">AGI</span>
-                                        <span class="font-extrabold text-lg block">${cardData.attributes.agilidade}</span>
+                cardDiv.innerHTML = `
+                <div class="card-3d-container">
+            <div class="card-3d">
+                <!-- Face frontal -->
+                <div class="card-front">
+                    <div class="relative w-full h-full p-4 ex-max" style="background:url(${cardData.backgroundURL}) !important; background-size: cover !important;    height: 550px;">
+                                <div class="absolute top-4 left-4 rounded-full w-14 h-14 flex items-center justify-center font-bold" style=" border: 2px solid ${palette.highlightColor}; background-color: #1f2937; color: ${palette.textColor}; display: flex; flex-direction: column; justify-content: center; padding: 5px; align-content: center; align-items: center;">
+                                    <small style="background: #1f2937; border: 2px solid ${palette.highlightColor}; border-bottom: 0; border-right: 0;">PM</small>
+                                    ${cardData.attributes.mana || '?'} 
+                                </div>
+                                <div class="absolute top-4 right-4 rounded-full w-14 h-14 flex items-center justify-center font-bold" style="border: 2px solid ${palette.highlightColor}; background-color: #1f2937; color: ${palette.textColor}; display: flex; flex-direction: column; justify-content: center; padding: 5px; align-content: center; align-items: center;">
+                                    <small  style="background: #1f2937; left: auto; right: -10px;  border: 2px solid ${palette.highlightColor}; border-bottom: 0; border-left: 0;"">PV</small>
+                                    ${cardData.attributes.vida || '?'} 
+                                </div>
+                                <div class="wave-container flex justify-center mt-12 img-max" style="position: relative; width: 200px !important; height: 200px; left: 0; right: 0; margin: auto; margin-top: 40px;">
+                                    <!-- As três ondas giratórias são adicionadas aqui 
+                                    <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>
+                                    <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>
+                                    <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>  -->                         
+                                    <img style="border-color: ${palette.borderColor}; height: 200px" src="${cardData.imageURL}" onerror="this.onerror=null;this.src='https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';" alt="Imagem do personagem" class="object-cover rounded-full border-4 border-white shadow-lg w-full h-full">
+                                </div>
+                                <!-- Bloco de informações do cartão estilizado e minimalista -->
+                                <div class="mt-8 p-3 rounded-3xl text-center w-full rpg-card-frame"
+                                    style="--card-bg-color: ${palette.cardBg}; --text-color: ${palette.textColor}; --border-color: ${palette.borderColor};">
+                                    <!-- Título e subtítulo do personagem -->
+                                    <h3 class="text-2xl font-extrabold" style="color: ${palette.highlightColor};">${cardData.title || 'Novo Cartão'}</h3>
+                                    <p class="text-sm mt-1" style="color: ${palette.textColor};">${cardData.subTitle || 'Subtítulo'}</p>
+                                    
+                                    <!-- Divisor estilizado para separar o título -->
+                                    <div class="flex items-center justify-center w-full">
+                                        <div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent);"></div>
                                     </div>
-                                    <!-- Carisma -->
-                                    <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
-                                         style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
-                                        <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">CAR</span>
-                                        <span class="font-extrabold text-lg block">${cardData.attributes.carisma}</span>
-                                    </div>
-                                    <!-- Força -->
-                                    <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
-                                         style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
-                                        <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">FOR</span>
-                                        <span class="font-extrabold text-lg block">${cardData.attributes.forca}</span>
+                                    
+                                    <!-- Nível do personagem -->
+                                    <h4 class="text-base font-bold" style="color: ${palette.textColor};">Nível: <span style="color: ${palette.highlightColor};">${cardData.level || '?'}</span></h4>
+                                    
+                                    <!-- Divisor para separar o nível dos atributos -->
+                                    <div class="rpg-card-stat-divider my-2" style="background-color: ${palette.borderColor};"></div>
+                                    
+                                    <!-- SEÇÃO DE ATRIBUTOS COM LAYOUT DE DUAS LINHAS -->
+                                    <div class="flex flex-col gap-2">
+                                        <!-- Primeira linha de atributos: AGI, CAR, FOR -->
+                                        <div class="grid grid-cols-3 gap-2">
+                                            <!-- Agilidade -->
+                                            <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
+                                                style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
+                                                <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">AGI</span>
+                                                <span class="font-extrabold text-lg block">${cardData.attributes.agilidade}</span>
+                                            </div>
+                                            <!-- Carisma -->
+                                            <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
+                                                style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
+                                                <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">CAR</span>
+                                                <span class="font-extrabold text-lg block">${cardData.attributes.carisma}</span>
+                                            </div>
+                                            <!-- Força -->
+                                            <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
+                                                style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
+                                                <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">FOR</span>
+                                                <span class="font-extrabold text-lg block">${cardData.attributes.forca}</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Segunda linha de atributos: INT, SAB, VIG -->
+                                        <div class="grid grid-cols-3 gap-2">
+                                            <!-- Inteligência -->
+                                            <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
+                                                style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
+                                                <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">INT</span>
+                                                <span class="font-extrabold text-lg block">${cardData.attributes.inteligencia}</span>
+                                            </div>
+                                            <!-- Sabedoria -->
+                                            <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
+                                                style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
+                                                <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">SAB</span>
+                                                <span class="font-extrabold text-lg block">${cardData.attributes.sabedoria}</span>
+                                            </div>
+                                            <!-- Vigor -->
+                                            <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
+                                                style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
+                                                <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">VIG</span>
+                                                <span class="font-extrabold text-lg block">${cardData.attributes.vigor}</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                
-                                <!-- Segunda linha de atributos: INT, SAB, VIG -->
-                                <div class="grid grid-cols-3 gap-2">
-                                    <!-- Inteligência -->
-                                    <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
-                                         style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
-                                        <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">INT</span>
-                                        <span class="font-extrabold text-lg block">${cardData.attributes.inteligencia}</span>
-                                    </div>
-                                    <!-- Sabedoria -->
-                                    <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
-                                         style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
-                                        <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">SAB</span>
-                                        <span class="font-extrabold text-lg block">${cardData.attributes.sabedoria}</span>
-                                    </div>
-                                    <!-- Vigor -->
-                                    <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
-                                         style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
-                                        <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">VIG</span>
-                                        <span class="font-extrabold text-lg block">${cardData.attributes.vigor}</span>
-                                    </div>
-                                </div>
                             </div>
-                        </div>
-                    </div>
-        </div>
+                          </div>
 
-        <!-- Face traseira -->
-        <div class="card-back" style="background:url(${cardData.backgroundURL}) !important; background-size: cover !important;">
-            <div class="back-content">
-                <h2>Conteúdo de trás</h2>
-                <p></p>
-            </div>
-        </div>
-    </div>
-</div>
-                
-                `;
+                          <!-- Face traseira -->
+                          <div class="card-back" style="background:url(${cardData.backgroundURL}) !important; background-size: cover !important;">
+                              <div class="back-content">
+                                  <h2></h2>
+                                  <p></p>
+                              </div>
+                          </div>
+                      </div>
+                  </div> `;
                 
                 const buttonsDiv = document.createElement('div');
                 buttonsDiv.className = 'flex justify-center space-x-2 w-full';
