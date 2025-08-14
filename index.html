@@ -15,6 +15,13 @@
     <link rel="stylesheet" href="particulas.css">
      -->
     <style>
+
+        .back-content{
+            width: 100%;
+            height: calc(100% - 30px);
+            margin: 15px;
+            border-radius: 7px;
+        }
         .card-3d-container {
             perspective: 1500px; /* profundidade do efeito 3D */
             width: 100%;
@@ -52,7 +59,7 @@
 
         .rpg-card .ex-max
         {
-            background-color: rgb(0 0 0 / 60%);
+            /*background-color: rgb(0 0 0 / 60%);*/
             background-size: cover;
             background-blend-mode: multiply;
         }
@@ -133,7 +140,7 @@
             border: 0;
             border-radius: 0;
 
-            background-color: rgb(0 0 0 / 60%);
+           /* background-color: rgb(0 0 0 / 60%);*/
             background-size: cover;
             background-blend-mode: multiply;
         }
@@ -305,7 +312,17 @@
                         <input type="number" id="vigor" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
                     </div>
                 </div>
-
+                <!-- Seção para Perícias com checkboxes dinâmicos -->
+                <div>
+                    <h3 class="text-xl font-bold text-indigo-300 mb-2">Perícias</h3>
+                    <div id="pericias-checkboxes-container" class="space-y-2">
+                        <!-- Checkboxes de perícias serão injetados aqui via JS -->
+                    </div>
+                    <div id="pericia-description-display" class="mt-4 p-4 rounded-lg bg-gray-700 hidden">
+                        <h4 id="periciaDescriptionTitle" class="font-bold text-indigo-300"></h4>
+                        <p id="periciaDescriptionText" class="text-sm text-gray-300 mt-2"></p>
+                    </div>
+                </div>
                 <button type="submit" id="submitButton"
                         class="w-full py-3 px-4 rounded-full text-lg font-bold text-white bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 focus:outline-none transition duration-300 ease-in-out transform hover:scale-105 shadow-xl btn-gradient-pulse">
                     Criar Cartão
@@ -338,6 +355,48 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script>
+           // Dados das perícias para o seletor
+        const periciasData = {
+            "🏃‍♂️ AGILIDADE": {
+                "Acrobacia": "Capacidade de realizar movimentos ágeis e controlados com o corpo. Permite executar saltos, rolamentos, cambalhotas, equilibrar-se em superfícies estreitas (como cordas ou parapeitos), escapar de armadilhas com destreza, e cair de grandes alturas sem se machucar seriamente. Muito usada por ladinos, artistas de circo, ladrões e monges guerreiros.",
+                "Iniciativa": "Esta perícia representa a velocidade de reação de um personagem quando o combate começa. Um personagem com alta Iniciativa é mais rápido para perceber o perigo e tomar uma ação decisiva antes dos demais. É usada principalmente para determinar a ordem de ações no início dos combates.",
+                "Montaria": "Controle de veículos e montarias complexas. Essa perícia mede a habilidade do personagem em conduzir carruagens, trenós, navios, dirigíveis mágicos ou bestas voadoras/domadas. Pode abranger desde cavalgar grifos até manejar uma biga em alta velocidade. Envolve coordenação, controle e capacidade de reação sob pressão. (Somente Treinada)",
+                "Furtividade": "A arte de mover-se sem ser notado. Esta perícia cobre tanto o andar silencioso quanto a habilidade de esconder-se nas sombras, atrás de objetos ou em multidões. Ideal para emboscadas, fugas furtivas ou infiltrações em ambientes hostis. O menor ruído pode denunciar sua presença e selar seu destino.",
+                "Pontaria": "Precisão com armas de longo alcance. Pontaria mede a capacidade do personagem de mirar e disparar com eficácia projéteis, como flechas, virotes, lanças arremessadas, dardos, pedras de funda ou até mesmo artefatos mágicos de disparo. É uma perícia essencial para arqueiros, caçadores e guerreiros de cerco. Você usa Pontaria para fazer ataques à distância. Se passar na Classe de Armadura (CA) do alvo, você acerta e causa dano de acordo com a arma utilizada.",
+                "Ladinagem": "Manipulação veloz e precisa com as mãos. Englobando truques de ilusionismo, carteado, pequenas trapaças, furto de bolsos e ações rápidas com objetos (como sacar uma arma oculta ou plantar algo em alguém). Em um mundo de mágicas e mistérios, é o talento dos charlatães, trapaceiros e artistas de rua. (Somente Treinada)",
+                "Reflexos": "Rapidez em reagir a estímulos. Envolve esquiva de ataques, defesa contra armadilhas ativadas subitamente, reações a eventos inesperados e ações de reflexo. Um reflexo afiado pode significar escapar de uma flecha ou agarrar algo antes de cair num abismo. Reação “Esquiva”. Sempre que estiver em um combate, e escolher a reação “Esquiva”’ você soma o bônus de seu Reflexos em sua Classe de Armadura (CA)."
+            },
+            "✨ CARISMA": {
+                "Adestramento": "Treinamento e comando de animais. Esta perícia representa a capacidade de domar, treinar, acalmar e comandar criaturas animais, desde cavalos e cães até bestas selvagens ou criaturas mágicas domesticáveis, como lobos-fantasma, grifos ou wyverns. Com Adestramento, um personagem pode ensinar truques, manter a calma de um animal em situações de estresse, ou até usá-lo em combate. (Somente Treinada)",
+                "Enganação": "A arte de manipular a verdade. Seja por mentiras diretas, disfarces convincentes ou atuação dramática, quem domina a enganação consegue escapar de interrogatórios, roubar com astúcia ou seduzir com falsidade. Um talento sombrio, mas poderoso.",
+                "Intimidação": "Uso da força de personalidade para impor medo. Pode envolver ameaças veladas, posturas dominantes, gritos ou gestos agressivos. Serve tanto em interrogatórios quanto em negociações tensas. Uma ferramenta dos brutais, ou dos desesperados.",
+                "Persuasão": "A habilidade de influenciar e inspirar. Persuasão é usada para negociar paz, inspirar aliados, convencer multidões ou manipular emoções. É a arma dos reis, sacerdotes, líderes e diplomatas. Carisma não é só beleza, é poder de alma."
+            },
+            "🧠 INTELIGÊNCIA": {
+                "Arcanismo": "Conhecimento teórico e prático das artes místicas. Permite identificar feitiços, decifrar runas arcanas, compreender grimórios, detectar perturbações mágicas e avaliar a origem de encantamentos. Magos, feiticeiros, sábios e escribas dependem desta perícia para navegar pelo tecido da realidade. (Somente treinada)",
+                "História": "Memória de tempos antigos. Conhecimento sobre civilizações passadas, linhagens nobres, guerras históricas, ruínas esquecidas e lendas ancestrais. Essencial para compreender o passado e como ele molda o presente. Os bardos e estudiosos valorizam muito essa habilidade.",
+                "Investigação": "Capacidade de analisar cenários, reunir pistas, cruzar informações e chegar a conclusões lógicas. Essencial em investigações de assassinato, quebra-cabeças antigos, armadilhas complexas ou tramas ocultas. Aqueles que buscam verdades escondidas são mestres em investigação.",
+                "Ofício": "Criação, manutenção e reparo de objetos físicos. Ofício representa o conhecimento técnico e prático de um personagem em artesanato, manufatura e produção de bens materiais. É uma perícia ampla, que abrange diferentes especializações, como carpintaria, forja, alquimia, ourivesaria, tesselagem, cerâmica, etc. Pode ser usada para: Criar itens como armas, armaduras, poções, ferramentas, joias ou obras de arte. Reparar equipamentos danificados ou enfraquecidos. Avaliar a qualidade e o valor de objetos artesanais. Fornecer rendimentos com trabalho durante tempos de descanso ou entre aventuras. Nota: o jogador deve especificar qual tipo de ofício domina ao investir nessa perícia (Ex: Ofício (Ferreiro), Ofício (Alquimista), Ofício (Carpinteiro), Ofício (Cervejeiro), etc). O Mestre pode permitir generalizações caso apropriado. (Somente treinada)",
+                "Religião": "Conhecimento sobre divindades, dogmas, rituais, cultos e símbolos sagrados ou profanos. Permite reconhecer práticas religiosas, interpretar escrituras, compreender profecias e resistir a corrupções espirituais. Clérigos, inquisidores e ocultistas têm na religião seu campo de estudo. (Somente treinada)",
+                "Tecnologia": "Compreensão de mecanismos, engrenagens, armas de pólvora, máquinas, golems ou autômatos. Serve para desmontar, sabotar ou construir engenhocas, desativar dispositivos complexos ou consertar artefatos arcanomecânicos. Ideal para inventores, artífices e engenheiros arcanos."
+            },
+            "🏋️ FORÇA": {
+                "Atletismo": "Medida da força bruta aplicada com técnica. Escalar penhascos, nadar em correntezas, arrombar portas, correr longas distâncias, saltar abismos e resistir ao cansaço físico são exemplos do uso de Atletismo. Guerreiros, bárbaros e aventureiros de corpo robusto são peritos nessa perícia.",
+                "Luta": "Combate corpo a corpo com armas simples, improvisadas ou sem técnica refinada. Diferente de “Pontaria”, Luta cobre o combate bruto e direto, incluindo socos, chutes, agarrões, cabeçadas ou o uso de objetos improvisados como armas. Um personagem que cresceu brigando em tavernas, ringues clandestinos ou treinado em pancadaria usaria Luta. Pode também ser usada em situações de agarrão, desarme ou quando estiver desarmado. Você usa Luta para fazer ataques corpo a corpo. Se passar na Classe de Armadura (CA) do alvo, você acerta e causa dano de acordo com a arma utilizada. Reação “Bloqueio”. Sempre que estiver em um combate, e escolher a reação “Bloqueio”’ você soma o bônus de seu Luta em sua Classe de Armadura (CA)."
+            },
+            "🦉 SABEDORIA": {
+                "Intuição": "Habilidade de ler emoções, detectar mentiras, perceber intenções ocultas ou sentir más vibrações. Intuição é o instinto afinado que diz quando algo está errado, mesmo sem provas. Empatas, inquisidores e detetives sensíveis dominam esta arte.",
+                "Percepção": "Capacidade de notar detalhes ao redor. Envolve detectar armadilhas, ouvir passos distantes, sentir cheiros suspeitos, ver além do óbvio. Percepção é a vigilância constante dos sentidos. Caçadores e sentinelas contam com ela para sobreviver.",
+                "Medicina": "Conhecimento de curas, ervas, tratamento de feridas, estabilização de moribundos, identificação de doenças e venenos. Em tempos onde magia curativa nem sempre está disponível, a medicina pode ser a diferença entre a vida e a morte. Primeiros Socorros (CD 20). Um personagem adjacente que esteja morrendo e inconsciente perde essas condições e fica com 1 PV. A CD aumenta em +5 para cada vez que ele tiver sido estabilizado na cena. Este uso gasta uma ação padrão. (Somente Treinada)",
+                "Natureza": "Sabedoria sobre o mundo natural. Inclui plantas, animais, clima, ecossistemas e perigos naturais. Ajuda a identificar criaturas selvagens, prever tempestades, encontrar ervas raras ou rastrear seres no mato. Druidas, caçadores e herbalistas são mestres nesta área.",
+                "Sobrevivência": "A perícia de se adaptar aos perigos do mundo selvagem. Desde acender fogueiras, montar acampamentos, caçar e rastrear presas até prever perigos naturais ou evitar áreas amaldiçoadas. Uma habilidade vital para quem trilha caminhos fora das cidades ou foge delas.",
+                "Vontade": "Representa a força interior e a estabilidade emocional. Resistir a encantamentos, manter a sanidade diante do horror, resistir a tortura psíquica, controlar impulsos destrutivos e manter-se fiel a seus ideais mesmo diante da corrupção. Monges, mártires e paladinos são exemplo de mentes inquebrantáveis."
+            },
+            "❤️ VIGOR": {
+                "Fortitude": "Representa a resistência física e imunológica do personagem. É a capacidade de resistir a doenças, venenos, fadiga extrema, torturas, fome e frio intenso. Também usada em testes de esforço corporal contínuo, como manter-se consciente após ferimentos graves."
+            }
+        };
+
         document.addEventListener('DOMContentLoaded', () => {
             // Referências para elementos do DOM
             const cardForm = document.getElementById('cardForm');
@@ -363,6 +422,64 @@
             const sabedoriaInput = document.getElementById('sabedoria');
             const vigorInput = document.getElementById('vigor');
             
+            const periciasCheckboxesContainer = document.getElementById('pericias-checkboxes-container');
+            const periciaDescriptionTitle = document.getElementById('periciaDescriptionTitle');
+            const periciaDescriptionText = document.getElementById('periciaDescriptionText');
+            const periciaDescriptionDisplay = document.getElementById('pericia-description-display');
+
+                // Função para preencher os checkboxes de perícias
+            function populatePericiasCheckboxes() {
+                periciasCheckboxesContainer.innerHTML = '';
+                
+                for (const attribute in periciasData) {
+                    if (periciasData.hasOwnProperty(attribute)) {
+                        const details = document.createElement('details');
+                        details.className = 'bg-gray-700 rounded-lg p-2 transition-all duration-300';
+                        details.innerHTML = `
+                            <summary class="flex items-center justify-between cursor-pointer font-semibold text-indigo-200">
+                                <span>${attribute}</span>
+                                <svg class="w-4 h-4 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </summary>
+                            <div class="mt-2 space-y-2 pl-4 border-l border-gray-600 pericias-list"></div>
+                        `;
+                        
+                        const periciasList = details.querySelector('.pericias-list');
+                        details.querySelector('summary').addEventListener('click', () => {
+                            setTimeout(() => {
+                                details.querySelector('svg').style.transform = details.open ? 'rotate(90deg)' : 'rotate(0deg)';
+                            }, 300);
+                        });
+
+                        for (const periciaName in periciasData[attribute]) {
+                            if (periciasData[attribute].hasOwnProperty(periciaName)) {
+                                const periciaItem = document.createElement('div');
+                                periciaItem.className = 'flex items-center pericia-item rounded-md p-1 cursor-pointer';
+                                periciaItem.innerHTML = `
+                                    <input type="checkbox" id="pericia-${periciaName.replace(/\s+/g, '-')}" name="pericia" value="${periciaName}"
+                                           class="form-checkbox h-4 w-4 text-indigo-500 rounded border-gray-600 focus:ring-indigo-500">
+                                    <label for="pericia-${periciaName.replace(/\s+/g, '-')}" class="ml-2 text-sm text-gray-200 cursor-pointer">${periciaName}</label>
+                                `;
+                                periciasList.appendChild(periciaItem);
+
+                                periciaItem.addEventListener('click', (e) => {
+                                    // Previne que o checkbox seja clicado duas vezes se clicar no label
+                                    if (e.target.tagName !== 'INPUT') {
+                                        const checkbox = periciaItem.querySelector('input');
+                                        checkbox.checked = !checkbox.checked;
+                                    }
+                                    periciaDescriptionTitle.textContent = periciaName;
+                                    periciaDescriptionText.textContent = periciasData[attribute][periciaName];
+                                    periciaDescriptionDisplay.classList.remove('hidden');
+                                });
+                            }
+                        }
+                        periciasCheckboxesContainer.appendChild(details);
+                    }
+                }
+            }
+
             let currentEditingCardId = null;
             let mySwiper = null;
             let db; // Variável para o banco de dados IndexedDB
@@ -615,6 +732,15 @@
                 sabedoriaInput.value = cardData.attributes.sabedoria;
                 vigorInput.value = cardData.attributes.vigor;
 
+                 // Limpa todos os checkboxes e marca os correspondentes
+                    document.querySelectorAll('#pericias-checkboxes-container input[type="checkbox"]').forEach(cb => cb.checked = false);
+                    if (Array.isArray(cardData.attributes.pericias)) {
+                        cardData.attributes.pericias.forEach(periciaName => {
+                            const checkbox = document.getElementById(`pericia-${periciaName.replace(/\s+/g, '-')}`);
+                            if (checkbox) checkbox.checked = true;
+                        });
+                    }
+
                 // Cria as URLs para as imagens salvas no IndexedDB para pré-visualização
                 if (cardData.image) {
                     const imageBlob = bufferToBlob(cardData.image, cardData.imageMimeType);
@@ -706,12 +832,16 @@
                     }
                 }
 
+                 const periciasString = Array.isArray(cardData.attributes.pericias) && cardData.attributes.pericias.length > 0
+                            ? cardData.attributes.pericias.join(', ')
+                            : 'Nenhuma';
+
                 cardDiv.innerHTML = `
                 <div class="card-3d-container">
-            <div class="card-3d">
+                    <div class="card-3d">
                 <!-- Face frontal -->
-                <div class="card-front">
-                    <div class="relative w-full h-full p-4 ex-max" style="background:url(${cardData.backgroundURL}) !important; background-size: cover !important; height: 590px;">
+                    <div class="card-front">
+                         <div class="relative w-full h-full p-4 ex-max" style="background-image:url(${cardData.backgroundURL}) !important; background-size: cover !important; height: 590px; display: flex; flex-direction: column; align-items: center; background-color: rgb(0 0 0 / 50%);background-blend-mode: multiply;">
                                 <div class="absolute top-4 left-4 rounded-full w-14 h-14 flex items-center justify-center font-bold" style=" border: 2px solid ${palette.highlightColor}; background-color: #1f2937; color: ${palette.textColor}; display: flex; flex-direction: column; justify-content: center; padding: 5px; align-content: center; align-items: center;">
                                     <small style="background: #1f2937; border: 2px solid ${palette.highlightColor}; border-bottom: 0; border-right: 0;">PM</small>
                                     ${cardData.attributes.mana || '?'} 
@@ -720,7 +850,12 @@
                                     <small  style="background: #1f2937; left: auto; right: -10px;  border: 2px solid ${palette.highlightColor}; border-bottom: 0; border-left: 0;"">PV</small>
                                     ${cardData.attributes.vida || '?'} 
                                 </div>
-                                <div class="wave-container flex justify-center mt-16 img-max" style="position: relative; width: 200px !important; height: 200px; left: 0; right: 0; margin: auto; margin-top: 60px;">
+                                <div class="text-center" style="width: 60%;">
+                                    <h3 class="text-2xl font-bold" style="color: ${palette.highlightColor};">${cardData.title || 'Novo Cartão'}</h3>
+                                    <div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent); width: 100%"></div>
+                                    <p class="text-sm italic" style="color: ${palette.highlightColor};">${cardData.subTitle || 'Subtítulo'}</p>
+                                </div>
+                                <div class="wave-container flex justify-center mt-10 img-max" style="position: relative; width: 200px !important; height: 200px; left: 0; right: 0; margin: auto; margin-top: 20px;">
                                     <!-- As três ondas giratórias são adicionadas aqui 
                                     <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>
                                     <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>
@@ -728,76 +863,39 @@
                                     <img style="border-color: ${palette.borderColor}; height: 200px" src="${cardData.imageURL}" onerror="this.onerror=null;this.src='https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';" alt="Imagem do personagem" class="object-cover rounded-full border-4 border-white shadow-lg w-full h-full">
                                 </div>
                                 <!-- Bloco de informações do cartão estilizado e minimalista -->
-                                <div class="mt-10 p-3 rounded-3xl text-center w-full rpg-card-frame"
-                                    style="--card-bg-color: ${palette.cardBg}; --text-color: ${palette.textColor}; --border-color: ${palette.borderColor};">
-                                    <!-- Título e subtítulo do personagem -->
-                                    <h3 class="text-2xl font-extrabold" style="color: ${palette.highlightColor};">${cardData.title || 'Novo Cartão'}</h3>
-                                    <p class="text-sm mt-1" style="color: ${palette.textColor};">${cardData.subTitle || 'Subtítulo'}</p>
-                                    
-                                    <!-- Divisor estilizado para separar o título -->
-                                    <div class="flex items-center justify-center w-full">
-                                        <div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent);"></div>
-                                    </div>
-                                    
+                                <div class="p-3 rounded-3xl text-center w-full rpg-card-frame" style="--card-bg-color: ${palette.cardBg}; --text-color: ${palette.textColor}; --border-color: ${palette.borderColor};">
                                     <!-- Nível do personagem -->
                                     <h4 class="text-base font-bold" style="color: ${palette.textColor};">Nível: <span style="color: ${palette.highlightColor};">${cardData.level || '?'}</span></h4>
                                     
-                                    <!-- Divisor para separar o nível dos atributos -->
-                                    <div class="rpg-card-stat-divider my-2" style="background-color: ${palette.borderColor};"></div>
-                                    
+                                     <!-- Divisor estilizado para separar o título -->
+                                    <div class="flex items-center justify-center w-full">
+                                        <div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent);"></div>
+                                    </div>
+
                                     <!-- SEÇÃO DE ATRIBUTOS COM LAYOUT DE DUAS LINHAS -->
                                     <div class="flex flex-col gap-2">
-                                        <!-- Primeira linha de atributos: AGI, CAR, FOR -->
-                                        <div class="grid grid-cols-3 gap-2">
-                                            <!-- Agilidade -->
-                                            <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
-                                                style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
-                                                <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">AGI</span>
-                                                <span class="font-extrabold text-lg block">${cardData.attributes.agilidade}</span>
-                                            </div>
-                                            <!-- Carisma -->
-                                            <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
-                                                style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
-                                                <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">CAR</span>
-                                                <span class="font-extrabold text-lg block">${cardData.attributes.carisma}</span>
-                                            </div>
-                                            <!-- Força -->
-                                            <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
-                                                style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
-                                                <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">FOR</span>
-                                                <span class="font-extrabold text-lg block">${cardData.attributes.forca}</span>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Segunda linha de atributos: INT, SAB, VIG -->
-                                        <div class="grid grid-cols-3 gap-2">
-                                            <!-- Inteligência -->
-                                            <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
-                                                style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
-                                                <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">INT</span>
-                                                <span class="font-extrabold text-lg block">${cardData.attributes.inteligencia}</span>
-                                            </div>
-                                            <!-- Sabedoria -->
-                                            <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
-                                                style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
-                                                <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">SAB</span>
-                                                <span class="font-extrabold text-lg block">${cardData.attributes.sabedoria}</span>
-                                            </div>
-                                            <!-- Vigor -->
-                                            <div class="p-1 rounded-lg border-2 transform hover:scale-105 transition-transform duration-200 shadow-lg cursor-pointer"
-                                                style="background-color: ${palette.cardBg}; color: ${palette.textColor}; border-color: ${palette.highlightColor};">
-                                                <span class="font-bold text-xs block" style="color: ${palette.highlightColor};">VIG</span>
-                                                <span class="font-extrabold text-lg block">${cardData.attributes.vigor}</span>
-                                            </div>
-                                        </div>
+                                         <div class="grid grid-cols-2 gap-2 text-center text-sm font-semibold mt-2">
+                                            <div class="bg-gray-700/70 p-1 rounded-md">AGI: ${cardData.attributes.agilidade}</div>
+                                            <div class="bg-gray-700/70 p-1 rounded-md">CAR: ${cardData.attributes.carisma}</div>
+                                            <div class="bg-gray-700/70 p-1 rounded-md">FOR: ${cardData.attributes.forca}</div>
+                                            <div class="bg-gray-700/70 p-1 rounded-md">INT: ${cardData.attributes.inteligencia}</div>
+                                            <div class="bg-gray-700/70 p-1 rounded-md">SAB: ${cardData.attributes.sabedoria}</div>
+                                            <div class="bg-gray-700/70 p-1 rounded-md">VIG: ${cardData.attributes.vigor}</div>
+                                        </div> 
+                                          <!-- Divisor estilizado para separar o título -->
+                                    <div class="flex items-center justify-center w-full">
+                                        <div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent);"></div>
+                                    </div>
+                                        <p class="text-xs text-gray-400 italic">Perícias</p>                                      
+                                        <p class="text-xs text-gray-400 italic">${periciasString}</p>                                   
                                     </div>
                                 </div>
                             </div>
                           </div>
 
                           <!-- Face traseira -->
-                          <div class="card-back" style="background:url(${cardData.backgroundURL}) !important; background-size: cover !important;">
-                              <div class="back-content">
+                          <div class="card-back" style="background-image:url(${cardData.backgroundURL}) !important; background-size: cover !important; background-color: rgb(0 0 0 / 50%);background-blend-mode: multiply;">
+                              <div class="back-content" style="border: 5px solid ${palette.cardBg};">
                                   <h2></h2>
                                   <p></p>
                               </div>
@@ -965,6 +1063,9 @@
                 const title = cardTitleInput.value;
                 const subTitle = cardSubTitleInput.value;
                 const level = cardLevelInput.value;
+                // Coleta todas as perícias marcadas
+                const selectedPericias = Array.from(document.querySelectorAll('#pericias-checkboxes-container input[name="pericia"]:checked'))
+                    .map(cb => cb.value);
 
                 const attributes = {
                     agilidade: agilidadeInput.value || '-',
@@ -975,6 +1076,7 @@
                     inteligencia: inteligenciaInput.value || '-',
                     sabedoria: sabedoriaInput.value || '-',
                     vigor: vigorInput.value || '-',
+                    pericias: selectedPericias
                 };
                 
                 let allCards = await getCards();
@@ -1046,6 +1148,7 @@
 
             // Inicia o IndexedDB e depois renderiza os cartões
             openDatabase().then(() => {
+                populatePericiasCheckboxes();
                 renderCardsAndThumbnails();
             }).catch(e => {
                 console.error("Falha ao inicializar o app:", e);
@@ -1057,5 +1160,4 @@
     </script>
 </body>
 </html>
-
 
