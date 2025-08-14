@@ -10,7 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+   
 <!-- CSS do Swiper para o carrossel <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7-icons/css/framework7-icons.css">
     <link rel="stylesheet" href="particulas.css">
      -->
@@ -347,9 +347,6 @@
                 <div class="swiper-button-next" style="opacity: 0;"></div>
                 <div class="swiper-button-prev" style="opacity: 0;"></div>
             </div>
-             <button id="exportCardButton">
-                Exportar Imagem
-            </button>
         </div>
 
     </div>
@@ -429,9 +426,6 @@
             const periciaDescriptionTitle = document.getElementById('periciaDescriptionTitle');
             const periciaDescriptionText = document.getElementById('periciaDescriptionText');
             const periciaDescriptionDisplay = document.getElementById('pericia-description-display');
-
-            
-            const exportCardButton = document.getElementById('exportCardButton');
 
                 // Função para preencher os checkboxes de perícias
             function populatePericiasCheckboxes() {
@@ -923,19 +917,6 @@
                         Expandir
                     </button>
                 `;
-
-            exportCardButton.addEventListener('click', () => {
-                const activeSlide = document.querySelector('.swiper-slide-active');
-                if (!activeSlide) return;
-
-                const cardToExport = activeSlide.querySelector('.rpg-card>.card-3d-container>.card-3d>.card-front');
-                html2canvas(cardToExport).then(canvas => {
-                    const link = document.createElement('a');
-                    link.download = `cartao_rpg_${activeSlide.dataset.id}.png`;
-                    link.href = canvas.toDataURL('image/png');
-                    link.click();
-                });
-            });
 
                 cardWrapper.appendChild(cardDiv);
                  // **ADICIONANDO O EVENTO DE CLICK AO CARD DINÂMICO**
