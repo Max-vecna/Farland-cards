@@ -15,7 +15,41 @@
     <link rel="stylesheet" href="particulas.css">
      -->
     <style>
+ 
 
+        .divPartculas h2 {
+            font-size: 2em;
+            margin: 0 0 10px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .divPartculas p {
+            font-size: 1em;
+            opacity: 0.8;
+        }
+
+        /* Estilo para as partículas douradas */
+        .sparkle {
+            position: absolute;
+            background-color: #ffd9006b; /* Cor dourada */
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0; /* Para que as partículas fiquem na frente do divPartculas */
+            animation: disperse var(--duration) forwards; /* A animação usa uma duração dinâmica */
+            box-shadow: 0 0 5px 2px #ffd90023, 0 0 10px 4px #ffd90023; /* Efeito de brilho */
+        }
+        
+        /* Animação de dispersão */
+        @keyframes disperse {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y)) scale(0) rotate(var(--r));
+                opacity: 0;
+            }
+        }
         .back-content{
             width: 100%;
             height: calc(100% - 30px);
@@ -25,7 +59,7 @@
         .card-3d-container {
             perspective: 1500px; /* profundidade do efeito 3D */
             width: 100%;
-            height: 650px;
+            height: 590px;
         }
 
         .card-3d {
@@ -340,7 +374,7 @@
         <div class="cards-container w-full max-w-lg mx-auto mb-1">
             <h2 class="text-2xl font-bold text-gray-800 text-center mb-4">Visualização dos Cartões</h2>
             <div class="swiper mySwiper">
-                <div class="swiper-wrapper" id="cardsContainer">
+                <div class="swiper-wrapper" id="cardsContainer" >
                     <!-- Cards serão injetados aqui -->
                 </div>
                 <!-- Botões de navegação do Swiper -->
@@ -355,6 +389,54 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script>
+        function part()
+        {
+            // Seleciona todas as divs que terão partículas
+const divsParticulas = document.querySelectorAll('.card-front.divPartculas');
+
+// Configura o efeito para cada div
+divsParticulas.forEach(divParticulas => {
+    const maxParticles = 80; /* Limite de partículas por div */
+    let currentParticles = 0;
+
+    function createSparkle() {
+        if (currentParticles >= maxParticles) return;
+
+        const sparkle = document.createElement('div');
+        sparkle.classList.add('sparkle');
+        divParticulas.appendChild(sparkle);
+        currentParticles++;
+
+        const rect = divParticulas.getBoundingClientRect();
+        const spawnX = Math.random() * rect.width;
+        const spawnY = Math.random() * rect.height;
+
+        sparkle.style.left = `${spawnX}px`;
+        sparkle.style.top = `${spawnY}px`;
+
+        const size = Math.random() * 1.5 + 0.5;
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
+
+        const directionX = (spawnX - rect.width / 2) * 4;
+        const directionY = (spawnY - rect.height / 2) * 4;
+
+        sparkle.style.setProperty('--x', `${directionX}px`);
+        sparkle.style.setProperty('--y', `${directionY}px`);
+        sparkle.style.setProperty('--r', `${Math.random() * 720}deg`);
+        sparkle.style.setProperty('--duration', `${Math.random() * 15 + 10}s`);
+
+        sparkle.addEventListener('animationend', () => {
+            sparkle.remove();
+            currentParticles--;
+        });
+    }
+
+    // Gera partículas continuamente para este div
+    setInterval(createSparkle, 100);
+});
+
+        }
            // Dados das perícias para o seletor
         const periciasData = {
             "🏃‍♂️ AGILIDADE": {
@@ -796,7 +878,7 @@
                         // Cria e adiciona o card no carrossel
                         const cardWrapper = await createCardElement({...cardData, imageURL, backgroundURL});
                         cardsContainer.appendChild(cardWrapper);
-
+                        part();
                         // Cria e adiciona a miniatura
                         const thumbnail = createThumbnailElement({...cardData, imageURL, backgroundURL});
                         thumbnailList.appendChild(thumbnail);
@@ -840,13 +922,13 @@
                 <div class="card-3d-container">
                     <div class="card-3d">
                 <!-- Face frontal -->
-                    <div class="card-front">
-                         <div class="relative w-full h-full p-4 ex-max" style="background-image:url(${cardData.backgroundURL}) !important; background-size: cover !important; height: 650px; display: flex; flex-direction: column; align-items: center; background-color: rgb(0 0 0 / 50%);background-blend-mode: multiply;">
-                                <div class="absolute top-4 left-4 rounded-full w-14 h-14 flex items-center justify-center font-bold" style=" border: 2px solid ${palette.highlightColor}; background-color: #1f2937; color: ${palette.textColor}; display: flex; flex-direction: column; justify-content: center; padding: 5px; align-content: center; align-items: center;">
+                    <div class="card-front divPartculas">
+                         <div class="relative w-full h-full p-4 ex-max" style="background-image:url(${cardData.backgroundURL}) !important; background-size: cover !important; height: 590px; display: flex; flex-direction: column; align-items: center; background-color: rgb(0 0 0 / 50%);background-blend-mode: multiply;">
+                                <div class="absolute top-4 left-4 rounded-full w-14 h-14 flex items-center justify-center font-bold" style="z-index: 1; border: 2px solid ${palette.highlightColor}; background-color: #1f2937; color: ${palette.textColor}; display: flex; flex-direction: column; justify-content: center; padding: 5px; align-content: center; align-items: center;">
                                     <small style="background: #1f2937; border: 2px solid ${palette.highlightColor}; border-bottom: 0; border-right: 0;">PM</small>
                                     ${cardData.attributes.mana || '?'} 
                                 </div>
-                                <div class="absolute top-4 right-4 rounded-full w-14 h-14 flex items-center justify-center font-bold" style="border: 2px solid ${palette.highlightColor}; background-color: #1f2937; color: ${palette.textColor}; display: flex; flex-direction: column; justify-content: center; padding: 5px; align-content: center; align-items: center;">
+                                <div class="absolute top-4 right-4 rounded-full w-14 h-14 flex items-center justify-center font-bold" style="z-index: 1;border: 2px solid ${palette.highlightColor}; background-color: #1f2937; color: ${palette.textColor}; display: flex; flex-direction: column; justify-content: center; padding: 5px; align-content: center; align-items: center;">
                                     <small  style="background: #1f2937; left: auto; right: -10px;  border: 2px solid ${palette.highlightColor}; border-bottom: 0; border-left: 0;"">PV</small>
                                     ${cardData.attributes.vida || '?'} 
                                 </div>
@@ -860,10 +942,10 @@
                                     <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>
                                     <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>
                                     <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>  -->                         
-                                    <img style="border-color: ${palette.borderColor}; height: 200px" src="${cardData.imageURL}" onerror="this.onerror=null;this.src='https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';" alt="Imagem do personagem" class="object-cover rounded-full border-4 border-white shadow-lg w-full h-full">
+                                    <img style="border-color: ${palette.borderColor}; z-index: 1; height: 200px" src="${cardData.imageURL}" onerror="this.onerror=null;this.src='https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';" alt="Imagem do personagem" class="object-cover rounded-full border-4 border-white shadow-lg w-full h-full">
                                 </div>
                                 <!-- Bloco de informações do cartão estilizado e minimalista -->
-                                <div class="p-3 rounded-3xl text-center w-full rpg-card-frame" style="--card-bg-color: ${palette.cardBg}; --text-color: ${palette.textColor}; --border-color: ${palette.borderColor};">
+                                <div class="p-3 rounded-3xl text-center w-full rpg-card-frame" style="--card-bg-color: ${palette.cardBg}; z-index: 1; --text-color: ${palette.textColor}; --border-color: ${palette.borderColor};">
                                     <!-- Nível do personagem -->
                                     <h4 class="text-base font-bold" style="color: ${palette.textColor};">Nível: <span style="color: ${palette.highlightColor};">${cardData.level || '?'}</span></h4>
                                     
@@ -894,8 +976,8 @@
                           </div>
 
                           <!-- Face traseira -->
-                          <div class="card-back" style="background-image:url(${cardData.backgroundURL}) !important; background-size: cover !important; background-color: rgb(0 0 0 / 50%);background-blend-mode: multiply;">
-                              <div class="back-content" style="border: 5px solid ${palette.cardBg};">
+                          <div class="card-back divPartculas" style="background-image:url(${cardData.backgroundURL}) !important; background-size: cover !important; background-color: rgb(0 0 0 / 50%);background-blend-mode: multiply;">
+                              <div class="back-content " style="border: 5px solid ${palette.cardBg};">
                                   <h2></h2>
                                   <p></p>
                               </div>
@@ -1160,5 +1242,4 @@
     </script>
 </body>
 </html>
-
 
