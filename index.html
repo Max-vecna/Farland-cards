@@ -179,8 +179,6 @@
             background-blend-mode: multiply;
         }
         .rpg-card:fullscreen .rpg-card-frame {
-            position: absolute;
-            bottom: 20px;
             max-width: 80vw;
             max-height: 90vh;
             overflow-y: auto;
@@ -391,51 +389,53 @@
     <script>
         function part()
         {
+           
             // Seleciona todas as divs que terão partículas
-const divsParticulas = document.querySelectorAll('.card-front.divPartculas');
+            const divsParticulas = document.querySelectorAll('.card-front.divPartculas');
 
-// Configura o efeito para cada div
-divsParticulas.forEach(divParticulas => {
-    const maxParticles = 80; /* Limite de partículas por div */
-    let currentParticles = 0;
+            // Configura o efeito para cada div
+            divsParticulas.forEach(divParticulas => {
+                const maxParticles = 80; /* Limite de partículas por div */
+                let currentParticles = 0;
 
-    function createSparkle() {
-        if (currentParticles >= maxParticles) return;
+                function createSparkle() {
+                    if (currentParticles >= maxParticles) return;
 
-        const sparkle = document.createElement('div');
-        sparkle.classList.add('sparkle');
-        divParticulas.appendChild(sparkle);
-        currentParticles++;
+                    const sparkle = document.createElement('div');
+                    sparkle.classList.add('sparkle');
+                    divParticulas.appendChild(sparkle);
+                    currentParticles++;
 
-        const rect = divParticulas.getBoundingClientRect();
-        const spawnX = Math.random() * rect.width;
-        const spawnY = Math.random() * rect.height;
+                    const rect = divParticulas.getBoundingClientRect();
+                    const spawnX = Math.random() * rect.width;
+                    const spawnY = Math.random() * rect.height;
 
-        sparkle.style.left = `${spawnX}px`;
-        sparkle.style.top = `${spawnY}px`;
+                    sparkle.style.left = `${spawnX}px`;
+                    sparkle.style.top = `${spawnY}px`;
 
-        const size = Math.random() * 1.5 + 0.5;
-        sparkle.style.width = `${size}px`;
-        sparkle.style.height = `${size}px`;
+                    const size = Math.random() * 1.5 + 0.5;
+                    sparkle.style.width = `${size}px`;
+                    sparkle.style.height = `${size}px`;
 
-        const directionX = (spawnX - rect.width / 2) * 4;
-        const directionY = (spawnY - rect.height / 2) * 4;
+                    const directionX = (spawnX - rect.width / 2) * 4;
+                    const directionY = (spawnY - rect.height / 2) * 4;
 
-        sparkle.style.setProperty('--x', `${directionX}px`);
-        sparkle.style.setProperty('--y', `${directionY}px`);
-        sparkle.style.setProperty('--r', `${Math.random() * 720}deg`);
-        sparkle.style.setProperty('--duration', `${Math.random() * 15 + 10}s`);
+                    sparkle.style.setProperty('--x', `${directionX}px`);
+                    sparkle.style.setProperty('--y', `${directionY}px`);
+                    sparkle.style.setProperty('--r', `${Math.random() * 720}deg`);
+                    sparkle.style.setProperty('--duration', `${Math.random() * 15 + 10}s`);
 
-        sparkle.addEventListener('animationend', () => {
-            sparkle.remove();
-            currentParticles--;
-        });
-    }
+                     // Tenta extrair a paleta de cores da imagem de fundo se houver
+              
+                    sparkle.addEventListener('animationend', () => {
+                        sparkle.remove();
+                        currentParticles--;
+                    });
+                }
 
-    // Gera partículas continuamente para este div
-    setInterval(createSparkle, 100);
-});
-
+                // Gera partículas continuamente para este div
+                setInterval(createSparkle, 100);
+            });
         }
            // Dados das perícias para o seletor
         const periciasData = {
@@ -878,7 +878,7 @@ divsParticulas.forEach(divParticulas => {
                         // Cria e adiciona o card no carrossel
                         const cardWrapper = await createCardElement({...cardData, imageURL, backgroundURL});
                         cardsContainer.appendChild(cardWrapper);
-                        part();
+                        
                         // Cria e adiciona a miniatura
                         const thumbnail = createThumbnailElement({...cardData, imageURL, backgroundURL});
                         thumbnailList.appendChild(thumbnail);
@@ -923,7 +923,7 @@ divsParticulas.forEach(divParticulas => {
                     <div class="card-3d">
                 <!-- Face frontal -->
                     <div class="card-front divPartculas">
-                         <div class="relative w-full h-full p-4 ex-max" style="background-image:url(${cardData.backgroundURL}) !important; background-size: cover !important; height: 590px; display: flex; flex-direction: column; align-items: center; background-color: rgb(0 0 0 / 50%);background-blend-mode: multiply;">
+                         <div class="relative w-full h-full p-4 ex-max" style="background-image:url(${cardData.backgroundURL}) !important; background-size: cover !important; height: 590px; display: flex; flex-direction: column; align-items: center; background-color: rgb(0 0 0 / 50%); background-blend-mode: multiply; justify-content: space-between;">
                                 <div class="absolute top-4 left-4 rounded-full w-14 h-14 flex items-center justify-center font-bold" style="z-index: 1; border: 2px solid ${palette.highlightColor}; background-color: #1f2937; color: ${palette.textColor}; display: flex; flex-direction: column; justify-content: center; padding: 5px; align-content: center; align-items: center;">
                                     <small style="background: #1f2937; border: 2px solid ${palette.highlightColor}; border-bottom: 0; border-right: 0;">PM</small>
                                     ${cardData.attributes.mana || '?'} 
@@ -937,7 +937,7 @@ divsParticulas.forEach(divParticulas => {
                                     <div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent); width: 100%"></div>
                                     <p class="text-sm italic" style="color: ${palette.highlightColor};">${cardData.subTitle || 'Subtítulo'}</p>
                                 </div>
-                                <div class="wave-container flex justify-center mt-4 mb-4 img-max" style="position: relative; width: 200px !important; height: 200px; left: 0; right: 0;">
+                                <div class="wave-container flex justify-center img-max" style="position: relative; width: 200px !important; height: 200px;">
                                     <!-- As três ondas giratórias são adicionadas aqui 
                                     <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>
                                     <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>
@@ -969,7 +969,7 @@ divsParticulas.forEach(divParticulas => {
                                         <div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent);"></div>
                                     </div>
                                         <p class="text-xs text-gray-400 italic">Perícias</p>                                      
-                                        <p class="text-xs text-gray-400 italic">${periciasString}</p>                                   
+                                        <p class="text-xs text-gray-400 italic" style="font-size: 11px;">${periciasString}</p>                                   
                                     </div>
                                 </div>
                             </div>
@@ -1027,7 +1027,7 @@ divsParticulas.forEach(divParticulas => {
                       });
                   }
                 cardWrapper.appendChild(buttonsDiv);
-                
+                part();
                 return cardWrapper;
             }
 
@@ -1242,6 +1242,4 @@ divsParticulas.forEach(divParticulas => {
     </script>
 </body>
 </html>
-
-
 
