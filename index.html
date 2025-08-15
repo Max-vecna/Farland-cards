@@ -25,7 +25,6 @@
 
         .divPartculas p {
             font-size: 1em;
-            opacity: 0.8;
         }
 
         /* Estilo para as partículas douradas */
@@ -42,7 +41,7 @@
         @keyframes disperse {
             0% {
                 transform: translate(0, 0) scale(1) rotate(0deg);
-                opacity: 1;
+                opacity: .3;
             }
             100% {
                 transform: translate(var(--x), var(--y)) scale(0) rotate(var(--r));
@@ -411,6 +410,7 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                     const spawnX = Math.random() * rect.width;
                     const spawnY = Math.random() * rect.height;
 
+                    sparkle.style.opacity = (0.1 + Math.random() * 0.4).toFixed(2);
                     sparkle.style.left = `${spawnX}px`;
                     sparkle.style.top = `${spawnY}px`;
                     sparkle.style.backgroundColor = `${estilos.borderColor}`;
