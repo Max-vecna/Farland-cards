@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- A referência ao Swiper CSS foi removida -->
     
     <style>
         /* Estilos gerais e de animação (sem alterações) */
@@ -146,8 +146,6 @@
             border-radius: 9999px; font-weight: 600; margin-right: 1rem; cursor: pointer;
         }
         .file-upload-input::-webkit-file-upload-button:hover { background-color: #4f46e5; }
-        .swiper-button-next:after, .swiper-button-prev:after { color: #4f46e5; }
-        .swiper-slide { display: flex; justify-content: center; }
         small {
             position: absolute; left: -10px; top: -10px; padding: 5px; border-radius: 50px;
             font-size: 11px !important; width: 30px; height: 30px; display: flex;            
@@ -302,6 +300,17 @@
         .expanded-spell-card-container.visible .expanded-spell-card {
             transform: scale(1);
         }
+
+        /* NOVOS ESTILOS: Animação de entrada do card */
+        .card-wrapper {
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease-out;
+            opacity: 0;
+            transform: scale(0.95) translateY(10px);
+        }
+        .card-wrapper.visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-2">
@@ -380,16 +389,14 @@
             </div>
         </div>
         
+        <!-- SEÇÃO DE EXIBIÇÃO MODIFICADA -->
         <div id="display-section">
             <div id="thumbnail-list" class="flex flex-wrap justify-center gap-4 p-4 bg-gray-900/50 rounded-xl shadow-inner mb-4">
                 <p class="text-gray-500">Nenhum cartão salvo ainda. Crie um para começar!</p>
             </div>
-            <div class="cards-container w-full max-w-lg mx-auto mb-1">
-                <div class="swiper mySwiper">
-                    <div class="swiper-wrapper" id="cardsContainer"></div>
-                    <div class="swiper-button-next" style="opacity: 0;"></div>
-                    <div class="swiper-button-prev" style="opacity: 0;"></div>
-                </div>
+            <!-- Nova área para exibir o card selecionado -->
+            <div id="card-display-area" class="w-full max-w-lg mx-auto mb-1 items-center justify-center" style="min-height: 720px;">
+                <p class="text-gray-400">Selecione um personagem na lista acima para ver os detalhes.</p>
             </div>
         </div>
 
@@ -420,16 +427,14 @@
             </div>
         </div>
 
+        <!-- SEÇÃO DE EXIBIÇÃO DE MAGIAS MODIFICADA -->
         <div id="spell-display-section" class="hidden">
             <div id="spell-thumbnail-list" class="flex flex-wrap justify-center gap-4 p-4 bg-gray-900/50 rounded-xl shadow-inner mb-4">
                 <p class="text-gray-500">Nenhuma magia salva ainda. Crie uma para começar!</p>
             </div>
-            <div class="cards-container w-full max-w-lg mx-auto mb-1">
-                <div class="swiper mySpellSwiper">
-                    <div class="swiper-wrapper" id="spellCardsContainer"></div>
-                    <div class="swiper-button-next spell-nav" style="opacity: 0;"></div>
-                    <div class="swiper-button-prev spell-nav" style="opacity: 0;"></div>
-                </div>
+             <!-- Nova área para exibir o card de magia selecionado -->
+            <div id="spell-card-display-area" class="w-full max-w-lg mx-auto mb-1 items-center justify-center" style="min-height: 720px;">
+                <p class="text-gray-400">Selecione uma magia na lista acima para ver os detalhes.</p>
             </div>
         </div>
 
@@ -454,7 +459,7 @@
         </button>        
     </nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <!-- A referência ao Swiper JS foi removida -->
 
     <script>
         // NEW: Array to keep track of particle intervals
@@ -509,9 +514,6 @@
                         currentParticles--; 
                     });
                 }
-                // Store the interval ID so we can clear it later
-                const intervalId = setInterval(createSparkle, 100);
-                particleIntervals.push(intervalId);
             });
         }
 
@@ -528,8 +530,11 @@
             // Referências aos elementos do DOM
             const cardForm = document.getElementById('cardForm');
             const spellForm = document.getElementById('spellForm');
-            const cardsContainer = document.getElementById('cardsContainer');
-            const spellCardsContainer = document.getElementById('spellCardsContainer');
+            
+            // MODIFICADO: Referências para as novas áreas de exibição
+            const cardDisplayArea = document.getElementById('card-display-area');
+            const spellCardDisplayArea = document.getElementById('spell-card-display-area');
+
             const submitButton = document.getElementById('submitButton');
             const spellSubmitButton = document.getElementById('spellSubmitButton');
             const thumbnailList = document.getElementById('thumbnail-list');
@@ -605,7 +610,7 @@
                 showDisplayBtn.classList.remove('active');
                 showSpellCreationBtn.classList.remove('active');
                 showSpellDisplayBtn.classList.remove('active');
-                stopParticles(); // NEW: Stop particles on creation screen
+                stopParticles(); 
                 
                 if (!isEditing) {
                     formTitle.textContent = "Criar Novo Cartão de Personagem";
@@ -627,7 +632,7 @@
                 showDisplayBtn.classList.remove('active');
                 showCreationBtn.classList.remove('active');
                 showSpellDisplayBtn.classList.remove('active');
-                stopParticles(); // NEW: Stop particles on creation screen
+                stopParticles();
 
                 if (!isEditing) {
                     spellFormTitle.textContent = "Nova Magia ou Habilidade";
@@ -647,9 +652,8 @@
                 showDisplayBtn.classList.remove('active');
                 showCreationBtn.classList.remove('active');
                 showSpellCreationBtn.classList.remove('active');
-                if(mySpellSwiper) mySpellSwiper.update();
                 stopParticles();
-                part(); // UPDATED: Restart particles
+                part();
             }
 
             showDisplayBtn.addEventListener('click', showDisplayView);
@@ -710,8 +714,6 @@
             // Variáveis de estado e IndexedDB
             let currentEditingCardId = null;
             let currentEditingSpellId = null;
-            let mySwiper = null;
-            let mySpellSwiper = null;
             let db;
             const DB_NAME = 'rpgCreatorDB', DB_VERSION = 2;
             const CARD_STORE_NAME = 'rpgCards';
@@ -768,9 +770,6 @@
                 }); 
             }
 
-            function initSwiper() { if (mySwiper) mySwiper.destroy(true, true); mySwiper = new Swiper('.mySwiper', { slidesPerView: 1, spaceBetween: 30, loop: false, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' } }); }
-            function initSpellSwiper() { if (mySpellSwiper) mySpellSwiper.destroy(true, true); mySpellSwiper = new Swiper('.mySpellSwiper', { slidesPerView: 1, spaceBetween: 30, loop: false, navigation: { nextEl: '.spell-nav.swiper-button-next', prevEl: '.spell-nav.swiper-button-prev' } }); }
-
             // --- Funções CRUD para Cartões de Personagem ---
             async function editCard(cardId) {
                 const allCards = await getData(CARD_STORE_NAME);
@@ -819,9 +818,10 @@
             }
 
             async function renderCardsAndThumbnails() {
-                cardsContainer.innerHTML = '';
                 thumbnailList.innerHTML = '';
                 const allCards = await getData(CARD_STORE_NAME);
+                cardDisplayArea.innerHTML = '<p class="text-gray-400">Selecione um personagem na lista acima para ver os detalhes.</p>';
+
                 if (allCards.length === 0) {
                     thumbnailList.innerHTML = '<p class="text-gray-500 text-center w-full">Nenhum personagem salvo. Crie um para começar!</p>';
                 } else {
@@ -832,22 +832,43 @@
                         if (cardData.image) imageURL = URL.createObjectURL(bufferToBlob(cardData.image, cardData.imageMimeType));
                         if (cardData.backgroundImage) backgroundURL = URL.createObjectURL(bufferToBlob(cardData.backgroundImage, cardData.backgroundMimeType));
                         
-                        const cardWrapper = await createCardElement({...cardData, imageURL, backgroundURL});
-                        cardsContainer.appendChild(cardWrapper);
                         const thumbnail = createThumbnailElement({...cardData, imageURL, backgroundURL});
                         thumbnailList.appendChild(thumbnail);
                         
                         cardsLoaded++;
-                        const percentage = Math.round((cardsLoaded / allCards.length) * 50); // 0 to 50% for characters
+                        const percentage = Math.round((cardsLoaded / allCards.length) * 50);
                         updateProgress(percentage, loadingMessages[Math.floor(Math.random() * loadingMessages.length)]);
                     }
+                    // MODIFICADO: Pré-carrega o primeiro card
+                    await displayCard(allCards[0].id);
                 }
-                initSwiper();
+            }
+            
+            // NOVA FUNÇÃO: Para exibir um card com animação
+            async function displayCard(cardId) {
+                cardDisplayArea.innerHTML = ''; // Limpa a área
+                const allCards = await getData(CARD_STORE_NAME);
+                const fullCardData = allCards.find(c => c.id === cardId);
+                if (!fullCardData) return;
+
+                let imageURL = 'https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';
+                let backgroundURL = 'https://placehold.co/400x600/1e293b/d1d5db?text=Fundo';
+                if (fullCardData.image) imageURL = URL.createObjectURL(bufferToBlob(fullCardData.image, fullCardData.imageMimeType));
+                if (fullCardData.backgroundImage) backgroundURL = URL.createObjectURL(bufferToBlob(fullCardData.backgroundImage, fullCardData.backgroundMimeType));
+
+                const cardElement = await createCardElement({ ...fullCardData, imageURL, backgroundURL });
+                
+                cardDisplayArea.appendChild(cardElement);
+                // Adiciona a classe 'visible' para iniciar a animação de entrada
+                setTimeout(() => cardElement.classList.add('visible'), 10);
+
+                await stopParticles();
+                part();
             }
 
             async function createCardElement(cardData) {
                 const cardWrapper = document.createElement('div');
-                cardWrapper.className = 'swiper-slide card-wrapper flex flex-col items-center gap-4';
+                cardWrapper.className = 'card-wrapper flex flex-col items-center gap-4';
                 const cardDiv = document.createElement('div');
                 cardDiv.className = 'w-full h-auto rounded-3xl shadow-2xl rpg-card';
                 cardDiv.dataset.cardId = cardData.id;
@@ -901,22 +922,23 @@
                 thumb.style.backgroundPosition = 'center';
                 thumb.style.minWidth = '5rem';
                 thumb.innerHTML = `<div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center"><img src="${cardData.imageURL}" onerror="this.src='https://placehold.co/40x40/E5E7EB/4B5563?text=P';" alt="Miniatura" class="w-10 h-10 object-cover rounded-full border-2 border-white"></div><div class="absolute bottom-1 left-1 bg-gray-800 text-white text-xs px-2 py-1 rounded-full font-bold">Lv.${cardData.level}</div>`;
-                thumb.addEventListener('click', async () => {
-                    const allCards = await getData(CARD_STORE_NAME);
-                    const cardIndex = allCards.findIndex(c => c.id === cardData.id);
-                    if (cardIndex !== -1 && mySwiper) mySwiper.slideTo(cardIndex);
-                });
+                
+                // MODIFICADO: Chama a nova função displayCard
+                thumb.addEventListener('click', () => displayCard(cardData.id));
                 return thumb;
             }
 
-            async function removeCard(cardId) { await removeData(CARD_STORE_NAME, cardId); await renderCardsAndThumbnails(); }
+            async function removeCard(cardId) { 
+                await removeData(CARD_STORE_NAME, cardId); 
+                await renderCardsAndThumbnails(); 
+            }
             
             // --- Funções CRUD para Magias/Habilidades ---
 
             async function renderSpellCards() {
-                spellCardsContainer.innerHTML = '';
                 spellThumbnailList.innerHTML = '';
                 const allSpells = await getData(SPELL_STORE_NAME);
+                spellCardDisplayArea.innerHTML = '<p class="text-gray-400">Selecione uma magia na lista acima para ver os detalhes.</p>';
 
                 if (allSpells.length === 0) {
                     spellThumbnailList.innerHTML = '<p class="text-gray-500 text-center w-full">Nenhuma magia salva. Crie uma para começar!</p>';
@@ -926,23 +948,41 @@
                         let imageURL = 'https://placehold.co/160x160/14b8a6/1f2937?text=Magia';
                         if (spellData.image) imageURL = URL.createObjectURL(bufferToBlob(spellData.image, spellData.imageMimeType));
                         
-                        const spellCardWrapper = await createSpellCardElement({...spellData, imageURL});
-                        spellCardsContainer.appendChild(spellCardWrapper);
-
                         const spellThumbnail = createSpellThumbnailElement({...spellData, imageURL});
                         spellThumbnailList.appendChild(spellThumbnail);
 
                         spellsLoaded++;
-                        const percentage = 50 + Math.round((spellsLoaded / allSpells.length) * 50); // 50 to 100% for spells
+                        const percentage = 50 + Math.round((spellsLoaded / allSpells.length) * 50);
                         updateProgress(percentage, loadingMessages[Math.floor(Math.random() * loadingMessages.length)]);
                     }
+                    // MODIFICADO: Pré-carrega a primeira magia
+                    await displaySpell(allSpells[0].id);
                 }
-                initSpellSwiper();
+            }
+            
+            // NOVA FUNÇÃO: Para exibir uma magia com animação
+            async function displaySpell(spellId) {
+                spellCardDisplayArea.innerHTML = ''; // Limpa a área
+                const allSpells = await getData(SPELL_STORE_NAME);
+                const fullSpellData = allSpells.find(s => s.id === spellId);
+                if (!fullSpellData) return;
+
+                let imageURL = 'https://placehold.co/160x160/14b8a6/1f2937?text=Magia';
+                if (fullSpellData.image) imageURL = URL.createObjectURL(bufferToBlob(fullSpellData.image, fullSpellData.imageMimeType));
+
+                const spellCardElement = await createSpellCardElement({ ...fullSpellData, imageURL });
+                
+                spellCardDisplayArea.appendChild(spellCardElement);
+                // Adiciona a classe 'visible' para iniciar a animação de entrada
+                setTimeout(() => spellCardElement.classList.add('visible'), 10);
+
+                await stopParticles();
+                part();
             }
 
             async function createSpellCardElement(spellData) {
                 const cardWrapper = document.createElement('div');
-                cardWrapper.className = 'swiper-slide card-wrapper flex flex-col items-center gap-4';
+                cardWrapper.className = 'card-wrapper flex flex-col items-center gap-4';
                 const cardDiv = document.createElement('div');
                 cardDiv.className = 'w-full h-auto rounded-3xl shadow-2xl rpg-card';
                 cardDiv.dataset.spellId = spellData.id;
@@ -964,7 +1004,7 @@
                     <div class="card-3d-container">
                         <div class="card-3d divPartculas">
                             <div class="card-front" style="border-color: ${palette.borderColor};background-image:url(${spellData.imageURL}) !important; background-position: center; background-size: cover">
-                                <div class="rounded-3xl relative w-full h-full p-4 ex-max" style="background: linear-gradient(-180deg, #000000ba, transparent, transparent); height: 650px; display: flex; flex-direction: column; align-items: center; justify-content: space-between;    background-blend-mode: multiply;">
+                                <div class="rounded-3xl relative w-full h-full p-4 ex-max" style="background: linear-gradient(-180deg, #000000ba, transparent, #00000085, #000000ba); height: 650px; display: flex; flex-direction: column; align-items: center; justify-content: space-between;    background-blend-mode: multiply;">
                                     <div class="text-center w-full"><h3 class="text-2xl font-bold" style="color: ${palette.highlightColor};">${spellData.name}</h3><div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent); width: 100%"></div></div>
                                      <div class="text-xs text-gray-400 mb-3" style="position: absolute; margin-top: 55px; left: 15px;">
                                             <p class="text-left"><strong>Execução:</strong> ${spellData.execution || '-'}</p>
@@ -972,21 +1012,20 @@
                                             <p class="text-left"><strong>Alvo:</strong> ${spellData.target || '-'}</p>
                                             <p class="text-left"><strong>Duração:</strong> ${spellData.duration || '-'}</p>
                                     </div>
-                                <div class="w-full">                                       
-                                        <div class="text-sm text-left">                                             
-                                            <div class="mb-4 p-3 rounded-3xl w-full rpg-card-frame" style="border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
-                                                <h4 class="font-semibold  rounded-3xl text-gray-300" style="position: absolute; top: -10px; background: ${palette.highlightColor}; padding: 0 10px;">Descrição</h4>
+                                    <div class="w-full">                                       
+                                        <div class="text-sm text-left" style="display: flex; flex-direction: row; overflow-y: scroll;gap: 12px;    scroll-snap-type: x mandatory;">                                             
+                                            <div class="mb-4 p-3 rounded-3xl w-full" style="scroll-snap-align: start;flex-shrink: 0;min-width: 100%; border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
+                                                <h4 class="font-semibold text-gray-300">Descrição</h4>
                                                 <p class="text-gray-300 text-xs">${spellData.description || 'Nenhuma descrição.'}</p>
                                             </div>                                            
-                                            <div class="mb-4 p-3 rounded-3xl w-full rpg-card-frame" style="border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
-                                                <h4 class="font-semibold  rounded-3xl text-gray-300" style="position: absolute; top: -10px; background: ${palette.highlightColor}; padding: 0 10px;">Aprimorar</h4>
+                                            <div class="mb-4 p-3 rounded-3xl w-full" style="scroll-snap-align: start;flex-shrink: 0;min-width: 100%; border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
+                                                <h4 class="font-semibold text-gray-300">Aprimorar</h4>
                                                 <p class="text-gray-300 text-xs">${spellData.enhance}</p>
                                             </div>
-                                            <div class="p-3 rounded-3xl w-full rpg-card-frame" style="border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
-                                                <h4 class="font-semibold  rounded-3xl text-gray-300" style="position: absolute; top: -10px; background: ${palette.highlightColor}; padding: 0 10px;">Verdadeiro</h4>
+                                            <div class="p-3 rounded-3xl w-full" style="scroll-snap-align: start;flex-shrink: 0;flex-shrink: 0;min-width: 100%; border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
+                                                <h4 class="font-semibold text-gray-300">Verdadeiro</h4>
                                                 <p class="text-gray-300 text-xs">${spellData.true}</p>
-                                            </div>
-                                            
+                                            </div>                                            
                                         </div>
                                     </div>
                                 </div>
@@ -1018,11 +1057,9 @@
                 thumb.style.background = 'linear-gradient(45deg, #0f172a, #1e293b)';
                 thumb.style.minWidth = '5rem';
                 thumb.innerHTML = `<div class="absolute inset-0 bg-opacity-40 flex items-center justify-center" style="background: url(${spellData.imageURL}); background-size: cover;"><img src="${spellData.imageURL}" onerror="this.src='https://placehold.co/40x40/14b8a6/1f2937?text=M';" alt="Miniatura da Magia" class="w-10 h-10 object-cover rounded-full border-2 border-teal-400"></div>`;
-                thumb.addEventListener('click', async () => {
-                    const allSpells = await getData(SPELL_STORE_NAME);
-                    const spellIndex = allSpells.findIndex(s => s.id === spellData.id);
-                    if (spellIndex !== -1 && mySpellSwiper) mySpellSwiper.slideTo(spellIndex);
-                });
+                
+                // MODIFICADO: Chama a nova função displaySpell
+                thumb.addEventListener('click', () => displaySpell(spellData.id));
                 return thumb;
             }
 
@@ -1060,7 +1097,7 @@
                 await renderSpellCards();
             }
 
-            spellCardsContainer.addEventListener('click', e => {
+            spellCardDisplayArea.addEventListener('click', e => {
                 const spellId = e.target.dataset.spellId;
                 if (!spellId) return;
 
@@ -1159,12 +1196,10 @@
 
             // --- ATUALIZADO: Lógica de Exibição de Magias em Tela Cheia ---
 
-            // Função para criar a visualização detalhada da magia (idêntica ao grimório)
             async function createExpandedSpellView(spellData) {
                 let imageURL = 'https://placehold.co/400x650/14b8a6/1f2937?text=Magia';
                 if (spellData.image) {
                     imageURL = URL.createObjectURL(bufferToBlob(spellData.image, spellData.imageMimeType));
-                    console.log(spellData.image);
                 }
                 
                 let palette = { cardBg: 'rgba(17, 24, 39, 0.9)', highlightColor: '#2dd4bf', textColor: '#e5e7eb', borderColor: '#0d9488' };
@@ -1184,29 +1219,28 @@
                 cardElement.style.backgroundPosition = 'center';
                 
                 cardElement.innerHTML = `
-                                <div class="rounded-3xl relative w-full h-full p-4 ex-max" style="background: linear-gradient(-180deg, #000000ba, transparent, transparent); height: 650px; display: flex; flex-direction: column; align-items: center; justify-content: space-between;    background-blend-mode: multiply;">
-                                    
+                    <div class="rounded-3xl relative w-full h-full p-4" style="background: linear-gradient(-180deg, #000000ba, transparent, #00000085, #000000ba); height: 650px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; background-blend-mode: multiply;">        
                         <div class="text-center w-full"><h3 class="text-2xl font-bold" style="color: ${palette.highlightColor};">${spellData.name}</h3><div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent); width: 100%"></div></div>
                         <div class="text-xs text-gray-400 mb-3" style="position: absolute; margin-top: 55px; left: 15px;">
-                                            <p class="text-left"><strong>Execução:</strong> ${spellData.execution || '-'}</p>
-                                            <p class="text-left"><strong>Alcance:</strong> ${spellData.range || '-'}</p>
-                                            <p class="text-left"><strong>Alvo:</strong> ${spellData.target || '-'}</p>
-                                            <p class="text-left"><strong>Duração:</strong> ${spellData.duration || '-'}</p>
-                                    </div>
-                        <div class="w-full">                                       
-                            <div class="text-sm text-left">  
-                                <div class="mb-4 p-3 rounded-3xl w-full rpg-card-frame" style="border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
-                                    <h4 class="font-semibold rounded-3xl text-gray-300" style="position: absolute; top: -10px; background: ${palette.highlightColor}; padding: 0 10px;">Descrição</h4>
+                            <p class="text-left"><strong>Execução:</strong> ${spellData.execution || '-'}</p>
+                            <p class="text-left"><strong>Alcance:</strong> ${spellData.range || '-'}</p>
+                            <p class="text-left"><strong>Alvo:</strong> ${spellData.target || '-'}</p>
+                            <p class="text-left"><strong>Duração:</strong> ${spellData.duration || '-'}</p>
+                        </div>
+                       <div class="w-full">                                       
+                            <div class="text-sm text-left" style="display: flex; flex-direction: row; overflow-y: scroll;gap: 12px; scroll-snap-type: x mandatory;">                                             
+                                <div class="mb-4 p-3 rounded-3xl w-full" style="scroll-snap-align: start;flex-shrink: 0;min-width: 100%; border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
+                                    <h4 class="font-semibold text-gray-300">Descrição</h4>
                                     <p class="text-gray-300 text-xs">${spellData.description || 'Nenhuma descrição.'}</p>
                                 </div>                                            
-                                <div class="mb-4 p-3 rounded-3xl w-full rpg-card-frame" style="border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
-                                    <h4 class="font-semibold rounded-3xl text-gray-300" style="position: absolute; top: -10px; background: ${palette.highlightColor}; padding: 0 10px;">Aprimorar</h4>
+                                <div class="mb-4 p-3 rounded-3xl w-full" style="scroll-snap-align: start;flex-shrink: 0;min-width: 100%; border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
+                                    <h4 class="font-semibold text-gray-300">Aprimorar</h4>
                                     <p class="text-gray-300 text-xs">${spellData.enhance}</p>
                                 </div>
-                                <div class="p-3 rounded-3xl w-full rpg-card-frame" style="border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
-                                    <h4 class="font-semibold rounded-3xl text-gray-300" style="position: absolute; top: -10px; background: ${palette.highlightColor}; padding: 0 10px;">Verdadeiro</h4>
+                                <div class="p-3 rounded-3xl w-full" style="scroll-snap-align: start;flex-shrink: 0;flex-shrink: 0;min-width: 100%; border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
+                                    <h4 class="font-semibold text-gray-300">Verdadeiro</h4>
                                     <p class="text-gray-300 text-xs">${spellData.true}</p>
-                                </div>
+                                </div>                                            
                             </div>
                         </div>
                     </div>`;
@@ -1215,7 +1249,6 @@
                 return cardElement;
             }
 
-            // Função para exibir a lista de magias retrátil na tela cheia
             async function displaySpellsInFullscreen(fullscreenElement) {
                 const allSpells = await getData(SPELL_STORE_NAME);
                 if (allSpells.length === 0) return;
@@ -1244,7 +1277,7 @@
                 toggler.style.display="block";
                 toggler.innerHTML = `<span>Grimório</span> <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>`;
                 toggler.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Impede que o clique feche o card expandido
+                    e.stopPropagation(); 
                     spellBar.classList.toggle('collapsed');
                 });
 
@@ -1252,7 +1285,6 @@
                 spellBar.appendChild(spellListContainer);
                 fullscreenElement.appendChild(spellBar);
 
-                // Adiciona um único ouvinte de eventos ao contêiner
                 spellListContainer.addEventListener('click', async (e) => {
                     const spellItem = e.target.closest('.spell-list-item');
                     if (!spellItem) return;
@@ -1287,8 +1319,7 @@
                 });
             }
 
-            // --- ATUALIZADO: Ouvinte de eventos dos cards de personagem ---
-            cardsContainer.addEventListener('click', async (e) => {
+            cardDisplayArea.addEventListener('click', async (e) => {
                 const cardId = e.target.dataset.cardId;
                 if (!cardId) return;
 
@@ -1303,10 +1334,8 @@
                     } else {
                         cardDiv.requestFullscreen().catch(err => console.error(`Erro ao entrar em tela cheia: ${err.message}`));
                         
-                        // Ao entrar em tela cheia, exibe a lista de magias
                         displaySpellsInFullscreen(cardDiv);
                         
-                        // Limpa os elementos ao sair da tela cheia
                         const onFullscreenChange = () => {
                             if (!document.fullscreenElement) {
                                 const spellBar = cardDiv.querySelector('.fullscreen-spell-bar');
