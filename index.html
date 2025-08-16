@@ -966,15 +966,15 @@
                             <div class="card-front" style="border-color: ${palette.borderColor};background-image:url(${spellData.imageURL}) !important; background-position: center; background-size: cover">
                                 <div class="rounded-3xl relative w-full h-full p-4 ex-max" style="background: linear-gradient(-180deg, #000000ba, transparent, transparent); height: 650px; display: flex; flex-direction: column; align-items: center; justify-content: space-between;    background-blend-mode: multiply;">
                                     <div class="text-center w-full"><h3 class="text-2xl font-bold" style="color: ${palette.highlightColor};">${spellData.name}</h3><div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent); width: 100%"></div></div>
-                                    
-                                    <div class="w-full">                                       
-                                        <div class="text-sm text-left"  style="transform: scale(.8);">
-                                             <div class="text-xs text-gray-400 mb-6 rpg-card-frame" style="max-width: max-content; position: relative;margin-left: auto; padding: 10px;border-radius: 15px; border: 1px solid ${palette.borderColor};">
-                                                <p class="text-left"><strong>Execução:</strong> ${spellData.execution || '-'}</p>
-                                                <p class="text-left"><strong>Alcance:</strong> ${spellData.range || '-'}</p>
-                                                <p class="text-left"><strong>Alvo:</strong> ${spellData.target || '-'}</p>
-                                                <p class="text-left"><strong>Duração:</strong> ${spellData.duration || '-'}</p>
-                                            </div>
+                                     <div class="text-xs text-gray-400 mb-3" style="position: absolute; margin-top: 55px; left: 15px;">
+                                            <p class="text-left"><strong>Execução:</strong> ${spellData.execution || '-'}</p>
+                                            <p class="text-left"><strong>Alcance:</strong> ${spellData.range || '-'}</p>
+                                            <p class="text-left"><strong>Alvo:</strong> ${spellData.target || '-'}</p>
+                                            <p class="text-left"><strong>Duração:</strong> ${spellData.duration || '-'}</p>
+                                    </div>
+                                <div class="w-full" style="transform: scale(.8);position: relative; bottom: -20px;">                                       
+                                        <div class="text-sm text-left">
+                                             
                                             <div class="mb-4 p-3 rounded-3xl w-full rpg-card-frame" style="border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
                                                 <h4 class="font-semibold  rounded-3xl text-gray-300" style="position: absolute; top: -10px; background: ${palette.highlightColor}; padding: 0 10px;">Descrição</h4>
                                                 <p class="text-gray-300 text-xs">${spellData.description || 'Nenhuma descrição.'}</p>
@@ -1188,15 +1188,15 @@
                                 <div class="rounded-3xl relative w-full h-full p-4 ex-max" style="background: linear-gradient(-180deg, #000000ba, transparent, transparent); height: 650px; display: flex; flex-direction: column; align-items: center; justify-content: space-between;    background-blend-mode: multiply;">
                                     
                         <div class="text-center w-full"><h3 class="text-2xl font-bold" style="color: ${palette.highlightColor};">${spellData.name}</h3><div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent); width: 100%"></div></div>
-                       
-                        <div class="w-full">                                       
-                            <div class="text-sm text-left"  style="transform: scale(.8);">
-                                <div class="text-xs text-gray-400 mb-6 rpg-card-frame" style="max-width: max-content;position: relative;margin-left: auto; padding: 10px;border-radius: 15px; border: 1px solid ${palette.borderColor};">
-                                    <p class="text-left"><strong>Execução:</strong> ${spellData.execution || '-'}</p>
-                                    <p class="text-left"><strong>Alcance:</strong> ${spellData.range || '-'}</p>
-                                    <p class="text-left"><strong>Alvo:</strong> ${spellData.target || '-'}</p>
-                                    <p class="text-left"><strong>Duração:</strong> ${spellData.duration || '-'}</p>
-                                </div>
+                        <div class="text-xs text-gray-400 mb-3" style="position: absolute; margin-top: 55px; left: 15px;">
+                                            <p class="text-left"><strong>Execução:</strong> ${spellData.execution || '-'}</p>
+                                            <p class="text-left"><strong>Alcance:</strong> ${spellData.range || '-'}</p>
+                                            <p class="text-left"><strong>Alvo:</strong> ${spellData.target || '-'}</p>
+                                            <p class="text-left"><strong>Duração:</strong> ${spellData.duration || '-'}</p>
+                                    </div>
+                        <div class="w-full"  style="transform: scale(.8);position: relative;bottom: -20px;">                                       
+                            <div class="text-sm text-left">
+                                
 
                                 <div class="mb-4 p-3 rounded-3xl w-full rpg-card-frame" style="border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
                                     <h4 class="font-semibold rounded-3xl text-gray-300" style="position: absolute; top: -10px; background: ${palette.highlightColor}; padding: 0 10px;">Descrição</h4>
