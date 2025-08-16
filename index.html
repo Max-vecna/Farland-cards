@@ -211,10 +211,11 @@
 
     <!-- Conteúdo Principal (Inicialmente escondido) -->
     <div id="mainContent" class="w-full max-w-5xl hidden">
+
         
         <!-- Seção de Criação de Cartão de Personagem -->
         <div id="creation-section" class="hidden">
-            <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-2xl mb-8">
+            <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-2xl">
                 <h2 id="form-title" class="text-2xl font-bold mb-6 text-indigo-300">Novo Cartão de Personagem</h2>
                 <form id="cardForm" class="space-y-6">
                     <!-- Campos do formulário de cartão -->
@@ -288,7 +289,7 @@
 
         <!-- Seção de Criação de Magia/Habilidade -->
         <div id="spell-creation-section" class="hidden">
-            <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-2xl mb-8">
+            <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-2xl">
                 <h2 id="spell-form-title" class="text-2xl font-bold mb-6 text-teal-300">Nova Magia ou Habilidade</h2>
                 <form id="spellForm" class="space-y-6">
                     <div>
@@ -316,8 +317,7 @@
 
         <!-- Seção de Visualização de Magias -->
         <div id="spell-display-section" class="hidden">
-            <h2 class="text-3xl font-bold text-center text-teal-300 my-6">Grimório de Magias</h2>
-            <div id="spell-thumbnail-list" class="flex flex-wrap justify-center gap-4 p-4 bg-gray-900/50 rounded-xl shadow-inner mb-8 mt-8">
+            <div id="spell-thumbnail-list" class="flex flex-wrap justify-center gap-4 p-4 bg-gray-900/50 rounded-xl shadow-inner mb-4">
                 <p class="text-gray-500">Nenhuma magia salva ainda. Crie uma para começar!</p>
             </div>
             <div class="cards-container w-full max-w-lg mx-auto mb-1">
@@ -332,7 +332,7 @@
     </div>
 
     <!-- Menu de Navegação Fixo -->
-    <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 bg-gray-800/80 backdrop-blur-sm rounded-full p-2 flex items-center gap-2 z-50 shadow-lg">
+    <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 bg-gray-800/80 backdrop-blur-sm rounded-full p-2 flex items-center gap-2 z-50 shadow-lg" id="nav">
         <button id="showDisplayBtn" class="nav-button px-4 py-2 text-sm md:px-6 md:py-3 md:text-lg font-semibold rounded-full focus:outline-none flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a1 1 0 011-1h14a1 1 0 110 2H3a1 1 0 01-1-1z" /></svg>
             <span class="hidden md:inline">Personagens</span>
@@ -341,47 +341,74 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" /></svg>
             <span class="hidden md:inline">Add Personagem</span>
         </button>
-        <button id="showSpellCreationBtn" class="nav-button px-4 py-2 text-sm md:px-6 md:py-3 md:text-lg font-semibold rounded-full focus:outline-none flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-            <span class="hidden md:inline">Add Magia</span>
-        </button>
         <button id="showSpellDisplayBtn" class="nav-button px-4 py-2 text-sm md:px-6 md:py-3 md:text-lg font-semibold rounded-full focus:outline-none flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" /></svg>
             <span class="hidden md:inline">Grimório</span>
         </button>
+        <button id="showSpellCreationBtn" class="nav-button px-4 py-2 text-sm md:px-6 md:py-3 md:text-lg font-semibold rounded-full focus:outline-none flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+            <span class="hidden md:inline">Add Magia</span>
+        </button>        
     </nav>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script>
-        // Função de partículas (sem alterações)
+        // NEW: Array to keep track of particle intervals
+        let particleIntervals = [];
+
+        // NEW: Function to stop all particle animations
+       async function stopParticles() {
+            // Clear all active particle generation intervals
+            particleIntervals.forEach(clearInterval);
+            particleIntervals = []; // Reset the array
+
+            // Remove any existing particle elements from the DOM
+            const existingParticles = document.querySelectorAll('.sparkle');
+            existingParticles.forEach(p => p.remove());
+        }
+
+        // UPDATED: Particle function now resets before starting
         async function part() {
+            // First, stop any previously running particle animations
+            await stopParticles();
+
             const divsParticulas = document.querySelectorAll('.divPartculas');
             divsParticulas.forEach(divParticulas => {
                 const estilos = window.getComputedStyle(divParticulas);
-                const maxParticles = 80; let currentParticles = 0;
+                const maxParticles = 80; 
+                let currentParticles = 0;
                 function createSparkle() {
                     if (currentParticles >= maxParticles) return;
                     const sparkle = document.createElement('div');
                     sparkle.classList.add('sparkle');
-                    divParticulas.appendChild(sparkle); currentParticles++;
+                    divParticulas.appendChild(sparkle); 
+                    currentParticles++;
                     const rect = divParticulas.getBoundingClientRect();
-                    const spawnX = Math.random() * rect.width; const spawnY = Math.random() * rect.height;
+                    const spawnX = Math.random() * rect.width; 
+                    const spawnY = Math.random() * rect.height;
                     sparkle.style.opacity = (0.1 + Math.random() * 0.4).toFixed(2);
-                    sparkle.style.left = `${spawnX}px`; sparkle.style.top = `${spawnY}px`;
+                    sparkle.style.left = `${spawnX}px`; 
+                    sparkle.style.top = `${spawnY}px`;
                     sparkle.style.backgroundColor = `${estilos.borderColor}`;
                     sparkle.style.boxShadow = `0 0 5px 2px ${estilos.borderColor}, 0 0 10px 4px ${estilos.borderColor}`;
                     const size = Math.random() * 1.5 + 0.5;
-                    sparkle.style.width = `${size}px`; sparkle.style.height = `${size}px`;
+                    sparkle.style.width = `${size}px`; 
+                    sparkle.style.height = `${size}px`;
                     const directionX = (spawnX - rect.width / 2) * 4;
                     const directionY = (spawnY - rect.height / 2) * 4;
                     sparkle.style.setProperty('--x', `${directionX}px`);
                     sparkle.style.setProperty('--y', `${directionY}px`);
                     sparkle.style.setProperty('--r', `${Math.random() * 720}deg`);
                     sparkle.style.setProperty('--duration', `${Math.random() * 15 + 10}s`);
-                    sparkle.addEventListener('animationend', () => { sparkle.remove(); currentParticles--; });
+                    sparkle.addEventListener('animationend', () => { 
+                        sparkle.remove(); 
+                        currentParticles--; 
+                    });
                 }
-                setInterval(createSparkle, 100);
+                // Store the interval ID so we can clear it later
+                const intervalId = setInterval(createSparkle, 100);
+                particleIntervals.push(intervalId);
             });
         }
 
@@ -437,6 +464,7 @@
             const loaderClipRect = document.getElementById('loaderClipRect');
             const progressText = document.getElementById('progressText');
             const mainContent = document.getElementById('mainContent');
+            const nav = document.getElementById('nav');
 
             // Elementos do menu e seções
             const showDisplayBtn = document.getElementById('showDisplayBtn');
@@ -461,6 +489,8 @@
                 showCreationBtn.classList.remove('active');
                 showSpellCreationBtn.classList.remove('active');
                 showSpellDisplayBtn.classList.remove('active');
+                stopParticles();
+                part();
             }
 
             function showCreationView(isEditing = false) {
@@ -472,6 +502,7 @@
                 showDisplayBtn.classList.remove('active');
                 showSpellCreationBtn.classList.remove('active');
                 showSpellDisplayBtn.classList.remove('active');
+                stopParticles(); // NEW: Stop particles on creation screen
                 
                 if (!isEditing) {
                     formTitle.textContent = "Criar Novo Cartão de Personagem";
@@ -493,6 +524,7 @@
                 showDisplayBtn.classList.remove('active');
                 showCreationBtn.classList.remove('active');
                 showSpellDisplayBtn.classList.remove('active');
+                stopParticles(); // NEW: Stop particles on creation screen
 
                 if (!isEditing) {
                     spellFormTitle.textContent = "Nova Magia ou Habilidade";
@@ -513,6 +545,8 @@
                 showCreationBtn.classList.remove('active');
                 showSpellCreationBtn.classList.remove('active');
                 if(mySpellSwiper) mySpellSwiper.update();
+                stopParticles();
+                part(); // UPDATED: Restart particles
             }
 
             showDisplayBtn.addEventListener('click', showDisplayView);
@@ -524,6 +558,7 @@
             function showSplash() {
                 splashScreen.classList.remove('hidden');
                 mainContent.classList.add('hidden');
+                nav.classList.add('hidden');
                 if (loaderClipRect) loaderClipRect.setAttribute('height', '0');
                 progressText.textContent = 'Iniciando aventura...';
             }
@@ -541,6 +576,8 @@
             function hideSplash() {
                 splashScreen.classList.add('hidden');
                 mainContent.classList.remove('hidden');
+                nav.classList.remove('hidden');
+                part();
             }
 
             function populatePericiasCheckboxes() {
@@ -887,7 +924,7 @@
                 thumb.dataset.spellId = spellData.id;
                 thumb.style.background = 'linear-gradient(45deg, #0f172a, #1e293b)';
                 thumb.style.minWidth = '5rem';
-                thumb.innerHTML = `<div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center"><img src="${spellData.imageURL}" onerror="this.src='https://placehold.co/40x40/14b8a6/1f2937?text=M';" alt="Miniatura da Magia" class="w-10 h-10 object-cover rounded-full border-2 border-teal-400"></div>`;
+                thumb.innerHTML = `<div class="absolute inset-0 bg-opacity-40 flex items-center justify-center" style="background: url(${spellData.imageURL}); background-size: cover;"><img src="${spellData.imageURL}" onerror="this.src='https://placehold.co/40x40/14b8a6/1f2937?text=M';" alt="Miniatura da Magia" class="w-10 h-10 object-cover rounded-full border-2 border-teal-400"></div>`;
                 thumb.addEventListener('click', async () => {
                     const allSpells = await getData(SPELL_STORE_NAME);
                     const spellIndex = allSpells.findIndex(s => s.id === spellData.id);
@@ -1036,7 +1073,7 @@
                     await renderCardsAndThumbnails();
                     await renderSpellCards();
                     showDisplayView();
-                    await part();
+                     //part();
                     setTimeout(hideSplash, 1000);
                 } catch (e) {
                     console.error("Falha ao inicializar o app:", e);
