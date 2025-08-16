@@ -7,8 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- A referência ao Swiper CSS foi removida -->
-    
     <style>
         /* Estilos gerais e de animação (sem alterações) */
         .divPartculas h2 {
@@ -151,7 +149,7 @@
             font-size: 11px !important; width: 30px; height: 30px; display: flex;            
             align-items: center; justify-content: center; transform: scale(0.8);
         }
-        #thumbnail-list, #spell-thumbnail-list {
+        #thumbnail-list, #spell-thumbnail-list, #item-thumbnail-list {
             min-height: 7rem;
             max-height: 8rem; overflow-y: hidden; overflow-x: auto; display: flex; flex-direction: row;
             flex-wrap: nowrap; justify-content: flex-start; align-items: center;
@@ -189,7 +187,7 @@
         }
 
         /* ESTILOS ATUALIZADOS: Barra de magias retrátil */
-        .fullscreen-spell-bar {
+        .fullscreen-tab-container {
             position: absolute;
             bottom: 10px;
             left: 50%;
@@ -199,17 +197,17 @@
             z-index: 100;
             transition: transform 0.4s ease-out;
         }
-        .fullscreen-spell-bar.collapsed {
+        .fullscreen-tab-container.collapsed {
             transform: translate(-50%, calc(100% - 45px));
             bottom: -45px;
         }
-        .spell-list-toggler {
+        .tab-list-toggler {
             position: absolute;
             top: -35px;
             left: 50%;
             transform: translateX(-50%);
             padding: 8px 20px;
-            background-color: rgba(79, 70, 229, 0.9);
+            background-color: #202a38;
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-bottom: none;
@@ -222,13 +220,13 @@
             align-items: center;
             gap: 8px;
         }
-        .spell-list-toggler svg {
+        .tab-list-toggler svg {
             transition: transform 0.3s ease;
         }
-        .fullscreen-spell-bar.collapsed .spell-list-toggler svg {
+        .fullscreen-tab-container.collapsed .tab-list-toggler svg {
             transform: rotate(180deg);
         }
-        .fullscreen-spell-list {
+        .fullscreen-tab-content {
             padding: 10px;
             background-color: rgba(17, 24, 39, 0.85);
             backdrop-filter: blur(10px);
@@ -238,18 +236,18 @@
             gap: 15px;
             overflow-x: auto;
         }
-        .fullscreen-spell-list::-webkit-scrollbar { height: 5px; }
-        .fullscreen-spell-list::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 10px; }
-        .fullscreen-spell-list::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); }
-        .spell-list-item {
+        .fullscreen-tab-content::-webkit-scrollbar { height: 5px; }
+        .fullscreen-tab-content::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 10px; }
+        .fullscreen-tab-content::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); }
+        .tab-list-item {
             cursor: pointer;
             text-align: center;
             transition: transform 0.2s ease;
             flex-shrink: 0;
             width: 80px;
         }
-        .spell-list-item:hover { transform: scale(1.1); }
-        .spell-list-item img {
+        .tab-list-item:hover { transform: scale(1.1); }
+        .tab-list-item img {
             width: 60px;
             height: 60px;
             border-radius: 20px;
@@ -258,7 +256,7 @@
             margin: 0 auto;
             box-shadow: 0 0 10px rgba(79, 70, 229, 0.7);
         }
-        .spell-list-item p {
+        .tab-list-item p {
             margin-top: 5px;
             font-size: 12px;
             color: #d1d5db;
@@ -269,7 +267,7 @@
         }
 
         /* ESTILOS ATUALIZADOS: Card de magia expandido */
-        .expanded-spell-card-container {
+        .expanded-card-container {
             position: absolute;
             top: 0;
             left: 0;
@@ -285,7 +283,7 @@
             transition: opacity 0.1s ease-in-out;
             pointer-events: none;
         }
-        .expanded-spell-card {
+        .expanded-card {
             transform: scale(0.8) !important;
             transition: transform 0.1s ease-in-out;
             cursor: default;
@@ -293,11 +291,11 @@
             width: 450px;
             height: 650px; /* Altura fixa para consistência */
         }
-        .expanded-spell-card-container.visible {
+        .expanded-card-container.visible {
             opacity: 1;
             pointer-events: auto;
         }
-        .expanded-spell-card-container.visible .expanded-spell-card {
+        .expanded-card-container.visible .expanded-card {
             transform: scale(1);
         }
 
@@ -311,6 +309,41 @@
             opacity: 1;
             transform: scale(1) translateY(0);
         }
+        
+        /* NOVOS ESTILOS: Abas expansíveis */
+        .section-toggle-btn {
+            background-color: #1f2937;
+            color: #d1d5db;
+            padding: 0.75rem 1.5rem;
+            width: 100%;
+            text-align: left;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .section-toggle-btn:hover {
+            background-color: #374151;
+        }
+        .section-toggle-btn svg {
+            transition: transform 0.3s ease;
+        }
+        .section-toggle-btn.active svg {
+            transform: rotate(180deg);
+        }
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .collapsible-content.expanded {
+            max-height: 1000px; /* Valor alto para garantir que o conteúdo caiba */
+        }
+
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-2">
@@ -333,7 +366,12 @@
         
         <div id="creation-section" class="hidden">
             <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-2xl">
-                <h2 id="form-title" class="text-2xl font-bold mb-6 text-indigo-300">Novo Cartão de Personagem</h2>
+                <div class="flex justify-between items-center mb-6">
+                    <h2 id="form-title" class="text-2xl font-bold text-indigo-300">Novo Cartão de Personagem</h2>
+                    <button class="back-btn text-gray-400 hover:text-white transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
                 <form id="cardForm" class="space-y-6">
                     <div>
                         <label for="cardTitle" class="block text-sm font-semibold mb-1">Nome</label>
@@ -389,12 +427,11 @@
             </div>
         </div>
         
-        <!-- SEÇÃO DE EXIBIÇÃO MODIFICADA -->
+        <!-- SEÇÃO DE EXIBIÇÃO DE PERSONAGENS -->
         <div id="display-section">
             <div id="thumbnail-list" class="flex flex-wrap justify-center gap-4 p-4 bg-gray-900/50 rounded-xl shadow-inner mb-4">
                 <p class="text-gray-500">Nenhum cartão salvo ainda. Crie um para começar!</p>
             </div>
-            <!-- Nova área para exibir o card selecionado -->
             <div id="card-display-area" class="w-full max-w-lg mx-auto mb-1 items-center justify-center" style="min-height: 720px;">
                 <p class="text-gray-400">Selecione um personagem na lista acima para ver os detalhes.</p>
             </div>
@@ -402,7 +439,12 @@
 
         <div id="spell-creation-section" class="hidden">
             <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-2xl">
-                <h2 id="spell-form-title" class="text-2xl font-bold mb-6 text-teal-300">Nova Magia ou Habilidade</h2>
+                 <div class="flex justify-between items-center mb-6">
+                    <h2 id="spell-form-title" class="text-2xl font-bold text-teal-300">Nova Magia ou Habilidade</h2>
+                    <button class="back-btn text-gray-400 hover:text-white transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
                 <form id="spellForm" class="space-y-6">
                     <div>
                         <h3 class="text-xl font-bold text-teal-300 mb-2">Ícone da Magia</h3>
@@ -429,37 +471,92 @@
 
         <!-- SEÇÃO DE EXIBIÇÃO DE MAGIAS MODIFICADA -->
         <div id="spell-display-section" class="hidden">
-            <div id="spell-thumbnail-list" class="flex flex-wrap justify-center gap-4 p-4 bg-gray-900/50 rounded-xl shadow-inner mb-4">
-                <p class="text-gray-500">Nenhuma magia salva ainda. Crie uma para começar!</p>
-            </div>
-             <!-- Nova área para exibir o card de magia selecionado -->
-            <div id="spell-card-display-area" class="w-full max-w-lg mx-auto mb-1 items-center justify-center" style="min-height: 720px;">
-                <p class="text-gray-400">Selecione uma magia na lista acima para ver os detalhes.</p>
+            <button id="toggle-spells" class="section-toggle-btn">
+                <span>Grimório</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+            </button>
+            <div id="spell-content" class="collapsible-content">
+                <div id="spell-thumbnail-list" class="flex flex-wrap justify-center gap-4 p-4 bg-gray-900/50 rounded-xl shadow-inner mb-4">
+                    <p class="text-gray-500">Nenhuma magia salva ainda. Crie uma para começar!</p>
+                </div>
+                <div id="spell-card-display-area" class="w-full max-w-lg mx-auto mb-1 items-center justify-center" style="min-height: 720px;">
+                    <p class="text-gray-400">Selecione uma magia na lista acima para ver os detalhes.</p>
+                </div>
             </div>
         </div>
 
+        <!-- NOVA SEÇÃO: CRIAÇÃO DE ITENS -->
+        <div id="item-creation-section" class="hidden">
+            <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-2xl">
+                 <div class="flex justify-between items-center mb-6">
+                    <h2 id="item-form-title" class="text-2xl font-bold text-amber-300">Novo Item</h2>
+                    <button class="back-btn text-gray-400 hover:text-white transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+                <form id="itemForm" class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-amber-300 mb-2">Ícone do Item</h3>
+                        <div class="mt-4 text-center">
+                            <label for="itemImageUpload" class="block text-sm font-semibold mb-1 cursor-pointer">Faça upload de uma imagem:</label>
+                            <input type="file" id="itemImageUpload" accept="image/*" class="file-upload-input">
+                            <img id="itemImagePreview" class="mt-4 mx-auto w-32 h-32 object-cover rounded-full border-4 border-gray-600 hidden" alt="Pré-visualização do Item">
+                        </div>
+                    </div>
+                    <div><label for="itemName" class="block text-sm font-semibold mb-1">Nome</label><input type="text" id="itemName" placeholder="Ex: Poção de Cura" required class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div><label for="itemType" class="block text-sm font-semibold mb-1">Tipo</label><input type="text" id="itemType" placeholder="Ex: Leve" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></div>
+                        <div><label for="itemDamage" class="block text-sm font-semibold mb-1">Dano</label><input type="text" id="itemDamage" placeholder="Ex: 2d6" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></div>
+                        <div><label for="itemCharge" class="block text-sm font-semibold mb-1">Carga</label><input type="text" id="itemCharge" placeholder="Ex: 1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></div>
+                        <div><label for="itemPrerequisite" class="block text-sm font-semibold mb-1">Pré-requisito</label><input type="text" id="itemPrerequisite" placeholder="Ex: Saber magia" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></div>
+                    </div>
+                    <div><label for="itemEffect" class="block text-sm font-semibold mb-1">Efeito</label><textarea id="itemEffect" rows="4" placeholder="Ex: Explosão imediata gerando fogo..." class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></textarea></div>
+                    <button type="submit" id="itemSubmitButton" class="w-full py-3 px-4 rounded-full text-lg font-bold text-white bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 focus:outline-none transition duration-300 ease-in-out transform hover:scale-105 shadow-xl">
+                        Salvar Item
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- NOVA SEÇÃO: EXIBIÇÃO DE ITENS MODIFICADA -->
+        <div id="item-display-section" class="hidden">
+             <button id="toggle-items" class="section-toggle-btn">
+                <span>Inventário</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+            </button>
+            <div id="item-content" class="collapsible-content">
+                <div id="item-thumbnail-list" class="flex flex-wrap justify-center gap-4 p-4 bg-gray-900/50 rounded-xl shadow-inner mb-4">
+                    <p class="text-gray-500">Nenhum item salvo ainda. Crie um para começar!</p>
+                </div>
+                <div id="item-card-display-area" class="w-full max-w-lg mx-auto mb-1 items-center justify-center" style="min-height: 720px;">
+                    <p class="text-gray-400">Selecione um item na lista acima para ver os detalhes.</p>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 
+    <!-- MENU DE NAVEGAÇÃO MODIFICADO -->
     <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 bg-gray-800/80 backdrop-blur-sm rounded-full p-2 flex items-center gap-2 z-50 shadow-lg" id="nav">
         <button id="showDisplayBtn" class="nav-button px-4 py-2 text-sm md:px-6 md:py-3 md:text-lg font-semibold rounded-full focus:outline-none flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a1 1 0 011-1h14a1 1 0 110 2H3a1 1 0 01-1-1z" /></svg>
             <span class="hidden md:inline">Personagens</span>
         </button>
-        <button id="showCreationBtn" class="nav-button px-4 py-2 text-sm md:px-6 md:py-3 md:text-lg font-semibold rounded-full focus:outline-none flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" /></svg>
-            <span class="hidden md:inline">Add Personagem</span>
-        </button>
         <button id="showSpellDisplayBtn" class="nav-button px-4 py-2 text-sm md:px-6 md:py-3 md:text-lg font-semibold rounded-full focus:outline-none flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" /></svg>
             <span class="hidden md:inline">Grimório</span>
         </button>
-        <button id="showSpellCreationBtn" class="nav-button px-4 py-2 text-sm md:px-6 md:py-3 md:text-lg font-semibold rounded-full focus:outline-none flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-            <span class="hidden md:inline">Add Magia</span>
-        </button>        
+        <button id="showItemDisplayBtn" class="nav-button px-4 py-2 text-sm md:px-6 md:py-3 md:text-lg font-semibold rounded-full focus:outline-none flex items-center gap-2">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a1 1 0 00-1 1v1a1 1 0 002 0V3a1 1 0 00-1-1zM4 4a1 1 0 00-1 1v1a1 1 0 002 0V5a1 1 0 00-1-1zm12 0a1 1 0 00-1 1v1a1 1 0 002 0V5a1 1 0 00-1-1zM5.454 8.454a1 1 0 000 1.414l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 0zm9.092 0a1 1 0 010 1.414l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 0zM10 12a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /><path d="M3 10a7 7 0 1114 0v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3z" /></svg>
+            <span class="hidden md:inline">Inventário</span>
+        </button>
+        <button id="saveDbBtn" class="nav-button px-4 py-2 text-sm md:px-6 md:py-3 md:text-lg font-semibold rounded-full focus:outline-none flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+            <span class="hidden md:inline">Ficha</span>
+        </button>
     </nav>
 
-    <!-- A referência ao Swiper JS foi removida -->
 
     <script>
         // NEW: Array to keep track of particle intervals
@@ -533,17 +630,22 @@
             // Referências aos elementos do DOM
             const cardForm = document.getElementById('cardForm');
             const spellForm = document.getElementById('spellForm');
+            const itemForm = document.getElementById('itemForm');
             
-            // MODIFICADO: Referências para as novas áreas de exibição
             const cardDisplayArea = document.getElementById('card-display-area');
             const spellCardDisplayArea = document.getElementById('spell-card-display-area');
+            const itemCardDisplayArea = document.getElementById('item-card-display-area');
 
             const submitButton = document.getElementById('submitButton');
             const spellSubmitButton = document.getElementById('spellSubmitButton');
+            const itemSubmitButton = document.getElementById('itemSubmitButton');
             const thumbnailList = document.getElementById('thumbnail-list');
             const spellThumbnailList = document.getElementById('spell-thumbnail-list');
+            const itemThumbnailList = document.getElementById('item-thumbnail-list');
+            
             const formTitle = document.getElementById('form-title');
             const spellFormTitle = document.getElementById('spell-form-title');
+            const itemFormTitle = document.getElementById('item-form-title');
 
             const cardTitleInput = document.getElementById('cardTitle');
             const cardSubTitleInput = document.getElementById('cardSubTitle');
@@ -570,6 +672,9 @@
 
             const spellImageUpload = document.getElementById('spellImageUpload');
             const spellImagePreview = document.getElementById('spellImagePreview');
+            const itemImageUpload = document.getElementById('itemImageUpload');
+            const itemImagePreview = document.getElementById('itemImagePreview');
+
 
             const splashScreen = document.getElementById('splashScreen');
             const loaderClipRect = document.getElementById('loaderClipRect');
@@ -579,16 +684,31 @@
 
             // Elementos do menu e seções
             const showDisplayBtn = document.getElementById('showDisplayBtn');
-            const showCreationBtn = document.getElementById('showCreationBtn');
-            const showSpellCreationBtn = document.getElementById('showSpellCreationBtn');
             const showSpellDisplayBtn = document.getElementById('showSpellDisplayBtn');
+            const showItemDisplayBtn = document.getElementById('showItemDisplayBtn');
+            const saveDbBtn = document.getElementById('saveDbBtn');
             
             const creationSection = document.getElementById('creation-section');
             const displaySection = document.getElementById('display-section');
-            const spellCreationSection = document.getElementById('spell-creation-section');
             const spellDisplaySection = document.getElementById('spell-display-section');
+            const itemDisplaySection = document.getElementById('item-display-section');
+            const spellCreationSection = document.getElementById('spell-creation-section');
+            const itemCreationSection = document.getElementById('item-creation-section');
+
+            const toggleSpellsBtn = document.getElementById('toggle-spells');
+            const spellContent = document.getElementById('spell-content');
+            const toggleItemsBtn = document.getElementById('toggle-items');
+            const itemContent = document.getElementById('item-content');
+
 
             const loadingMessages = ['Invocando o Grimório...', 'Forjando Cartões...', 'Organizando o Inventário...', 'Sincronizando com os Reinos...'];
+
+            function updateActiveNav(activeButton) {
+                [showDisplayBtn, showSpellDisplayBtn, showItemDisplayBtn].forEach(button => {
+                    button.classList.remove('active');
+                });
+                activeButton.classList.add('active');
+            }
 
             // Funções para controlar a visibilidade das seções
             function showDisplayView() {
@@ -596,10 +716,9 @@
                 creationSection.classList.add('hidden');
                 spellCreationSection.classList.add('hidden');
                 spellDisplaySection.classList.add('hidden');
-                showDisplayBtn.classList.add('active');
-                showCreationBtn.classList.remove('active');
-                showSpellCreationBtn.classList.remove('active');
-                showSpellDisplayBtn.classList.remove('active');
+                itemCreationSection.classList.add('hidden');
+                itemDisplaySection.classList.add('hidden');
+                updateActiveNav(showDisplayBtn);
                 stopParticles();
                 part();
             }
@@ -609,10 +728,8 @@
                 displaySection.classList.add('hidden');
                 spellCreationSection.classList.add('hidden');
                 spellDisplaySection.classList.add('hidden');
-                showCreationBtn.classList.add('active');
-                showDisplayBtn.classList.remove('active');
-                showSpellCreationBtn.classList.remove('active');
-                showSpellDisplayBtn.classList.remove('active');
+                itemCreationSection.classList.add('hidden');
+                itemDisplaySection.classList.add('hidden');
                 stopParticles(); 
                 
                 if (!isEditing) {
@@ -631,10 +748,8 @@
                 displaySection.classList.add('hidden');
                 creationSection.classList.add('hidden');
                 spellDisplaySection.classList.add('hidden');
-                showSpellCreationBtn.classList.add('active');
-                showDisplayBtn.classList.remove('active');
-                showCreationBtn.classList.remove('active');
-                showSpellDisplayBtn.classList.remove('active');
+                itemCreationSection.classList.add('hidden');
+                itemDisplaySection.classList.add('hidden');
                 stopParticles();
 
                 if (!isEditing) {
@@ -651,18 +766,65 @@
                 displaySection.classList.add('hidden');
                 creationSection.classList.add('hidden');
                 spellCreationSection.classList.add('hidden');
-                showSpellDisplayBtn.classList.add('active');
-                showDisplayBtn.classList.remove('active');
-                showCreationBtn.classList.remove('active');
-                showSpellCreationBtn.classList.remove('active');
+                itemCreationSection.classList.add('hidden');
+                itemDisplaySection.classList.add('hidden');
+                updateActiveNav(showSpellDisplayBtn);
+                stopParticles();
+                part();
+            }
+
+            function showItemCreationView(isEditing = false) {
+                itemCreationSection.classList.remove('hidden');
+                displaySection.classList.add('hidden');
+                creationSection.classList.add('hidden');
+                spellDisplaySection.classList.add('hidden');
+                spellCreationSection.classList.add('hidden');
+                itemDisplaySection.classList.add('hidden');
+                stopParticles();
+
+                if (!isEditing) {
+                    itemFormTitle.textContent = "Novo Item";
+                    itemSubmitButton.textContent = 'Salvar Item';
+                    itemForm.reset();
+                    showImagePreview(itemImagePreview, null, true);
+                    currentEditingItemId = null;
+                }
+            }
+
+            function showItemDisplayView() {
+                itemDisplaySection.classList.remove('hidden');
+                displaySection.classList.add('hidden');
+                creationSection.classList.add('hidden');
+                spellDisplaySection.classList.add('hidden');
+                spellCreationSection.classList.add('hidden');
+                itemCreationSection.classList.add('hidden');
+                updateActiveNav(showItemDisplayBtn);
                 stopParticles();
                 part();
             }
 
             showDisplayBtn.addEventListener('click', showDisplayView);
-            showCreationBtn.addEventListener('click', () => showCreationView(false));
-            showSpellCreationBtn.addEventListener('click', () => showSpellCreationView(false));
             showSpellDisplayBtn.addEventListener('click', showSpellDisplayView);
+            showItemDisplayBtn.addEventListener('click', showItemDisplayView);
+
+            document.querySelectorAll('.back-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (!creationSection.classList.contains('hidden')) showDisplayView();
+                    if (!spellCreationSection.classList.contains('hidden')) showSpellDisplayView();
+                    if (!itemCreationSection.classList.contains('hidden')) showItemDisplayView();
+                });
+            });
+
+            toggleSpellsBtn.addEventListener('click', () => {
+                spellContent.classList.toggle('expanded');
+                toggleSpellsBtn.classList.toggle('active');
+            });
+
+            toggleItemsBtn.addEventListener('click', () => {
+                itemContent.classList.toggle('expanded');
+                toggleItemsBtn.classList.toggle('active');
+            });
+
 
             // Funções da tela de splash
             function showSplash() {
@@ -717,11 +879,14 @@
             // Variáveis de estado e IndexedDB
             let currentEditingCardId = null;
             let currentEditingSpellId = null;
+            let currentEditingItemId = null;
+
             let db;
-            const DB_NAME = 'rpgCreatorDB', DB_VERSION = 2;
+            const DB_NAME = 'rpgCreatorDB', DB_VERSION = 3;
             const CARD_STORE_NAME = 'rpgCards';
             const SPELL_STORE_NAME = 'rpgSpells';
-            let characterImageFile = null, backgroundImageFile = null, spellImageFile = null;
+            const ITEM_STORE_NAME = 'rpgItems';
+            let characterImageFile = null, backgroundImageFile = null, spellImageFile = null, itemImageFile = null;
 
             function bufferToBlob(buffer, mimeType) { return new Blob([buffer], { type: mimeType }); }
             function rgbToHsl(r, g, b) { r /= 255; g /= 255; b /= 255; let max = Math.max(r, g, b), min = Math.min(r, g, b); let h, s, l = (max + min) / 2; if (max === min) { h = s = 0; } else { let d = max - min; s = l > 0.5 ? d / (2 - max - min) : d / (max + min); switch (max) { case r: h = (g - b) / d + (g < b ? 6 : 0); break; case g: h = (b - r) / d + 2; break; case b: h = (r - g) / d + 4; break; } h /= 6; } return [h, s, l]; }
@@ -740,6 +905,9 @@
                         }
                         if (!db.objectStoreNames.contains(SPELL_STORE_NAME)) {
                             db.createObjectStore(SPELL_STORE_NAME, { keyPath: 'id' });
+                        }
+                        if (!db.objectStoreNames.contains(ITEM_STORE_NAME)) {
+                            db.createObjectStore(ITEM_STORE_NAME, { keyPath: 'id' });
                         }
                     }; 
                 }); 
@@ -819,31 +987,52 @@
                 submitButton.textContent = 'Salvar Edição';
                 submitButton.classList.remove('btn-gradient-pulse');
             }
+            
+            function createAddThumbnail(type) {
+                const thumb = document.createElement('div');
+                let colorClass = 'border-indigo-500 hover:bg-indigo-500';
+                if(type === 'spell') colorClass = 'border-teal-500 hover:bg-teal-500';
+                if(type === 'item') colorClass = 'border-amber-500 hover:bg-amber-500';
+
+                thumb.className = `relative w-20 h-24 rounded-lg flex items-center justify-center border-2 border-dashed ${colorClass} cursor-pointer transition-colors duration-200`;
+                thumb.style.minWidth = '5rem';
+                thumb.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>`;
+                
+                let clickHandler;
+                if(type === 'character') clickHandler = () => showCreationView(false);
+                if(type === 'spell') clickHandler = () => showSpellCreationView(false);
+                if(type === 'item') clickHandler = () => showItemCreationView(false);
+
+                thumb.addEventListener('click', clickHandler);
+                return thumb;
+            }
 
             async function renderCardsAndThumbnails() {
                 thumbnailList.innerHTML = '';
                 const allCards = await getData(CARD_STORE_NAME);
                 cardDisplayArea.innerHTML = '<p class="text-gray-400">Selecione um personagem na lista acima para ver os detalhes.</p>';
+                
+                let cardsLoaded = 0;
+                for (const cardData of allCards) {
+                    let imageURL = 'https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';
+                    let backgroundURL = 'https://placehold.co/400x600/1e293b/d1d5db?text=Fundo';
+                    if (cardData.image) imageURL = URL.createObjectURL(bufferToBlob(cardData.image, cardData.imageMimeType));
+                    if (cardData.backgroundImage) backgroundURL = URL.createObjectURL(bufferToBlob(cardData.backgroundImage, cardData.backgroundMimeType));
+                    
+                    const thumbnail = createThumbnailElement({...cardData, imageURL, backgroundURL});
+                    thumbnailList.appendChild(thumbnail);
+                    
+                    cardsLoaded++;
+                    const percentage = Math.round((cardsLoaded / allCards.length) * 33);
+                    updateProgress(percentage, loadingMessages[Math.floor(Math.random() * loadingMessages.length)]);
+                }
 
-                if (allCards.length === 0) {
-                    thumbnailList.innerHTML = '<p class="text-gray-500 text-center w-full">Nenhum personagem salvo. Crie um para começar!</p>';
+                thumbnailList.appendChild(createAddThumbnail('character'));
+
+                if (allCards.length > 0) {
+                     await displayCard(allCards[0].id);
                 } else {
-                    let cardsLoaded = 0;
-                    for (const cardData of allCards) {
-                        let imageURL = 'https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';
-                        let backgroundURL = 'https://placehold.co/400x600/1e293b/d1d5db?text=Fundo';
-                        if (cardData.image) imageURL = URL.createObjectURL(bufferToBlob(cardData.image, cardData.imageMimeType));
-                        if (cardData.backgroundImage) backgroundURL = URL.createObjectURL(bufferToBlob(cardData.backgroundImage, cardData.backgroundMimeType));
-                        
-                        const thumbnail = createThumbnailElement({...cardData, imageURL, backgroundURL});
-                        thumbnailList.appendChild(thumbnail);
-                        
-                        cardsLoaded++;
-                        const percentage = Math.round((cardsLoaded / allCards.length) * 50);
-                        updateProgress(percentage, loadingMessages[Math.floor(Math.random() * loadingMessages.length)]);
-                    }
-                    // MODIFICADO: Pré-carrega o primeiro card
-                    await displayCard(allCards[0].id);
+                     cardDisplayArea.innerHTML = '<p class="text-gray-400 text-center">Nenhum personagem encontrado. Clique no botão + para criar um.</p>';
                 }
             }
             
@@ -947,27 +1136,28 @@
                 const allSpells = await getData(SPELL_STORE_NAME);
                 spellCardDisplayArea.innerHTML = '<p class="text-gray-400">Selecione uma magia na lista acima para ver os detalhes.</p>';
 
-                if (allSpells.length === 0) {
-                    spellThumbnailList.innerHTML = '<p class="text-gray-500 text-center w-full">Nenhuma magia salva. Crie uma para começar!</p>';
-                } else {
-                     let spellsLoaded = 0;
-                    for (const spellData of allSpells) {
-                        let imageURL = 'https://placehold.co/160x160/14b8a6/1f2937?text=Magia';
-                        if (spellData.image) imageURL = URL.createObjectURL(bufferToBlob(spellData.image, spellData.imageMimeType));
-                        
-                        const spellThumbnail = createSpellThumbnailElement({...spellData, imageURL});
-                        spellThumbnailList.appendChild(spellThumbnail);
+                let spellsLoaded = 0;
+                for (const spellData of allSpells) {
+                    let imageURL = 'https://placehold.co/160x160/14b8a6/1f2937?text=Magia';
+                    if (spellData.image) imageURL = URL.createObjectURL(bufferToBlob(spellData.image, spellData.imageMimeType));
+                    
+                    const spellThumbnail = createSpellThumbnailElement({...spellData, imageURL});
+                    spellThumbnailList.appendChild(spellThumbnail);
 
-                        spellsLoaded++;
-                        const percentage = 50 + Math.round((spellsLoaded / allSpells.length) * 50);
-                        updateProgress(percentage, loadingMessages[Math.floor(Math.random() * loadingMessages.length)]);
-                    }
-                    // MODIFICADO: Pré-carrega a primeira magia
+                    spellsLoaded++;
+                    const percentage = 33 + Math.round((spellsLoaded / allSpells.length) * 33);
+                    updateProgress(percentage, loadingMessages[Math.floor(Math.random() * loadingMessages.length)]);
+                }
+
+                spellThumbnailList.appendChild(createAddThumbnail('spell'));
+
+                if (allSpells.length > 0) {
                     await displaySpell(allSpells[0].id);
+                } else {
+                    spellCardDisplayArea.innerHTML = '<p class="text-gray-400 text-center">Nenhuma magia encontrada. Clique no botão + para criar uma.</p>';
                 }
             }
             
-            // NOVA FUNÇÃO: Para exibir uma magia com animação
             async function displaySpell(spellId) {
                 spellCardDisplayArea.innerHTML = ''; // Limpa a área
                 const allSpells = await getData(SPELL_STORE_NAME);
@@ -980,7 +1170,6 @@
                 const spellCardElement = await createSpellCardElement({ ...fullSpellData, imageURL });
                 
                 spellCardDisplayArea.appendChild(spellCardElement);
-                // Adiciona a classe 'visible' para iniciar a animação de entrada
                 setTimeout(() => spellCardElement.classList.add('visible'), 10);
 
                 await stopParticles();
@@ -1065,7 +1254,6 @@
                 thumb.style.minWidth = '5rem';
                 thumb.innerHTML = `<div class="absolute inset-0 bg-opacity-40 flex items-center justify-center" style="background: url(${spellData.imageURL}); background-size: cover;"><img src="${spellData.imageURL}" onerror="this.src='https://placehold.co/40x40/14b8a6/1f2937?text=M';" alt="Miniatura da Magia" class="w-10 h-10 object-cover rounded-full border-2 border-teal-400"></div>`;
                 
-                // MODIFICADO: Chama a nova função displaySpell
                 thumb.addEventListener('click', () => displaySpell(spellData.id));
                 return thumb;
             }
@@ -1119,10 +1307,176 @@
                 }
             });
 
+            // --- Funções CRUD para Itens ---
+            async function renderItemsAndThumbnails() {
+                itemThumbnailList.innerHTML = '';
+                const allItems = await getData(ITEM_STORE_NAME);
+                itemCardDisplayArea.innerHTML = '<p class="text-gray-400">Selecione um item na lista acima para ver os detalhes.</p>';
+
+                let itemsLoaded = 0;
+                for (const itemData of allItems) {
+                    let imageURL = 'https://placehold.co/160x160/f59e0b/422006?text=Item';
+                    if (itemData.image) imageURL = URL.createObjectURL(bufferToBlob(itemData.image, itemData.imageMimeType));
+
+                    const itemThumbnail = createItemThumbnailElement({ ...itemData, imageURL });
+                    itemThumbnailList.appendChild(itemThumbnail);
+
+                    itemsLoaded++;
+                    const percentage = 66 + Math.round((itemsLoaded / allItems.length) * 34);
+                    updateProgress(percentage, loadingMessages[Math.floor(Math.random() * loadingMessages.length)]);
+                }
+                
+                itemThumbnailList.appendChild(createAddThumbnail('item'));
+
+                if (allItems.length > 0) {
+                    await displayItem(allItems[0].id);
+                } else {
+                    itemCardDisplayArea.innerHTML = '<p class="text-gray-400 text-center">Nenhum item encontrado. Clique no botão + para criar um.</p>';
+                }
+            }
+
+            async function displayItem(itemId) {
+                itemCardDisplayArea.innerHTML = ''; // Limpa a área
+                const allItems = await getData(ITEM_STORE_NAME);
+                const fullItemData = allItems.find(i => i.id === itemId);
+                if (!fullItemData) return;
+
+                let imageURL = 'https://placehold.co/160x160/f59e0b/422006?text=Item';
+                if (fullItemData.image) imageURL = URL.createObjectURL(bufferToBlob(fullItemData.image, fullItemData.imageMimeType));
+
+                const itemCardElement = await createItemCardElement({ ...fullItemData, imageURL });
+
+                itemCardDisplayArea.appendChild(itemCardElement);
+                setTimeout(() => itemCardElement.classList.add('visible'), 10);
+
+                await stopParticles();
+                part();
+            }
+
+            async function createItemCardElement(itemData) {
+                const cardWrapper = document.createElement('div');
+                cardWrapper.className = 'card-wrapper flex flex-col items-center gap-4';
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'w-full h-auto rounded-3xl shadow-2xl rpg-card';
+                cardDiv.dataset.itemId = itemData.id;
+                
+                let palette = { cardBg: 'rgba(17, 24, 39, 0.9)', highlightColor: '#f59e0b', textColor: '#e5e7eb', borderColor: '#d97706' };
+                if (itemData.imageURL && !itemData.imageURL.includes('placehold.co')) {
+                    try { palette = await getPredominantColorAndPalette(itemData.imageURL); } catch(e) { console.error('Falha ao gerar paleta para item.', e); }
+                }
+
+                cardDiv.style.backgroundImage = `url(${itemData.imageURL})`;
+                cardDiv.style.backgroundColor="rgb(0 0 0 / 50%)";
+                cardDiv.style.backgroundBlendMode="multiply";
+
+                 cardDiv.innerHTML = `
+                    <div class="card-3d-container">
+                        <div class="card-3d divPartculas">
+                            <div class="card-front" style="border-color: ${palette.borderColor};background-image:url(${itemData.imageURL}) !important; background-position: center; background-size: cover">
+                                <div class="rounded-3xl relative w-full h-full p-4 ex-max" style="background: linear-gradient(-180deg, #000000ba, transparent, #00000085, #000000ba); height: 650px; display: flex; flex-direction: column; align-items: center; justify-content: space-between;    background-blend-mode: multiply;">
+                                    <div class="text-center w-full"><h3 class="text-2xl font-bold" style="color: ${palette.highlightColor};">${itemData.name}</h3><div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent); width: 100%"></div></div>
+                                     <div class="text-xs text-gray-400 mb-3" style="position: absolute; margin-top: 55px; left: 15px;">
+                                            <p class="text-left"><strong>Tipo:</strong> ${itemData.type || '-'}</p>
+                                            <p class="text-left"><strong>Dano:</strong> ${itemData.damage || '-'}</p>
+                                            <p class="text-left"><strong>Carga:</strong> ${itemData.charge || '-'}</p>
+                                            <p class="text-left"><strong>Pré-requisito:</strong> ${itemData.prerequisite || '-'}</p>
+                                    </div>
+                                    <div class="w-full">                                       
+                                        <div class="text-sm text-left" style="display: flex; flex-direction: row; overflow-y: scroll;gap: 12px;    scroll-snap-type: x mandatory;">                                             
+                                            <div class="mb-4 p-3 rounded-3xl w-full" style="scroll-snap-align: start;flex-shrink: 0;min-width: 100%; border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
+                                                <h4 class="font-semibold text-gray-300">Efeito</h4>
+                                                <p class="text-gray-300 text-xs">${itemData.effect || 'Nenhum efeito.'}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-back divPartculas" style="background-image:url(${itemData.imageURL}) !important; background-size: cover !important; background-color: rgb(0 0 0 / 50%);background-blend-mode: multiply;">
+                                <div class="back-content" style="border: 5px solid ${palette.borderColor};">
+                                    <h2></h2>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+
+                const buttonsDiv = document.createElement('div');
+                buttonsDiv.className = 'flex justify-center space-x-2 w-full';
+                buttonsDiv.innerHTML = `<button class="w-1/3 py-3 px-4 text-sm font-bold text-white transition-colors duration-200 edit-item-btn" data-item-id="${itemData.id}" style="border-radius: 50px 0 0 50px; background-color: #23426d;">Editar</button><button class="w-1/3 py-3 px-4 text-sm font-bold text-white transition-colors duration-200 remove-item-btn" data-item-id="${itemData.id}" style="border-radius: 0; background-color: #dc2626;">Excluir</button><button class="w-1/3 py-3 px-4 text-sm font-bold text-white transition-colors duration-200 fullscreen-item-btn" data-item-id="${itemData.id}" style="border-radius: 0 50px 50px 0; background-color: #23426d;">Expandir</button>`;
+                
+                cardWrapper.appendChild(cardDiv);
+                const card3d = cardDiv.querySelector('.card-3d');
+                if(card3d){card3d.addEventListener('click',()=>card3d.style.transform=card3d.style.transform==='rotateY(180deg)'?'rotateY(0deg)':'rotateY(180deg)');}
+                cardWrapper.appendChild(buttonsDiv);
+                return cardWrapper;
+            }
+            
+            function createItemThumbnailElement(itemData) {
+                const thumb = document.createElement('div');
+                thumb.className = 'relative w-20 h-24 rounded-lg overflow-hidden shadow-lg border-2 border-gray-400 cursor-pointer hover:border-amber-500 transition-colors duration-200';
+                thumb.dataset.itemId = itemData.id;
+                thumb.style.background = 'linear-gradient(45deg, #272011, #422006)';
+                thumb.style.minWidth = '5rem';
+                thumb.innerHTML = `<div class="absolute inset-0 bg-opacity-40 flex items-center justify-center" style="background: url(${itemData.imageURL}); background-size: cover;"><img src="${itemData.imageURL}" onerror="this.src='https://placehold.co/40x40/f59e0b/422006?text=I';" alt="Miniatura do Item" class="w-10 h-10 object-cover rounded-full border-2 border-amber-400"></div>`;
+                
+                thumb.addEventListener('click', () => displayItem(itemData.id));
+                return thumb;
+            }
+
+            async function editItem(itemId) {
+                const allItems = await getData(ITEM_STORE_NAME);
+                const itemData = allItems.find(i => i.id === itemId);
+                if (!itemData) return;
+
+                showItemCreationView(true);
+                itemFormTitle.textContent = `Editando: ${itemData.name}`;
+                currentEditingItemId = itemId;
+
+                document.getElementById('itemName').value = itemData.name;
+                document.getElementById('itemType').value = itemData.type;
+                document.getElementById('itemDamage').value = itemData.damage;
+                document.getElementById('itemCharge').value = itemData.charge;
+                document.getElementById('itemPrerequisite').value = itemData.prerequisite;
+                document.getElementById('itemEffect').value = itemData.effect;
+                
+                if (itemData.image) {
+                    const imageBlob = bufferToBlob(itemData.image, itemData.imageMimeType);
+                    showImagePreview(itemImagePreview, URL.createObjectURL(imageBlob), true);
+                    itemImageFile = null;
+                } else {
+                    showImagePreview(itemImagePreview, null, true);
+                }
+                itemImageUpload.value = null;
+                itemSubmitButton.textContent = 'Salvar Edição';
+            }
+
+            async function removeItem(itemId) {
+                await removeData(ITEM_STORE_NAME, itemId);
+                await renderItemsAndThumbnails();
+            }
+
+            itemCardDisplayArea.addEventListener('click', e => {
+                const itemId = e.target.dataset.itemId;
+                if (!itemId) return;
+
+                if (e.target.classList.contains('edit-item-btn')) {
+                    editItem(itemId);
+                } else if (e.target.classList.contains('remove-item-btn')) {
+                    removeItem(itemId);
+                } else if (e.target.classList.contains('fullscreen-item-btn')) {
+                    const cardDiv = e.target.closest('.card-wrapper').querySelector('.rpg-card');
+                    if (document.fullscreenElement) document.exitFullscreen();
+                    else cardDiv.requestFullscreen().catch(err => console.error(`Erro: ${err.message}`));
+                }
+            });
+
+
             // --- Gerenciamento de Imagens e Formulários ---
             characterImageUpload.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { characterImageFile = file; showImagePreview(characterImagePreview, URL.createObjectURL(file), true); } });
             backgroundImageUpload.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { backgroundImageFile = file; showImagePreview(backgroundImagePreview, URL.createObjectURL(file), false); } });
             spellImageUpload.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { spellImageFile = file; showImagePreview(spellImagePreview, URL.createObjectURL(file), true); } });
+            itemImageUpload.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { itemImageFile = file; showImagePreview(itemImagePreview, URL.createObjectURL(file), true); } });
+
 
             function showImagePreview(element, url, isImageElement) { if (url) { if (isImageElement) element.src = url; else element.style.backgroundImage = `url(${url})`; element.classList.remove('hidden'); } else { element.classList.add('hidden'); } }
             function readFileAsArrayBuffer(file) { return new Promise((resolve, reject) => { if (!file) { resolve(null); return; } const reader = new FileReader(); reader.onload = (e) => resolve(e.target.result); reader.onerror = (e) => reject(e.target.error); reader.readAsArrayBuffer(file); }); }
@@ -1201,21 +1555,63 @@
                 showSpellDisplayView();
             });
 
+            itemForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                let itemData;
+                const itemValues = {
+                    name: document.getElementById('itemName').value,
+                    type: document.getElementById('itemType').value,
+                    damage: document.getElementById('itemDamage').value,
+                    charge: document.getElementById('itemCharge').value,
+                    prerequisite: document.getElementById('itemPrerequisite').value,
+                    effect: document.getElementById('itemEffect').value,
+                };
+
+                if (currentEditingItemId) {
+                    const allItems = await getData(ITEM_STORE_NAME);
+                    itemData = allItems.find(i => i.id === currentEditingItemId);
+                    if (!itemData) return;
+                    Object.assign(itemData, itemValues);
+                } else {
+                    itemData = { id: Date.now().toString(), ...itemValues };
+                }
+
+                if (itemImageFile) {
+                    itemData.image = await readFileAsArrayBuffer(itemImageFile);
+                    itemData.imageMimeType = itemImageFile.type;
+                }
+
+                await saveData(ITEM_STORE_NAME, itemData);
+                
+                itemForm.reset();
+                itemImageFile = null;
+                currentEditingItemId = null;
+                showImagePreview(itemImagePreview, null, true);
+                await renderItemsAndThumbnails();
+                showItemDisplayView();
+            });
+
+
             // --- ATUALIZADO: Lógica de Exibição de Magias em Tela Cheia ---
 
-            async function createExpandedSpellView(spellData) {
-                let imageURL = 'https://placehold.co/400x650/14b8a6/1f2937?text=Magia';
-                if (spellData.image) {
-                    imageURL = URL.createObjectURL(bufferToBlob(spellData.image, spellData.imageMimeType));
+            async function createExpandedCardView(data, type) {
+                let imageURL, palette;
+                if (type === 'spell') {
+                    imageURL = 'https://placehold.co/400x650/14b8a6/1f2937?text=Magia';
+                    if (data.image) imageURL = URL.createObjectURL(bufferToBlob(data.image, data.imageMimeType));
+                    palette = { cardBg: 'rgba(17, 24, 39, 0.9)', highlightColor: '#2dd4bf', textColor: '#e5e7eb', borderColor: '#0d9488' };
+                } else { // item
+                    imageURL = 'https://placehold.co/400x650/f59e0b/422006?text=Item';
+                    if (data.image) imageURL = URL.createObjectURL(bufferToBlob(data.image, data.imageMimeType));
+                    palette = { cardBg: 'rgba(17, 24, 39, 0.9)', highlightColor: '#f59e0b', textColor: '#e5e7eb', borderColor: '#d97706' };
                 }
-                
-                let palette = { cardBg: 'rgba(17, 24, 39, 0.9)', highlightColor: '#2dd4bf', textColor: '#e5e7eb', borderColor: '#0d9488' };
+
                 if (imageURL && !imageURL.includes('placehold.co')) {
                     try {
-                        palette = await getPredominantColorAndPalette(imageURL);
-                    } catch (e) {
-                        console.error('Falha ao gerar paleta para magia.', e);
-                    }
+                        const newPalette = await getPredominantColorAndPalette(imageURL);
+                        palette.borderColor = newPalette.borderColor;
+                        palette.highlightColor = newPalette.highlightColor;
+                    } catch (e) { console.error(`Falha ao gerar paleta para ${type}.`, e); }
                 }
 
                 const cardElement = document.createElement('div');
@@ -1224,30 +1620,54 @@
                 cardElement.style.background = `url(${imageURL})`;
                 cardElement.style.backgroundSize = 'cover';
                 cardElement.style.backgroundPosition = 'center';
+
+                let detailsHtml, mainContentHtml;
+
+                if (type === 'spell') {
+                    detailsHtml = `
+                        <p class="text-left"><strong>Execução:</strong> ${data.execution || '-'}</p>
+                        <p class="text-left"><strong>Alcance:</strong> ${data.range || '-'}</p>
+                        <p class="text-left"><strong>Alvo:</strong> ${data.target || '-'}</p>
+                        <p class="text-left"><strong>Duração:</strong> ${data.duration || '-'}</p>
+                    `;
+                    mainContentHtml = `
+                        <div class="mb-4 p-3 rounded-3xl w-full" style="scroll-snap-align: start;flex-shrink: 0;min-width: 100%;">
+                            <h4 class="font-semibold text-gray-300">Descrição</h4>
+                            <p class="text-gray-300 text-xs">${data.description || 'Nenhuma descrição.'}</p>
+                        </div>
+                        <div class="mb-4 p-3 rounded-3xl w-full" style="scroll-snap-align: start;flex-shrink: 0;min-width: 100%;">
+                            <h4 class="font-semibold text-gray-300">Aprimorar</h4>
+                            <p class="text-gray-300 text-xs">${data.enhance || 'Nenhum aprimoramento.'}</p>
+                        </div>
+                        <div class="p-3 rounded-3xl w-full" style="scroll-snap-align: start;flex-shrink: 0;min-width: 100%;">
+                            <h4 class="font-semibold text-gray-300">Verdadeiro</h4>
+                            <p class="text-gray-300 text-xs">${data.true || 'Nenhum efeito verdadeiro.'}</p>
+                        </div>
+                    `;
+                } else { // item
+                    detailsHtml = `
+                        <p class="text-left"><strong>Tipo:</strong> ${data.type || '-'}</p>
+                        <p class="text-left"><strong>Dano:</strong> ${data.damage || '-'}</p>
+                        <p class="text-left"><strong>Carga:</strong> ${data.charge || '-'}</p>
+                        <p class="text-left"><strong>Pré-requisito:</strong> ${data.prerequisite || '-'}</p>
+                    `;
+                    mainContentHtml = `
+                        <div class="p-3 rounded-3xl w-full">
+                            <h4 class="font-semibold text-gray-300">Efeito</h4>
+                            <p class="text-gray-300 text-xs">${data.effect || 'Nenhum efeito.'}</p>
+                        </div>
+                    `;
+                }
                 
                 cardElement.innerHTML = `
                     <div class="rounded-3xl relative w-full h-full p-4" style="background: linear-gradient(-180deg, #000000ba, transparent, #00000085, #000000ba); height: 650px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; background-blend-mode: multiply;">        
-                        <div class="text-center w-full"><h3 class="text-2xl font-bold" style="color: ${palette.highlightColor};">${spellData.name}</h3><div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent); width: 100%"></div></div>
+                        <div class="text-center w-full"><h3 class="text-2xl font-bold" style="color: ${palette.highlightColor};">${data.name}</h3><div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent); width: 100%"></div></div>
                         <div class="text-xs text-gray-400 mb-3" style="position: absolute; margin-top: 55px; left: 15px;">
-                            <p class="text-left"><strong>Execução:</strong> ${spellData.execution || '-'}</p>
-                            <p class="text-left"><strong>Alcance:</strong> ${spellData.range || '-'}</p>
-                            <p class="text-left"><strong>Alvo:</strong> ${spellData.target || '-'}</p>
-                            <p class="text-left"><strong>Duração:</strong> ${spellData.duration || '-'}</p>
+                            ${detailsHtml}
                         </div>
                        <div class="w-full">                                       
                             <div class="text-sm text-left" style="display: flex; flex-direction: row; overflow-y: scroll;gap: 12px; scroll-snap-type: x mandatory;">                                             
-                                <div class="mb-4 p-3 rounded-3xl w-full" style="scroll-snap-align: start;flex-shrink: 0;min-width: 100%; border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
-                                    <h4 class="font-semibold text-gray-300">Descrição</h4>
-                                    <p class="text-gray-300 text-xs">${spellData.description || 'Nenhuma descrição.'}</p>
-                                </div>                                            
-                                <div class="mb-4 p-3 rounded-3xl w-full" style="scroll-snap-align: start;flex-shrink: 0;min-width: 100%; border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
-                                    <h4 class="font-semibold text-gray-300">Aprimorar</h4>
-                                    <p class="text-gray-300 text-xs">${spellData.enhance}</p>
-                                </div>
-                                <div class="p-3 rounded-3xl w-full" style="scroll-snap-align: start;flex-shrink: 0;flex-shrink: 0;min-width: 100%; border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
-                                    <h4 class="font-semibold text-gray-300">Verdadeiro</h4>
-                                    <p class="text-gray-300 text-xs">${spellData.true}</p>
-                                </div>                                            
+                               ${mainContentHtml}                                           
                             </div>
                         </div>
                     </div>`;
@@ -1256,72 +1676,109 @@
                 return cardElement;
             }
 
-            async function displaySpellsInFullscreen(fullscreenElement) {
+            async function displayTabsInFullscreen(fullscreenElement) {
                 const allSpells = await getData(SPELL_STORE_NAME);
-                if (allSpells.length === 0) return;
+                const allItems = await getData(ITEM_STORE_NAME);
 
-                const spellBar = document.createElement('div');
-                spellBar.className = 'fullscreen-spell-bar collapsed'; // Inicia recolhida
+                const tabContainer = document.createElement('div');
+                tabContainer.className = 'fullscreen-tab-container collapsed';
 
-                const spellListContainer = document.createElement('div');
-                spellListContainer.className = 'fullscreen-spell-list';
+                const createTabContent = (items, type) => {
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = 'fullscreen-tab-content hidden';
+                    contentDiv.dataset.tab = type;
+                    items.forEach(item => {
+                        let imageURL = type === 'spell' ? 'https://placehold.co/60x60/14b8a6/1f2937?text=M' : 'https://placehold.co/60x60/f59e0b/422006?text=I';
+                        if (item.image) {
+                            imageURL = URL.createObjectURL(bufferToBlob(item.image, item.imageMimeType));
+                        }
+                        const itemEl = document.createElement('div');
+                        itemEl.className = 'tab-list-item';
+                        itemEl.dataset.id = item.id;
+                        itemEl.dataset.type = type;
+                        itemEl.innerHTML = `<img src="${imageURL}" alt="${item.name}"><p>${item.name}</p>`;
+                        contentDiv.appendChild(itemEl);
+                    });
+                    return contentDiv;
+                };
 
-                allSpells.forEach(spell => {
-                    let imageURL = 'https://placehold.co/60x60/14b8a6/1f2937?text=M';
-                    if (spell.image) {
-                        imageURL = URL.createObjectURL(bufferToBlob(spell.image, spell.imageMimeType));
-                    }
-                    
-                    const spellItem = document.createElement('div');
-                    spellItem.className = 'spell-list-item';
-                    spellItem.dataset.spellId = spell.id;
-                    spellItem.innerHTML = `<img src="${imageURL}" alt="${spell.name}"><p>${spell.name}</p>`;
-                    spellListContainer.appendChild(spellItem);
+                const spellContent = createTabContent(allSpells, 'spell');
+                const itemContent = createTabContent(allItems, 'item');
+                
+                const toggler = document.createElement('div');
+                toggler.className = 'tab-list-toggler';
+                toggler.innerHTML = `
+                    <div class="flex gap-2">
+                        <button data-tab="spell" class="px-3 py-1 rounded-lg bg-indigo-600 text-white" style="display: block; border-radius: 0.5rem .5rem 0 0;">Grimório</button>
+                        <button data-tab="item" class="px-3 py-1 rounded-lg bg-gray-600 text-white" style="display: block; border-radius: 0.5rem .5rem 0 0;">Inventário</button>
+                    </div>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+                `;
+                
+                toggler.querySelector('svg').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    tabContainer.classList.toggle('collapsed');
+                });
+
+                tabContainer.appendChild(toggler);
+                tabContainer.appendChild(spellContent);
+                tabContainer.appendChild(itemContent);
+                fullscreenElement.appendChild(tabContainer);
+
+                toggler.querySelectorAll('button').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const tab = e.target.dataset.tab;
+                        tabContainer.querySelectorAll('.fullscreen-tab-content').forEach(content => content.classList.add('hidden'));
+                        tabContainer.querySelector(`.fullscreen-tab-content[data-tab="${tab}"]`).classList.remove('hidden');
+                        
+                        toggler.querySelectorAll('button').forEach(btn => btn.classList.replace('bg-indigo-600', 'bg-gray-600'));
+                        e.target.classList.replace('bg-gray-600', 'bg-indigo-600');
+                        
+                        if (tabContainer.classList.contains('collapsed')) {
+                            tabContainer.classList.remove('collapsed');
+                        }
+                    });
                 });
                 
-                const toggler = document.createElement('button');
-                toggler.className = 'spell-list-toggler';
-                toggler.style.display="block";
-                toggler.innerHTML = `<span>Grimório</span> <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>`;
-                toggler.addEventListener('click', (e) => {
-                    e.stopPropagation(); 
-                    spellBar.classList.toggle('collapsed');
-                });
+                // Show spells by default
+                toggler.querySelector('button[data-tab="spell"]').click();
 
-                spellBar.appendChild(toggler);
-                spellBar.appendChild(spellListContainer);
-                fullscreenElement.appendChild(spellBar);
 
-                spellListContainer.addEventListener('click', async (e) => {
-                    const spellItem = e.target.closest('.spell-list-item');
-                    if (!spellItem) return;
+                [spellContent, itemContent].forEach(content => {
+                    content.addEventListener('click', async (e) => {
+                        const itemEl = e.target.closest('.tab-list-item');
+                        if (!itemEl) return;
 
-                    const spellId = spellItem.dataset.spellId;
-                    const allSpells = await getData(SPELL_STORE_NAME);
-                    const spellData = allSpells.find(s => s.id === spellId);
-                    if (!spellData) return;
-                    
-                    const existingCard = fullscreenElement.querySelector('.expanded-spell-card-container');
-                    if (existingCard) existingCard.remove();
+                        const id = itemEl.dataset.id;
+                        const type = itemEl.dataset.type;
+                        
+                        const data = await getData(type === 'spell' ? SPELL_STORE_NAME : ITEM_STORE_NAME);
+                        const itemData = data.find(d => d.id === id);
+                        if (!itemData) return;
+                        
+                        const existingCard = fullscreenElement.querySelector('.expanded-card-container');
+                        if (existingCard) existingCard.remove();
 
-                    const expandedContainer = document.createElement('div');
-                    expandedContainer.className = 'expanded-spell-card-container';
-                    
-                    const cardHolder = document.createElement('div');
-                    cardHolder.className = 'expanded-spell-card';
-                    
-                    const spellCardContent = await createExpandedSpellView(spellData);
-                    cardHolder.appendChild(spellCardContent);
-                    expandedContainer.appendChild(cardHolder);
-                    fullscreenElement.appendChild(expandedContainer);
+                        const expandedContainer = document.createElement('div');
+                        expandedContainer.className = 'expanded-card-container';
+                        
+                        const cardHolder = document.createElement('div');
+                        cardHolder.className = 'expanded-card';
+                        
+                        const cardContent = await createExpandedCardView(itemData, type);
+                        cardHolder.appendChild(cardContent);
+                        expandedContainer.appendChild(cardHolder);
+                        fullscreenElement.appendChild(expandedContainer);
 
-                    setTimeout(() => expandedContainer.classList.add('visible'), 2);
+                        setTimeout(() => expandedContainer.classList.add('visible'), 2);
 
-                    expandedContainer.addEventListener('click', function(event) {
-                        if (event.target === expandedContainer) {
-                            expandedContainer.classList.remove('visible');
-                            expandedContainer.addEventListener('transitionend', () => expandedContainer.remove(), { once: true });
-                        }
+                        expandedContainer.addEventListener('click', function(event) {
+                            if (event.target === expandedContainer) {
+                                expandedContainer.classList.remove('visible');
+                                expandedContainer.addEventListener('transitionend', () => expandedContainer.remove(), { once: true });
+                            }
+                        });
                     });
                 });
             }
@@ -1341,13 +1798,13 @@
                     } else {
                         cardDiv.requestFullscreen().catch(err => console.error(`Erro ao entrar em tela cheia: ${err.message}`));
                         
-                        displaySpellsInFullscreen(cardDiv);
+                        displayTabsInFullscreen(cardDiv);
                         
                         const onFullscreenChange = () => {
                             if (!document.fullscreenElement) {
-                                const spellBar = cardDiv.querySelector('.fullscreen-spell-bar');
-                                if (spellBar) spellBar.remove();
-                                const expandedCard = cardDiv.querySelector('.expanded-spell-card-container');
+                                const tabContainer = cardDiv.querySelector('.fullscreen-tab-container');
+                                if (tabContainer) tabContainer.remove();
+                                const expandedCard = cardDiv.querySelector('.expanded-card-container');
                                 if (expandedCard) expandedCard.remove();
                                 document.removeEventListener('fullscreenchange', onFullscreenChange);
                             }
@@ -1355,6 +1812,81 @@
                         document.addEventListener('fullscreenchange', onFullscreenChange);
                     }
                 }
+            });
+
+            async function generateCharacterSheetText() {
+                const allCards = await getData(CARD_STORE_NAME);
+                const allSpells = await getData(SPELL_STORE_NAME);
+                const allItems = await getData(ITEM_STORE_NAME);
+
+                let text = "FICHA DE PERSONAGENS, MAGIAS E ITENS\n";
+                text += "========================================\n\n";
+
+                if (allCards.length > 0) {
+                    text += "PERSONAGENS\n";
+                    text += "----------------------------------------\n";
+                    allCards.forEach(card => {
+                        text += `Nome: ${card.title || ''}\n`;
+                        text += `Raça e Classe: ${card.subTitle || ''}\n`;
+                        text += `Nível: ${card.level || ''}\n\n`;
+                        text += "Atributos:\n";
+                        if (card.attributes) {
+                            for (const [key, value] of Object.entries(card.attributes)) {
+                                if (key !== 'pericias') {
+                                    text += `  - ${key.charAt(0).toUpperCase() + key.slice(1)}: ${value || ''}\n`;
+                                }
+                            }
+                            text += "\nPerícias:\n";
+                            text += `  - ${(card.attributes.pericias || []).join(', ')}\n`;
+                        }
+                        text += "----------------------------------------\n";
+                    });
+                }
+
+                if (allSpells.length > 0) {
+                    text += "\n\nGRIMÓRIO\n";
+                    text += "----------------------------------------\n";
+                    allSpells.forEach(spell => {
+                        text += `Magia: ${spell.name || ''}\n`;
+                        text += `  - Execução: ${spell.execution || ''}\n`;
+                        text += `  - Alcance: ${spell.range || ''}\n`;
+                        text += `  - Alvo: ${spell.target || ''}\n`;
+                        text += `  - Duração: ${spell.duration || ''}\n`;
+                        text += `  - Descrição: ${spell.description || ''}\n`;
+                        text += `  - Aprimorar: ${spell.enhance || ''}\n`;
+                        text += `  - Verdadeiro: ${spell.true || ''}\n`;
+                        text += "----------------------------------------\n";
+                    });
+                }
+
+                if (allItems.length > 0) {
+                    text += "\n\nINVENTÁRIO\n";
+                    text += "----------------------------------------\n";
+                    allItems.forEach(item => {
+                        text += `Item: ${item.name || ''}\n`;
+                        text += `  - Tipo: ${item.type || ''}\n`;
+                        text += `  - Dano: ${item.damage || ''}\n`;
+                        text += `  - Carga: ${item.charge || ''}\n`;
+                        text += `  - Pré-requisito: ${item.prerequisite || ''}\n`;
+                        text += `  - Efeito: ${item.effect || ''}\n`;
+                        text += "----------------------------------------\n";
+                    });
+                }
+
+                return text;
+            }
+
+            saveDbBtn.addEventListener('click', async () => {
+                const textContent = await generateCharacterSheetText();
+                const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'ficha_rpg.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
             });
 
 
@@ -1366,6 +1898,7 @@
                     populatePericiasCheckboxes();
                     await renderCardsAndThumbnails();
                     await renderSpellCards();
+                    await renderItemsAndThumbnails();
                     showDisplayView();
                     setTimeout(hideSplash, 1000);
                 } catch (e) {
