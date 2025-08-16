@@ -5,18 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criador de Cartões Estilo RPG</title>
     <!-- Adicionando a fonte Inter do Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
     <!-- Adicionando o Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-   
-<!-- CSS do Swiper para o carrossel <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7-icons/css/framework7-icons.css">
-    <link rel="stylesheet" href="particulas.css">
-     -->
+    
     <style>
- 
-
         .divPartculas h2 {
             font-size: 2em;
             margin: 0 0 10px;
@@ -32,12 +27,10 @@
             position: absolute;
             border-radius: 50%;
             pointer-events: none;
-            z-index: 0; /* Para que as partículas fiquem na frente do divPartculas */
-            animation: disperse var(--duration) forwards; /* A animação usa uma duração dinâmica */
-             /* Efeito de brilho */
+            z-index: 0; 
+            animation: disperse var(--duration) forwards; 
         }
         
-        /* Animação de dispersão */
         @keyframes disperse {
             0% {
                 transform: translate(0, 0) scale(1) rotate(0deg);
@@ -55,7 +48,7 @@
             border-radius: 7px;
         }
         .card-3d-container {
-            perspective: 1500px; /* profundidade do efeito 3D */
+            perspective: 1500px; 
             width: 100%;
             height: 600px;
         }
@@ -64,24 +57,23 @@
             width: 100%;
             height: 100%;
             position: relative;
-            transform-style: preserve-3d; /* habilita o 3D */
+            transform-style: preserve-3d; 
             transition: transform 0.6s;
             cursor: pointer;
             
         }
 
-        /* Faces do card */
         .card-front, .card-back {
             position: absolute;
             width: 100%;
             height: 100%;
-            backface-visibility: hidden; /* oculta o verso quando não está virado */
+            backface-visibility: hidden; 
             border-radius: 20px;
             box-shadow: 0px 0px 6px 0px #0f1908;
         }
 
         .card-back {
-            transform: rotateY(180deg); /* virada para trás */
+            transform: rotateY(180deg); 
             color: white;
             display: flex;
             justify-content: center;
@@ -90,7 +82,6 @@
 
         .rpg-card .ex-max
         {
-            /*background-color: rgb(0 0 0 / 60%);*/
             background-size: cover;
             background-blend-mode: multiply;
         }
@@ -98,11 +89,9 @@
         .rpg-card:fullscreen .card-3d-container{ width: 90%;}
         .rpg-card:fullscreen .ex-max, .rpg-card:fullscreen .card-3d-container
         {
-           
             display: flex;
             border-radius: 10px;
             justify-content: center;
-           
             background-size: cover !important;
         }
 
@@ -120,7 +109,6 @@
         {
             width: 100%;
             height: 100%;
-           
         }
 
         body {
@@ -141,7 +129,6 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        /* Estilos do cartão - Atualizados para o novo design */
         .rpg-card {
             background-image: url('https://placehold.co/400x600/1e293b/d1d5db?text=Fundo+do+Cartão');
             background-size: cover;
@@ -149,7 +136,6 @@
             border: 4px solid #1f2937;
             position: relative;
         }
-        /* Estilo para a moldura do cartão, com fundo transparente e efeito de blur */
         .rpg-card-frame {
             backdrop-filter: blur(8px);
             border: 2px solid var(--border-color, #4b5563);
@@ -159,7 +145,6 @@
             color: var(--text-color, #f3f4f6);
             width: 100%;
         }
-        /* Estilos para o modo tela cheia */
         .rpg-card:fullscreen {
             width: 100vw;
             height: 100vh;
@@ -171,8 +156,6 @@
             background-position: center;
             border: 0;
             border-radius: 0;
-
-           /* background-color: rgb(0 0 0 / 60%);*/
             background-size: cover;
             background-blend-mode: multiply;
         }
@@ -184,7 +167,6 @@
         .rpg-card:fullscreen button, .rpg-card:fullscreen .swiper-navigation {
             display: none;
         }
-        /* Divisor de título com estilo personalizado e gradiente */
         .rpg-card-title-divider {
             height: 2px;
             width: 80%;
@@ -192,42 +174,38 @@
             margin-top: 0.5rem;
             margin-bottom: 0.5rem;
         }
-        
-        /* Divisor de estatísticas com estilo personalizado */
         .rpg-card-stat-divider {
             height: 1px;
             width: 100%;
             background-color: var(--border-color, #4b5563);
         }
-
-        /* Classes de upload de arquivo existentes */
         .file-upload-input {
             width: 100%;
             padding: 0.5rem 1rem;
             margin-top: 0.25rem;
-            background-color: #4b5563; /* bg-gray-700 */
+            background-color: #4b5563;
             color: white;
-            border-radius: 0.5rem; /* rounded-lg */
-            border: 1px solid #4b5563; /* border-gray-600 */
+            border-radius: 0.5rem;
+            border: 1px solid #4b5563;
             transition-property: all;
             transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
             transition-duration: 200ms;
         }
         .file-upload-input:hover {
-            border-color: #6b7280; /* hover:border-gray-500 */
+            border-color: #6b7280; 
         }
         .file-upload-input::-webkit-file-upload-button {
-            background-color: #6366f1; /* bg-indigo-500 */
+            background-color: #6366f1; 
             color: white;
             padding: 0.5rem 1rem;
             border: none;
-            border-radius: 9999px; /* rounded-full */
-            font-weight: 600; /* font-semibold */
+            border-radius: 9999px;
+            font-weight: 600;
             margin-right: 1rem;
             cursor: pointer;
         }
         .file-upload-input::-webkit-file-upload-button:hover {
-            background-color: #4f46e5; /* hover:bg-indigo-600 */
+            background-color: #4f46e5;
         }
         .swiper-button-next:after, .swiper-button-prev:after {
             color: #4f46e5;
@@ -236,9 +214,7 @@
             display: flex;
             justify-content: center;
         }
-
-        small
-        {
+        small {
             position: absolute;
             left: -10px;
             top: -10px;            
@@ -252,10 +228,108 @@
             justify-content: center;            
             transform: scale(0.8);
         }
+        #thumbnail-list {
+            max-height: 8rem;
+            overflow: scroll;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;            
+            justify-content: flex-start;
+            background-color: rgb(30 41 59 / var(--tw-bg-opacity, 1));
+        }
+
+        /* ESTILOS DA TELA DE SPLASH PERSONALIZADA */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1f2937;
+            color: #f3f4f6;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .splash-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-icon {
+            animation: spin-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes spin-pulse {
+            0% { transform: rotate(0deg); opacity: 1; }
+            50% { transform: rotate(180deg); opacity: 0.8; }
+            100% { transform: rotate(360deg); opacity: 1; }
+        }
+
+        .progress-bar-container {
+            width: 80%;
+            max-width: 400px;
+            height: 12px;
+            background-color: #374151;
+            border-radius: 6px;
+            margin-top: 20px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            transition: width 0.5s ease-in-out;
+            box-shadow: 0 0 10px #8b5cf6, 0 0 5px #6366f1;
+        }
+
+        .progress-text {
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+         .stat-fill {
+            height: 100%;
+            background-color: #eab308;
+            border-radius: 9999px;
+            transition: width 0.5s ease-in-out;
+        }
+         
+        .stat-bar {
+            background-color: #4a5568;
+            border-radius: 9999px;
+            height: 8px;
+            margin-top: 0.25rem;
+            position: relative;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-2">
-    <div class="w-full max-w-5xl">
+
+    <!-- Tela de Splash Personalizada -->
+    <div id="splashScreen" class="splash-screen divPartculas">
+        <!-- Ícone SVG de carregamento (miniatura de cartão) -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="loading-icon text-indigo-400 w-20 h-20" viewBox="0 0 24 24" fill="currentColor">
+            <!-- Card Outline -->
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/>
+            <!-- Card Symbol (Star) -->
+            <path d="M12 7.74l1.39 2.82 3.12.45-2.26 2.2.53 3.11-2.78-1.46-2.78 1.46.53-3.11-2.26-2.2 3.12-.45L12 7.74z" fill="currentColor"/>
+        </svg>
+        <h1 class="text-3xl font-bold mt-4">Forjando Cartões...</h1>
+        <div class="progress-bar-container">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
+        <p id="progressText" class="text-sm mt-2 font-medium progress-text">Preparando...</p>
+        <div class="divPartculas absolute inset-0"></div>
+    </div>
+
+    <!-- Conteúdo Principal (Inicialmente escondido) -->
+    <div id="mainContent" class="w-full max-w-5xl hidden">
         <!-- Título principal -->
         <header class="text-center my-8">
             <h1 class="text-4xl font-bold text-gray-800">Crie seus próprios Cartões</h1>
@@ -378,30 +452,21 @@
                 <div class="swiper-button-prev" style="opacity: 0;"></div>
             </div>
         </div>
-
     </div>
 
     <!-- Script do Swiper -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script>
-        function part()
-        {
-           
-            // Seleciona todas as divs que terão partículas
-const divsParticulas = document.querySelectorAll('.divPartculas');
-
-            // Configura o efeito para cada div
+        function part() {
+            const divsParticulas = document.querySelectorAll('.divPartculas');
             divsParticulas.forEach(divParticulas => {
                 const estilos = window.getComputedStyle(divParticulas);
-                console.log(estilos.borderColor);
-
-                const maxParticles = 80; /* Limite de partículas por div */
+                const maxParticles = 80;
                 let currentParticles = 0;
 
                 function createSparkle() {
                     if (currentParticles >= maxParticles) return;
-
                     const sparkle = document.createElement('div');
                     sparkle.classList.add('sparkle');
                     divParticulas.appendChild(sparkle);
@@ -429,15 +494,11 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                     sparkle.style.setProperty('--r', `${Math.random() * 720}deg`);
                     sparkle.style.setProperty('--duration', `${Math.random() * 15 + 10}s`);
 
-                     // Tenta extrair a paleta de cores da imagem de fundo se houver
-              
                     sparkle.addEventListener('animationend', () => {
                         sparkle.remove();
                         currentParticles--;
                     });
                 }
-
-                // Gera partículas continuamente para este div
                 setInterval(createSparkle, 100);
             });
         }
@@ -482,9 +543,7 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                 "Fortitude": "Representa a resistência física e imunológica do personagem. É a capacidade de resistir a doenças, venenos, fadiga extrema, torturas, fome e frio intenso. Também usada em testes de esforço corporal contínuo, como manter-se consciente após ferimentos graves."
             }
         };
-
         document.addEventListener('DOMContentLoaded', () => {
-            // Referências para elementos do DOM
             const cardForm = document.getElementById('cardForm');
             const cardsContainer = document.getElementById('cardsContainer');
             const submitButton = document.getElementById('submitButton');
@@ -513,7 +572,37 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
             const periciaDescriptionText = document.getElementById('periciaDescriptionText');
             const periciaDescriptionDisplay = document.getElementById('pericia-description-display');
 
-                // Função para preencher os checkboxes de perícias
+            // Novos elementos da tela de splash
+            const splashScreen = document.getElementById('splashScreen');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const mainContent = document.getElementById('mainContent');
+            const loadingMessages = [
+                'Invocando o Grimório...',
+                'Forjando Cartões...',
+                'Organizando o Inventário...',
+                'Sincronizando com os Reinos...'
+            ];
+
+            function showSplash() {
+                splashScreen.classList.remove('hidden');
+                mainContent.classList.add('hidden');
+                progressBar.style.width = '0%';
+                progressText.textContent = 'Iniciando aventura...';
+            }
+
+            function updateProgress(percentage, message) {
+                progressBar.style.width = `${percentage}%`;
+                if (message) {
+                    progressText.textContent = `${message} (${percentage}%)`;
+                }
+            }
+
+            function hideSplash() {
+                splashScreen.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+            }
+
             function populatePericiasCheckboxes() {
                 periciasCheckboxesContainer.innerHTML = '';
                 
@@ -550,7 +639,6 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                                 periciasList.appendChild(periciaItem);
 
                                 periciaItem.addEventListener('click', (e) => {
-                                    // Previne que o checkbox seja clicado duas vezes se clicar no label
                                     if (e.target.tagName !== 'INPUT') {
                                         const checkbox = periciaItem.querySelector('input');
                                         checkbox.checked = !checkbox.checked;
@@ -568,32 +656,25 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
 
             let currentEditingCardId = null;
             let mySwiper = null;
-            let db; // Variável para o banco de dados IndexedDB
-
-            // Nomes e versões do banco de dados
+            let db;
             const DB_NAME = 'rpgCardCreatorDB';
             const DB_VERSION = 1;
             const STORE_NAME = 'rpgCards';
-
-            // URLs temporárias para pré-visualização de imagens no formulário
             let characterImageUrl = '';
             let backgroundImageUrl = '';
             let characterImageFile = null;
             let backgroundImageFile = null;
 
-            // Função para converter ArrayBuffer para Blob
             function bufferToBlob(buffer, mimeType) {
                 return new Blob([buffer], { type: mimeType });
             }
 
-            // Função para converter RGB para HSL (necessário para manipulação de cores)
             function rgbToHsl(r, g, b) {
                 r /= 255; g /= 255; b /= 255;
                 let max = Math.max(r, g, b), min = Math.min(r, g, b);
                 let h, s, l = (max + min) / 2;
-
                 if (max === min) {
-                    h = s = 0; // achromatic
+                    h = s = 0;
                 } else {
                     let d = max - min;
                     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
@@ -607,11 +688,10 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                 return [h, s, l];
             }
 
-            // Função para converter HSL para RGB
             function hslToRgb(h, s, l) {
                 let r, g, b;
                 if (s === 0) {
-                    r = g = b = l; // achromatic
+                    r = g = b = l;
                 } else {
                     const hue2rgb = (p, q, t) => {
                         if (t < 0) t += 1;
@@ -630,11 +710,10 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                 return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
             }
 
-            // Função para extrair a cor principal de uma imagem e gerar uma paleta com contraste
             function getPredominantColorAndPalette(imageUrl) {
                 return new Promise((resolve, reject) => {
                     const img = new Image();
-                    img.crossOrigin = "Anonymous"; // Essencial para evitar problemas de CORS
+                    img.crossOrigin = "Anonymous";
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
                         const ctx = canvas.getContext('2d');
@@ -645,9 +724,7 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                         try {
                             const imageData = ctx.getImageData(0, 0, img.width, img.height).data;
                             let r = 0, g = 0, b = 0, count = 0;
-
-                            // Percorre os pixels para calcular a cor média
-                            const step = 4 * 10; // Pega um pixel a cada 10 para otimizar
+                            const step = 4 * 10;
                             for (let i = 0; i < imageData.length; i += step) {
                                 r += imageData[i];
                                 g += imageData[i + 1];
@@ -658,18 +735,11 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                             const avgR = Math.floor(r / count);
                             const avgG = Math.floor(g / count);
                             const avgB = Math.floor(b / count);
-
-                            // Converte a cor média para HSL para manipulação
                             let [h, s, l] = rgbToHsl(avgR, avgG, avgB);
-
-                            // Lógica de contraste:
-                            // Se a cor de fundo for clara (l > 0.5), o texto deve ser escuro.
-                            // Se a cor de fundo for escura (l <= 0.5), o texto deve ser claro.
                             const isLightBackground = l > 0.5;
-                            const textColor = isLightBackground ? 'rgb(31, 41, 55)' : 'rgb(243, 244, 246)'; // Dark gray or light gray
-                            const cardBg = isLightBackground ? 'rgba(255, 255, 255, 0.8)' : 'rgba(31, 41, 55, 0.9)'; // White or dark gray with transparency
+                            const textColor = isLightBackground ? 'rgb(31, 41, 55)' : 'rgb(243, 244, 246)';
+                            const cardBg = isLightBackground ? 'rgba(255, 255, 255, 0.8)' : 'rgba(31, 41, 55, 0.9)';
 
-                            // Gera a paleta de cores
                             const palette = {
                                 cardBg: cardBg,
                                 highlightColor: hslToRgb(h, Math.min(s * 1.5, 1), isLightBackground ? Math.max(l * 0.7, 0.3) : Math.min(l * 1.5, 0.7)),
@@ -688,29 +758,21 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                 });
             }
 
-            // Função para inicializar o IndexedDB
             function openDatabase() {
                 return new Promise((resolve, reject) => {
                     const request = indexedDB.open(DB_NAME, DB_VERSION);
-
-                    // Evento de sucesso: o banco de dados foi aberto com sucesso
                     request.onsuccess = (event) => {
                         db = event.target.result;
                         console.log('IndexedDB aberto com sucesso');
                         resolve(db);
                     };
-
-                    // Evento de erro: falha ao abrir o banco de dados
                     request.onerror = (event) => {
                         console.error('Erro ao abrir o IndexedDB:', event.target.error);
                         reject(event.target.error);
                     };
-
-                    // Evento de atualização: usado para criar/modificar a estrutura do banco de dados
                     request.onupgradeneeded = (event) => {
                         db = event.target.result;
                         if (!db.objectStoreNames.contains(STORE_NAME)) {
-                            // Cria um novo object store (tabela)
                             db.createObjectStore(STORE_NAME, { keyPath: 'id' });
                             console.log('Object store criado com sucesso.');
                         }
@@ -718,19 +780,16 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                 });
             }
 
-            // Função para salvar um cartão no IndexedDB
             async function saveCard(cardData) {
                 const transaction = db.transaction([STORE_NAME], 'readwrite');
                 const store = transaction.objectStore(STORE_NAME);
                 
                 return new Promise((resolve, reject) => {
                     const request = store.put(cardData);
-                    
                     request.onsuccess = () => {
                         console.log('Cartão salvo no IndexedDB.');
                         resolve();
                     };
-                    
                     request.onerror = (event) => {
                         console.error('Erro ao salvar cartão:', event.target.error);
                         reject(event.target.error);
@@ -738,18 +797,15 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                 });
             }
 
-            // Função para obter todos os cartões do IndexedDB
             async function getCards() {
                 const transaction = db.transaction([STORE_NAME], 'readonly');
                 const store = transaction.objectStore(STORE_NAME);
 
                 return new Promise((resolve, reject) => {
                     const request = store.getAll();
-                    
                     request.onsuccess = (event) => {
                         resolve(event.target.result);
                     };
-
                     request.onerror = (event) => {
                         console.error('Erro ao obter cartões:', event.target.error);
                         reject(event.target.error);
@@ -757,19 +813,15 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                 });
             }
 
-            // Função para remover um cartão do IndexedDB
             async function removeCardFromDB(cardId) {
                 const transaction = db.transaction([STORE_NAME], 'readwrite');
                 const store = transaction.objectStore(STORE_NAME);
-
                 return new Promise((resolve, reject) => {
                     const request = store.delete(cardId);
-                    
                     request.onsuccess = () => {
                         console.log('Cartão removido do IndexedDB.');
                         resolve();
                     };
-
                     request.onerror = (event) => {
                         console.error('Erro ao remover cartão:', event.target.error);
                         reject(event.target.error);
@@ -777,7 +829,6 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                 });
             }
 
-            // Função para inicializar o carrossel Swiper
             function initSwiper() {
                 if (mySwiper) {
                     mySwiper.destroy(true, true);
@@ -797,7 +848,6 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                 });
             }
 
-            // Função para preencher o formulário para edição
             async function editCard(cardId) {
                 const allCards = await getCards();
                 const cardData = allCards.find(card => card.id === cardId);
@@ -805,7 +855,6 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                 
                 currentEditingCardId = cardId;
                 
-                // Preenche os campos do formulário
                 cardTitleInput.value = cardData.title;
                 cardSubTitleInput.value = cardData.subTitle;
                 cardLevelInput.value = cardData.level;
@@ -818,16 +867,14 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                 sabedoriaInput.value = cardData.attributes.sabedoria;
                 vigorInput.value = cardData.attributes.vigor;
 
-                 // Limpa todos os checkboxes e marca os correspondentes
-                    document.querySelectorAll('#pericias-checkboxes-container input[type="checkbox"]').forEach(cb => cb.checked = false);
-                    if (Array.isArray(cardData.attributes.pericias)) {
-                        cardData.attributes.pericias.forEach(periciaName => {
-                            const checkbox = document.getElementById(`pericia-${periciaName.replace(/\s+/g, '-')}`);
-                            if (checkbox) checkbox.checked = true;
-                        });
-                    }
+                document.querySelectorAll('#pericias-checkboxes-container input[type="checkbox"]').forEach(cb => cb.checked = false);
+                if (Array.isArray(cardData.attributes.pericias)) {
+                    cardData.attributes.pericias.forEach(periciaName => {
+                        const checkbox = document.getElementById(`pericia-${periciaName.replace(/\s+/g, '-')}`);
+                        if (checkbox) checkbox.checked = true;
+                    });
+                }
 
-                // Cria as URLs para as imagens salvas no IndexedDB para pré-visualização
                 if (cardData.image) {
                     const imageBlob = bufferToBlob(cardData.image, cardData.imageMimeType);
                     characterImageUrl = URL.createObjectURL(imageBlob);
@@ -847,26 +894,26 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                     showImagePreview(backgroundImagePreview, null, false);
                 }
 
-                // Limpa os inputs de arquivo
                 characterImageUpload.value = null;
                 backgroundImageUpload.value = null;
 
-                // Muda o texto do botão para indicar que estamos em modo de edição
                 submitButton.textContent = 'Salvar Edição';
                 submitButton.classList.remove('btn-gradient-pulse');
             }
 
-            // Função para renderizar os cartões e as miniaturas
             async function renderCardsAndThumbnails() {
-                const allCards = await getCards();
                 cardsContainer.innerHTML = '';
                 thumbnailList.innerHTML = '';
-
+                
+                const allCards = await getCards();
+                
                 if (allCards.length === 0) {
                     thumbnailList.innerHTML = '<p class="text-gray-500 text-center w-full">Nenhum cartão salvo ainda. Crie um para começar!</p>';
                 } else {
+                    let cardsLoaded = 0;
+                    const totalCards = allCards.length;
+                    
                     for (const cardData of allCards) {
-                        // Converte ArrayBuffers de imagem para URLs temporárias
                         let imageURL = 'https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';
                         let backgroundURL = 'https://placehold.co/400x600/1e293b/d1d5db?text=Fundo+do+Cartão';
 
@@ -879,38 +926,35 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                             backgroundURL = URL.createObjectURL(backgroundBlob);
                         }
 
-                        // Cria e adiciona o card no carrossel
                         const cardWrapper = await createCardElement({...cardData, imageURL, backgroundURL});
                         cardsContainer.appendChild(cardWrapper);
                         
-                        // Cria e adiciona a miniatura
                         const thumbnail = createThumbnailElement({...cardData, imageURL, backgroundURL});
                         thumbnailList.appendChild(thumbnail);
+                        
+                        cardsLoaded++;
+                        const percentage = Math.round((cardsLoaded / totalCards) * 100);
+                        updateProgress(percentage, loadingMessages[Math.floor(Math.random() * loadingMessages.length)]);
                     }
                 }
-                // Reinicializa o Swiper para incluir os novos cartões
                 initSwiper();
                 part();
+                setTimeout(hideSplash, 1000); // Esconde a tela de splash após 1 segundo
             }
 
-            // Função assíncrona para criar o elemento HTML do cartão com paleta de cores dinâmica
             async function createCardElement(cardData) {
                 const cardWrapper = document.createElement('div');
                 cardWrapper.className = 'swiper-slide card-wrapper flex flex-col items-center gap-4';
-                
                 const cardDiv = document.createElement('div');
-                cardDiv.className = 'w-full h-auto rounded-3xl overflow-hidden shadow-2xl rpg-card';
+                cardDiv.className = 'w-full h-auto rounded-3xl shadow-2xl rpg-card';
                 cardDiv.dataset.cardId = cardData.id;
                 cardDiv.style.backgroundImage = `url(${cardData.backgroundURL})`;
-
                 let palette = {
                     cardBg: 'rgba(31, 41, 55, 0.9)',
                     highlightColor: '#6366f1',
                     textColor: '#e5e7eb',
                     borderColor: '#4b5563'
                 };
-
-                // Tenta extrair a paleta de cores da imagem de fundo se houver
                 if (cardData.backgroundURL && !cardData.backgroundURL.includes('placehold.co')) {
                     try {
                         palette = await getPredominantColorAndPalette(cardData.backgroundURL);
@@ -918,17 +962,14 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                         console.error('Falha ao gerar paleta de cores, usando padrão.', e);
                     }
                 }
-
-                 const periciasString = Array.isArray(cardData.attributes.pericias) && cardData.attributes.pericias.length > 0
+                const periciasString = Array.isArray(cardData.attributes.pericias) && cardData.attributes.pericias.length > 0
                             ? cardData.attributes.pericias.join(', ')
                             : 'Nenhuma';
-
                 cardDiv.innerHTML = `
                 <div class="card-3d-container">
                     <div class="card-3d divPartculas">
-                    <!-- Face frontal -->
-                    <div class="card-front " style="border-color: ${palette.borderColor}">
-                         <div class="relative w-full h-full p-4 ex-max" style="background-image:url(${cardData.backgroundURL}) !important; background-size: cover !important; height: 600px; display: flex; flex-direction: column; align-items: center; background-color: rgb(0 0 0 / 50%); background-blend-mode: multiply; justify-content: space-between;">
+                        <div class="card-front" style="border-color: ${palette.borderColor}">
+                            <div class=" rounded-3xl relative w-full h-full p-4 ex-max" style="background-image:url(${cardData.backgroundURL}) !important; background-size: cover !important; height: 600px; display: flex; flex-direction: column; align-items: center; background-color: rgb(0 0 0 / 50%); background-blend-mode: multiply; justify-content: space-between;">
                                 <div class="absolute top-4 left-4 rounded-full w-14 h-14 flex items-center justify-center font-bold" style="z-index: 1; border: 2px solid ${palette.highlightColor}; background-color: #1f2937; color: ${palette.textColor}; display: flex; flex-direction: column; justify-content: center; padding: 5px; align-content: center; align-items: center;">
                                     <small style="background: #1f2937; border: 2px solid ${palette.highlightColor}; border-bottom: 0; border-right: 0;">PM</small>
                                     ${cardData.attributes.mana || '?'} 
@@ -943,52 +984,86 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                                     <p class="text-sm italic" style="color: ${palette.highlightColor};">${cardData.subTitle || 'Subtítulo'}</p>
                                 </div>
                                 <div class="wave-container flex justify-center img-max" style="position: relative; width: 200px !important; height: 200px;">
-                                    <!-- As três ondas giratórias são adicionadas aqui 
-                                    <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>
-                                    <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>
-                                    <div class="wave-ring" style="border-top-color: ${palette.highlightColor};"></div>  -->                         
                                     <img style="border-color: ${palette.borderColor}; z-index: 1; height: 200px" src="${cardData.imageURL}" onerror="this.onerror=null;this.src='https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';" alt="Imagem do personagem" class="object-cover rounded-full border-4 border-white shadow-lg w-full h-full">
                                 </div>
-                                <!-- Bloco de informações do cartão estilizado e minimalista -->
                                 <div class="p-3 rounded-3xl text-center w-full rpg-card-frame" style="--card-bg-color: ${palette.cardBg}; z-index: 1; --text-color: ${palette.textColor}; --border-color: ${palette.borderColor};">
-                                    <!-- Nível do personagem -->
                                     <h4 class="text-base font-bold" style="color: ${palette.textColor};">Nível: <span style="color: ${palette.highlightColor};">${cardData.level || '?'}</span></h4>
+                                    <div class="flex items-center justify-center w-full">
+                                        <div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent);"></div>
+                                    </div>
                                     
-                                     <!-- Divisor estilizado para separar o título -->
-                                    <div class="flex items-center justify-center w-full">
-                                        <div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent);"></div>
+                                    <div class="mt-2 flex flex-col space-y-2 text-xs">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="font-bold">AGI</span>
+                                            <div class="stat-bar flex-grow" style="margin-top: 0">
+                                                <div class="stat-fill" style="width: ${(cardData.attributes.agilidade * 100)/ 3}%; background: ${palette.borderColor}"></div>
+                                            </div>
+                                            <span class="text-xs font-bold ml-auto">${cardData.attributes.agilidade} / 3</span>
+                                        </div>                                   
                                     </div>
-
-                                    <!-- SEÇÃO DE ATRIBUTOS COM LAYOUT DE DUAS LINHAS -->
-                                    <div class="flex flex-col gap-2">
-                                         <div class="grid grid-cols-2 gap-2 text-center text-sm font-semibold mt-2">
-                                            <div class="p-1 rounded-md" style="background: ${palette.borderColor}">AGI: ${cardData.attributes.agilidade}</div>
-                                            <div class="p-1 rounded-md" style="background: ${palette.borderColor}">CAR: ${cardData.attributes.carisma}</div>
-                                            <div class="p-1 rounded-md" style="background: ${palette.borderColor}">FOR: ${cardData.attributes.forca}</div>
-                                            <div class="p-1 rounded-md" style="background: ${palette.borderColor}">INT: ${cardData.attributes.inteligencia}</div>
-                                            <div class="p-1 rounded-md" style="background: ${palette.borderColor}">SAB: ${cardData.attributes.sabedoria}</div>
-                                            <div class="p-1 rounded-md" style="background: ${palette.borderColor}">VIG: ${cardData.attributes.vigor}</div>
-                                        </div> 
-                                          <!-- Divisor estilizado para separar o título -->
-                                    <div class="flex items-center justify-center w-full">
-                                        <div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent);"></div>
+                                    <div class="mt-2 flex flex-col space-y-2 text-xs">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="font-bold">CAR</span>
+                                            <div class="stat-bar flex-grow" style="margin-top: 0">
+                                                <div class="stat-fill" style="width: ${(cardData.attributes.carisma * 100) / 3}%; background: ${palette.borderColor}"></div>
+                                            </div>
+                                            <span class="text-xs font-bold ml-auto">${cardData.attributes.carisma} / 3</span>
+                                        </div>                                   
                                     </div>
+                                    <div class="mt-2 flex flex-col space-y-2 text-xs">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="font-bold">FOR</span>
+                                            <div class="stat-bar flex-grow" style="margin-top: 0">
+                                                <div class="stat-fill" style="width: ${(cardData.attributes.forca * 100) / 3}%; background: ${palette.borderColor}"></div>
+                                            </div>
+                                            <span class="text-xs font-bold ml-auto">${cardData.attributes.forca} / 3</span>
+                                        </div>                                   
+                                    </div>
+                                    <div class="mt-2 flex flex-col space-y-2 text-xs">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="font-bold">INT</span>
+                                            <div class="stat-bar flex-grow" style="margin-top: 0">
+                                                <div class="stat-fill" style="width: ${(cardData.attributes.inteligencia * 100) / 3}%; background: ${palette.borderColor}"></div>
+                                            </div>
+                                            <span class="text-xs font-bold ml-auto">${cardData.attributes.inteligencia} / 3</span>
+                                        </div>                                   
+                                    </div>
+                                    <div class="mt-2 flex flex-col space-y-2 text-xs">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="font-bold">SAB</span>
+                                            <div class="stat-bar flex-grow" style="margin-top: 0">
+                                                <div class="stat-fill" style="width: ${(cardData.attributes.sabedoria * 100) / 3}%; background: ${palette.borderColor}"></div>
+                                            </div>
+                                            <span class="text-xs font-bold ml-auto">${cardData.attributes.sabedoria} / 3</span>
+                                        </div>                                   
+                                    </div>
+                                    <div class="mt-2 flex flex-col space-y-2 text-xs">
+                                        <div class="flex items-center space-x-2">
+                                            <span class="font-bold">VIG</span>
+                                            <div class="stat-bar flex-grow" style="margin-top: 0">
+                                                <div class="stat-fill" style="width: ${(cardData.attributes.vigor * 100) / 3}%; background: ${palette.borderColor}"></div>
+                                            </div>
+                                            <span class="text-xs font-bold ml-auto">${cardData.attributes.vigor} / 3</span>
+                                        </div>                                   
+                                    </div>
+                                    <div class="flex flex-col gap-2">                                       
+                                        <div class="flex items-center justify-center w-full">
+                                            <div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent);"></div>
+                                        </div>
                                         <p class="text-xs text-gray-400 italic">Perícias</p>                                      
                                         <p class="text-xs text-gray-400 italic" style="font-size: 11px;">${periciasString}</p>                                   
                                     </div>
                                 </div>
                             </div>
-                          </div>
-
-                          <!-- Face traseira -->
-                          <div class="card-back divPartculas" style="background-image:url(${cardData.backgroundURL}) !important; background-size: cover !important; background-color: rgb(0 0 0 / 50%);background-blend-mode: multiply;">
-                              <div class="back-content " style="border: 5px solid ${palette.borderColor};">
-                                  <h2></h2>
-                                  <p></p>
-                              </div>
-                          </div>
-                      </div>
-                  </div> `;
+                        </div>
+                        <div class="card-back divPartculas" style="background-image:url(${cardData.backgroundURL}) !important; background-size: cover !important; background-color: rgb(0 0 0 / 50%);background-blend-mode: multiply;">
+                            <div class="back-content " style="border: 5px solid ${palette.borderColor};">
+                                <h2></h2>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div> `;
                 
                 const buttonsDiv = document.createElement('div');
                 buttonsDiv.className = 'flex justify-center space-x-2 w-full';
@@ -999,44 +1074,39 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                     <button class="w-1/3 py-3 px-4 rounded-full text-sm font-bold text-white bg-red-500 hover:bg-red-600 transition-colors duration-200 remove-btn" data-card-id="${cardData.id}"  style="border-radius: 0; background-color: ${palette.highlightColor};">
                         Excluir
                     </button>
-                    <!-- Novo botão de tela cheia -->
                     <button class="w-1/3 py-3 px-4 rounded-full text-sm font-bold text-white bg-purple-500 hover:bg-purple-600 transition-colors duration-200 fullscreen-btn" data-card-id="${cardData.id}" style="border-radius: 0px 50px 50px 0px; background-color: ${palette.cardBg};">
                         Expandir
                     </button>
                 `;
 
                 cardWrapper.appendChild(cardDiv);
-                 // **ADICIONANDO O EVENTO DE CLICK AO CARD DINÂMICO**
-                  const card3d = cardDiv.querySelector('.card-3d');
-                  if (card3d) {
-                      card3d.addEventListener('click', () => {
-                          if (card3d.style.transform === 'rotateY(180deg)') {
-                              card3d.style.transform = 'rotateY(0deg)';
-                          } else {
-                              card3d.style.transform = 'rotateY(180deg)';
-                          }
-                      });
+                const card3d = cardDiv.querySelector('.card-3d');
+                if (card3d) {
+                    card3d.addEventListener('click', () => {
+                        if (card3d.style.transform === 'rotateY(180deg)') {
+                            card3d.style.transform = 'rotateY(0deg)';
+                        } else {
+                            card3d.style.transform = 'rotateY(180deg)';
+                        }
+                    });
 
-                      // Opcional: efeito 3D com movimento do mouse
-                      card3d.addEventListener('mousemove', (e) => {
-                          const rect = card3d.getBoundingClientRect();
-                          const x = e.clientX - rect.left - rect.width / 2;
-                          const y = e.clientY - rect.top - rect.height / 2;
-                          const rotateX = (-y / rect.height) * 20;
-                          const rotateY = (x / rect.width) * 20;
-                          card3d.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
-                      });
+                    card3d.addEventListener('mousemove', (e) => {
+                        const rect = card3d.getBoundingClientRect();
+                        const x = e.clientX - rect.left - rect.width / 2;
+                        const y = e.clientY - rect.top - rect.height / 2;
+                        const rotateX = (-y / rect.height) * 20;
+                        const rotateY = (x / rect.width) * 20;
+                        card3d.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+                    });
 
-                      card3d.addEventListener('mouseleave', () => {
-                          card3d.style.transform = 'rotateY(0deg) rotateX(0deg)';
-                      });
-                  }
+                    card3d.addEventListener('mouseleave', () => {
+                        card3d.style.transform = 'rotateY(0deg) rotateX(0deg)';
+                    });
+                }
                 cardWrapper.appendChild(buttonsDiv);
-                
                 return cardWrapper;
             }
 
-            // Função para criar o elemento HTML da miniatura
             function createThumbnailElement(cardData) {
                 const thumbnailWrapper = document.createElement('div');
                 thumbnailWrapper.className = 'relative w-20 h-24 rounded-lg overflow-hidden shadow-lg border-2 border-gray-400 cursor-pointer hover:border-indigo-500 transition-colors duration-200';
@@ -1044,7 +1114,7 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                 thumbnailWrapper.style.backgroundImage = `url(${cardData.backgroundURL})`;
                 thumbnailWrapper.style.backgroundSize = 'cover';
                 thumbnailWrapper.style.backgroundPosition = 'center';
-
+                thumbnailWrapper.style.minWidth = '5rem';
                 thumbnailWrapper.innerHTML = `
                     <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
                         <img src="${cardData.imageURL}" onerror="this.onerror=null;this.src='https://placehold.co/40x40/E5E7EB/4B5563?text=P';" alt="Miniatura do personagem" class="w-10 h-10 object-cover rounded-full border-2 border-white">
@@ -1053,31 +1123,24 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                         Lv.${cardData.level || '?'}
                     </div>
                 `;
-
-                // Evento de clique para carregar o cartão para edição
                 thumbnailWrapper.addEventListener('click', async () => {
                     await editCard(cardData.id);
-                    // Navega para o slide do card correspondente
                     const allCards = await getCards();
                     const cardIndex = allCards.findIndex(c => c.id === cardData.id);
                     if (cardIndex !== -1) {
                         mySwiper.slideTo(cardIndex);
                     }
                 });
-
                 return thumbnailWrapper;
             }
 
-            // Event listener para os botões dentro do carrossel
             cardsContainer.addEventListener('click', async (e) => {
                 const target = e.target;
                 const buttonsDiv = target.closest('.buttons-div');
                 const cardWrapper = target.closest('.card-wrapper');
                 const cardDiv = cardWrapper ? cardWrapper.querySelector('.rpg-card') : null;
                 const cardId = cardDiv ? cardDiv.dataset.cardId : null;
-
                 if (!cardId) return;
-
                 if (target.classList.contains('edit-btn')) {
                     await editCard(cardId);
                 } else if (target.classList.contains('remove-btn')) {
@@ -1098,7 +1161,6 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                 renderCardsAndThumbnails();
             }
 
-            // Event listener para os inputs de arquivo para pré-visualização
             characterImageUpload.addEventListener('change', (e) => {
                 const file = e.target.files[0];
                 if (file) {
@@ -1130,7 +1192,6 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                 }
             }
 
-            // Função para ler um arquivo como ArrayBuffer
             function readFileAsArrayBuffer(file) {
                 return new Promise((resolve, reject) => {
                     if (!file) {
@@ -1146,14 +1207,11 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
 
             cardForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-
                 const title = cardTitleInput.value;
                 const subTitle = cardSubTitleInput.value;
                 const level = cardLevelInput.value;
-                // Coleta todas as perícias marcadas
                 const selectedPericias = Array.from(document.querySelectorAll('#pericias-checkboxes-container input[name="pericia"]:checked'))
                     .map(cb => cb.value);
-
                 const attributes = {
                     agilidade: agilidadeInput.value || '-',
                     mana: manaInput.value || '-',
@@ -1165,21 +1223,15 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                     vigor: vigorInput.value || '-',
                     pericias: selectedPericias
                 };
-                
                 let allCards = await getCards();
                 let cardData;
-
                 if (currentEditingCardId) {
-                    // Atualiza o cartão existente
                     cardData = allCards.find(card => card.id === currentEditingCardId);
-                    if (!cardData) return; // Cartão não encontrado
-
+                    if (!cardData) return;
                     cardData.title = title;
                     cardData.subTitle = subTitle;
                     cardData.level = level;
                     cardData.attributes = attributes;
-
-                    // Se novos arquivos foram selecionados, atualiza
                     if (characterImageFile) {
                         cardData.image = await readFileAsArrayBuffer(characterImageFile);
                         cardData.imageMimeType = characterImageFile.type;
@@ -1188,15 +1240,11 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                         cardData.backgroundImage = await readFileAsArrayBuffer(backgroundImageFile);
                         cardData.backgroundMimeType = backgroundImageFile.type;
                     }
-                    
                     await saveCard(cardData);
-
-                    // Reseta o estado de edição
                     currentEditingCardId = null;
                     submitButton.textContent = 'Criar Cartão';
                     submitButton.classList.add('btn-gradient-pulse');
                 } else {
-                    // Cria um novo cartão
                     const newCardId = Date.now().toString();
                     const newCardData = { 
                         id: newCardId, 
@@ -1205,8 +1253,6 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                         level, 
                         attributes 
                     };
-                    
-                    // Lê e salva os arquivos das imagens
                     if (characterImageFile) {
                         newCardData.image = await readFileAsArrayBuffer(characterImageFile);
                         newCardData.imageMimeType = characterImageFile.type;
@@ -1215,37 +1261,29 @@ const divsParticulas = document.querySelectorAll('.divPartculas');
                         newCardData.backgroundImage = await readFileAsArrayBuffer(backgroundImageFile);
                         newCardData.backgroundMimeType = backgroundImageFile.type;
                     }
-
                     await saveCard(newCardData);
                 }
-
                 cardForm.reset();
-                // Limpa as URLs temporárias e os arquivos para o próximo uso
                 if (characterImageUrl) URL.revokeObjectURL(characterImageUrl);
                 if (backgroundImageUrl) URL.revokeObjectURL(backgroundImageUrl);
                 characterImageUrl = '';
                 backgroundImageFile = null;
                 backgroundImageFile = null;
-
                 showImagePreview(characterImagePreview, null, true);
                 showImagePreview(backgroundImagePreview, null, false);
-                
                 renderCardsAndThumbnails();
             });
 
-            // Inicia o IndexedDB e depois renderiza os cartões
+            // Inicia o IndexedDB e depois renderiza os cartões, mostrando a tela de splash
+            showSplash();
             openDatabase().then(() => {
                 populatePericiasCheckboxes();
                 renderCardsAndThumbnails();
-                
             }).catch(e => {
                 console.error("Falha ao inicializar o app:", e);
+                hideSplash();
             });
         });
-
-        const card = document.querySelector('.card-3d')
-
     </script>
 </body>
 </html>
-
