@@ -36,7 +36,7 @@
             margin: 15px;
             border-radius: 7px;
         }
-        .card-3d-container { perspective: 1500px; width: 100%; height: 600px; }
+        .card-3d-container { perspective: 1500px; width: 100%; height: 650px; }
         .card-3d {
             width: 100%;
             height: 100%;
@@ -163,7 +163,7 @@
         }
         .splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #1f2937, #3730a3, #1e3a8a);
+            background: var(--card-bg-color, rgba(31, 41, 55, 0.9));
             color: #f3f4f6; display: flex; flex-direction: column; justify-content: center;
             align-items: center; z-index: 9999; transition: opacity 1s ease-in-out;
         }
@@ -196,7 +196,7 @@
 <body class="min-h-screen flex flex-col items-center p-2">
 
     <!-- Tela de Splash -->
-    <div id="splashScreen" class="splash-screen divPartculas">
+    <div id="splashScreen" class="splash-screen">
         <svg xmlns="http://www.w3.org/2000/svg" class="loading-icon text-indigo-400 w-20 h-20" viewBox="0 0 24 24" fill="currentColor">
             <defs><clipPath id="loaderClipPath"><rect id="loaderClipRect" x="0" y="0" width="24" height="0" /></clipPath></defs>
             <g clip-path="url(#loaderClipPath)">
@@ -206,7 +206,7 @@
         </svg>
         <h1 class="text-3xl font-bold mt-4">Forjando Cartões...</h1>
         <p id="progressText" class="text-sm mt-2 font-medium progress-text">Preparando...</p>
-        <div class="divPartculas absolute inset-0"></div>
+        <div class="absolute inset-0"></div>
     </div>
 
     <!-- Conteúdo Principal (Inicialmente escondido) -->
@@ -214,7 +214,7 @@
         
         <!-- Seção de Criação de Cartão de Personagem -->
         <div id="creation-section" class="hidden">
-            <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-2xl">
+            <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-2xl mb-8">
                 <h2 id="form-title" class="text-2xl font-bold mb-6 text-indigo-300">Novo Cartão de Personagem</h2>
                 <form id="cardForm" class="space-y-6">
                     <!-- Campos do formulário de cartão -->
@@ -288,7 +288,7 @@
 
         <!-- Seção de Criação de Magia/Habilidade -->
         <div id="spell-creation-section" class="hidden">
-            <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-2xl">
+            <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-2xl mb-8">
                 <h2 id="spell-form-title" class="text-2xl font-bold mb-6 text-teal-300">Nova Magia ou Habilidade</h2>
                 <form id="spellForm" class="space-y-6">
                     <div>
@@ -355,7 +355,7 @@
 
     <script>
         // Função de partículas (sem alterações)
-        function part() {
+        async function part() {
             const divsParticulas = document.querySelectorAll('.divPartculas');
             divsParticulas.forEach(divParticulas => {
                 const estilos = window.getComputedStyle(divParticulas);
@@ -721,7 +721,7 @@
                     <div class="card-3d-container">
                         <div class="card-3d divPartculas">
                             <div class="card-front" style="border-color: ${palette.borderColor}">
-                                <div class="rounded-3xl relative w-full h-full p-4 ex-max" style="background-image:url(${cardData.backgroundURL}) !important; height: 600px; display: flex; flex-direction: column; align-items: center; background-color: rgb(0 0 0 / 50%); justify-content: space-between;">
+                                <div class="rounded-3xl relative w-full h-full p-4 ex-max" style="background-image:url(${cardData.backgroundURL}) !important; height: 650px; display: flex; flex-direction: column; align-items: center; background-color: rgb(0 0 0 / 50%); justify-content: space-between;">
                                     <div class="absolute top-4 left-4 rounded-full w-14 h-14 flex items-center justify-center font-bold" style="z-index: 1; border: 2px solid ${palette.highlightColor}; background-color: #1f2937; color: ${palette.textColor};"><small style="background: #1f2937; border: 2px solid ${palette.highlightColor}; border-bottom: 0; border-right: 0;">PM</small>${cardData.attributes.mana || '?'}</div>
                                     <div class="absolute top-4 right-4 rounded-full w-14 h-14 flex items-center justify-center font-bold" style="z-index: 1;border: 2px solid ${palette.highlightColor}; background-color: #1f2937; color: ${palette.textColor};"><small style="background: #1f2937; left: auto; right: -10px; border: 2px solid ${palette.highlightColor}; border-bottom: 0; border-left: 0;">PV</small>${cardData.attributes.vida || '?'}</div>
                                     <div class="text-center" style="width: 60%;"><h3 class="text-2xl font-bold" style="color: ${palette.highlightColor};">${cardData.title}</h3><div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent); width: 100%"></div><p class="text-sm italic" style="color: ${palette.highlightColor};">${cardData.subTitle}</p></div>
@@ -734,7 +734,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-back divPartculas" style="background-image:url(${cardData.backgroundURL}) !important; background-size: cover !important; background-color: rgb(0 0 0 / 50%);background-blend-mode: multiply;"><div class="back-content" style="border: 5px solid ${palette.borderColor};"><h2>Detalhes</h2><p>Informações adicionais ou lore do personagem aqui.</p></div></div>
+                            <div class="card-back divPartculas" style="background-image:url(${cardData.backgroundURL}) !important; background-size: cover !important; background-color: rgb(0 0 0 / 50%);background-blend-mode: multiply;">
+                                <div class="back-content" style="border: 5px solid ${palette.borderColor};">
+                                    <h2></h2>
+                                    <p></p>
+                                </div>
+                            </div>
                         </div>
                     </div>`;
                 const buttonsDiv = document.createElement('div');
@@ -793,7 +798,7 @@
                         let imageURL = 'https://placehold.co/160x160/14b8a6/1f2937?text=Magia';
                         if (spellData.image) imageURL = URL.createObjectURL(bufferToBlob(spellData.image, spellData.imageMimeType));
                         
-                        const spellCardWrapper = createSpellCardElement({...spellData, imageURL});
+                        const spellCardWrapper = await createSpellCardElement({...spellData, imageURL});
                         spellCardsContainer.appendChild(spellCardWrapper);
 
                         const spellThumbnail = createSpellThumbnailElement({...spellData, imageURL});
@@ -807,44 +812,59 @@
                 initSpellSwiper();
             }
 
-            function createSpellCardElement(spellData) {
+            async function createSpellCardElement(spellData) {
                 const cardWrapper = document.createElement('div');
                 cardWrapper.className = 'swiper-slide card-wrapper flex flex-col items-center gap-4';
                 const cardDiv = document.createElement('div');
                 cardDiv.className = 'w-full h-auto rounded-3xl shadow-2xl rpg-card';
                 cardDiv.dataset.spellId = spellData.id;
-                // Usando um gradiente padrão para magias
-                cardDiv.style.background = 'linear-gradient(45deg, #0f172a, #1e293b, #334155)';
                 
-                let palette = { cardBg: 'rgba(31,41,55,0.9)', highlightColor: '#6366f1', textColor: '#e5e7eb', borderColor: '#4b5563' };
+                let palette = { cardBg: 'rgba(17, 24, 39, 0.9)', highlightColor: '#2dd4bf', textColor: '#e5e7eb', borderColor: '#0d9488' };
                 if (spellData.imageURL && !spellData.imageURL.includes('placehold.co')) {
-                    try { palette = getPredominantColorAndPalette(spellData.imageURL); } catch (e) { console.error('Falha ao gerar paleta.', e); }
+                    try { 
+                        palette = await getPredominantColorAndPalette(spellData.imageURL); 
+                    } catch (e) { 
+                        console.error('Falha ao gerar paleta para magia.', e); 
+                    }
                 }
+
+                cardDiv.style.backgroundImage = `url(${spellData.imageURL})`;
+
                 cardDiv.innerHTML = `
                     <div class="card-3d-container">
                         <div class="card-3d divPartculas">
                             <div class="card-front" style="border-color: ${palette.borderColor}">
-                                <div class="rounded-3xl relative w-full h-full p-4 ex-max" style="background: url(${spellData.imageURL}); background-size: cover; height: 600px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; background-color: rgb(0 0 0 / 50%); background-blend-mode: multiply;">
+                                <div class="rounded-3xl relative w-full h-full p-4 ex-max" style="background-image:url(${spellData.imageURL}) !important; background-position: center; height: 650px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; background-color: rgb(0 0 0 / 50%); background-blend-mode: multiply;">
                                     <div class="text-center w-full"><h3 class="text-2xl font-bold" style="color: ${palette.highlightColor};">${spellData.name}</h3><div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent); width: 100%"></div></div>
-                                   
-                                    <div class="p-3 rounded-3xl w-full rpg-card-frame overflow-y-auto" style="z-index: 1;">
-                                         <div class="text-xs mb-3">
+                                     <div class="text-xs text-gray-400 mb-3" style="position: absolute; margin-top: 55px; left: 15px;">
                                             <p class="text-left"><strong>Execução:</strong> ${spellData.execution || '-'}</p>
                                             <p class="text-left"><strong>Alcance:</strong> ${spellData.range || '-'}</p>
                                             <p class="text-left"><strong>Alvo:</strong> ${spellData.target || '-'}</p>
                                             <p class="text-left"><strong>Duração:</strong> ${spellData.duration || '-'}</p>
-                                        </div>
-                                        <div class="space-y-2 text-sm text-left">
-                                            <div><h4 class="font-semibold text-teal-400">Descrição</h4><p class="text-gray-300 text-xs">${spellData.description || 'Nenhuma descrição.'}</p></div>
-                                            ${spellData.enhance ? `<div><h4 class="font-semibold text-teal-400">Aprimorar</h4><p class="text-gray-300 text-xs">${spellData.enhance}</p></div>` : ''}
-                                            ${spellData.true ? `<div><h4 class="font-semibold text-teal-400">Verdadeiro</h4><p class="text-gray-300 text-xs">${spellData.true}</p></div>` : ''}
+                                    </div>
+                                    <div class="w-full">                                       
+                                        <div class="text-sm text-left">
+                                            <div class="mb-4 p-3 rounded-3xl w-full rpg-card-frame" style="border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
+                                                <h4 class="font-semibold  rounded-3xl text-gray-300" style="position: absolute; top: -10px; background: ${palette.highlightColor}; padding: 0 10px;">Descrição</h4>
+                                                <p class="text-gray-300 text-xs">${spellData.description || 'Nenhuma descrição.'}</p>
+                                            </div>                                            
+                                            <div class="mb-4 p-3 rounded-3xl w-full rpg-card-frame" style="border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
+                                                <h4 class="font-semibold  rounded-3xl text-gray-300" style="position: absolute; top: -10px; background: ${palette.highlightColor}; padding: 0 10px;">Aprimorar</h4>
+                                                <p class="text-gray-300 text-xs">${spellData.enhance}</p>
+                                            </div>
+                                            <div class="p-3 rounded-3xl w-full rpg-card-frame" style="border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
+                                                <h4 class="font-semibold  rounded-3xl text-gray-300" style="position: absolute; top: -10px; background: ${palette.highlightColor}; padding: 0 10px;">Verdadeiro</h4>
+                                                <p class="text-gray-300 text-xs">${spellData.true}</p>
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-back divPartculas" style="background: url(${spellData.imageURL}); background-size: cover;">
+                            <div class="card-back divPartculas" style="background-image:url(${spellData.imageURL}) !important; background-size: cover !important; background-color: rgb(0 0 0 / 50%);background-blend-mode: multiply;">
                                 <div class="back-content" style="border: 5px solid ${palette.borderColor};">
-                                    <h2></h2><p></p>
+                                    <h2></h2>
+                                    <p></p>
                                 </div>
                             </div>
                         </div>
@@ -1016,7 +1036,7 @@
                     await renderCardsAndThumbnails();
                     await renderSpellCards();
                     showDisplayView();
-                    part();
+                    await part();
                     setTimeout(hideSplash, 1000);
                 } catch (e) {
                     console.error("Falha ao inicializar o app:", e);
