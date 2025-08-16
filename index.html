@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criador de Cartões Estilo RPG</title>
-    <!-- Adicionando a fonte Inter do Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
-    <!-- Adicionando o Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -191,17 +189,129 @@
         .nav-button:not(.active):hover {
             background-color: #374151; /* gray-700 */
         }
+
+        /* ESTILOS ATUALIZADOS: Barra de magias retrátil */
+        .fullscreen-spell-bar {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 20px);
+            max-width: calc(100% - 20px);
+            z-index: 100;
+            transition: transform 0.4s ease-out;
+        }
+        .fullscreen-spell-bar.collapsed {
+            transform: translate(-50%, calc(100% - 45px));
+            bottom: -45px;
+        }
+        .spell-list-toggler {
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 20px;
+            background-color: rgba(79, 70, 229, 0.9);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: none;
+            border-radius: 12px 12px 0 0;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .spell-list-toggler svg {
+            transition: transform 0.3s ease;
+        }
+        .fullscreen-spell-bar.collapsed .spell-list-toggler svg {
+            transform: rotate(180deg);
+        }
+        .fullscreen-spell-list {
+            padding: 10px;
+            background-color: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+        }
+        .fullscreen-spell-list::-webkit-scrollbar { height: 5px; }
+        .fullscreen-spell-list::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 10px; }
+        .fullscreen-spell-list::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); }
+        .spell-list-item {
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+            width: 80px;
+        }
+        .spell-list-item:hover { transform: scale(1.1); }
+        .spell-list-item img {
+            width: 60px;
+            height: 60px;
+            border-radius: 20px;
+            border: 3px solid #4f46e5;
+            object-fit: cover;
+            margin: 0 auto;
+            box-shadow: 0 0 10px rgba(79, 70, 229, 0.7);
+        }
+        .spell-list-item p {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #d1d5db;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 80px;
+        }
+
+        /* ESTILOS ATUALIZADOS: Card de magia expandido */
+        .expanded-spell-card-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 200;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.1s ease-in-out;
+            pointer-events: none;
+        }
+        .expanded-spell-card {
+            transform: scale(0.8) !important;
+            transition: transform 0.1s ease-in-out;
+            cursor: default;
+            max-width: 90%;
+            width: 450px;
+            height: 650px; /* Altura fixa para consistência */
+        }
+        .expanded-spell-card-container.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .expanded-spell-card-container.visible .expanded-spell-card {
+            transform: scale(1);
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-2">
 
-    <!-- Tela de Splash -->
     <div id="splashScreen" class="splash-screen">
         <svg xmlns="http://www.w3.org/2000/svg" class="loading-icon text-indigo-400 w-20 h-20" viewBox="0 0 24 24" fill="currentColor">
             <defs><clipPath id="loaderClipPath"><rect id="loaderClipRect" x="0" y="0" width="24" height="0" /></clipPath></defs>
             <g clip-path="url(#loaderClipPath)">
                 <rect x="5" y="2" width="14" height="20" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/>
-                <path d="M12 7.74l1.39 2.82 3.12.45-2.26 2.2.53 3.11-2.78-1.46-2.78 1.46.53-3.11-2.26-2.2 3.12-.45L12 7.74z" fill="currentColor"/>
+                <path d="M12 7.74l1.39 2.82 3.12.45-2.26 2.2.53 3.11-2.78-1.46-2.78 1.46.53-3.11-2.26-2.2 3.12.45L12 7.74z" fill="currentColor"/>
             </g>
         </svg>
         <h1 class="text-3xl font-bold mt-4">Forjando Cartões...</h1>
@@ -209,16 +319,13 @@
         <div class="absolute inset-0"></div>
     </div>
 
-    <!-- Conteúdo Principal (Inicialmente escondido) -->
     <div id="mainContent" class="w-full max-w-5xl hidden">
 
         
-        <!-- Seção de Criação de Cartão de Personagem -->
         <div id="creation-section" class="hidden">
             <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-2xl">
                 <h2 id="form-title" class="text-2xl font-bold mb-6 text-indigo-300">Novo Cartão de Personagem</h2>
                 <form id="cardForm" class="space-y-6">
-                    <!-- Campos do formulário de cartão -->
                     <div>
                         <label for="cardTitle" class="block text-sm font-semibold mb-1">Nome</label>
                         <input type="text" id="cardTitle" placeholder="Ex: Guerreiro Lendário" required class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600">
@@ -273,7 +380,6 @@
             </div>
         </div>
         
-        <!-- Seção de Visualização de Cartões de Personagem -->
         <div id="display-section">
             <div id="thumbnail-list" class="flex flex-wrap justify-center gap-4 p-4 bg-gray-900/50 rounded-xl shadow-inner mb-4">
                 <p class="text-gray-500">Nenhum cartão salvo ainda. Crie um para começar!</p>
@@ -287,7 +393,6 @@
             </div>
         </div>
 
-        <!-- Seção de Criação de Magia/Habilidade -->
         <div id="spell-creation-section" class="hidden">
             <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-2xl">
                 <h2 id="spell-form-title" class="text-2xl font-bold mb-6 text-teal-300">Nova Magia ou Habilidade</h2>
@@ -315,7 +420,6 @@
             </div>
         </div>
 
-        <!-- Seção de Visualização de Magias -->
         <div id="spell-display-section" class="hidden">
             <div id="spell-thumbnail-list" class="flex flex-wrap justify-center gap-4 p-4 bg-gray-900/50 rounded-xl shadow-inner mb-4">
                 <p class="text-gray-500">Nenhuma magia salva ainda. Crie uma para começar!</p>
@@ -331,7 +435,6 @@
 
     </div>
 
-    <!-- Menu de Navegação Fixo -->
     <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 bg-gray-800/80 backdrop-blur-sm rounded-full p-2 flex items-center gap-2 z-50 shadow-lg" id="nav">
         <button id="showDisplayBtn" class="nav-button px-4 py-2 text-sm md:px-6 md:py-3 md:text-lg font-semibold rounded-full focus:outline-none flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a1 1 0 011-1h14a1 1 0 110 2H3a1 1 0 01-1-1z" /></svg>
@@ -806,18 +909,6 @@
                 return thumb;
             }
 
-            cardsContainer.addEventListener('click', async (e) => {
-                const cardId = e.target.dataset.cardId;
-                if (!cardId) return;
-                if (e.target.classList.contains('edit-btn')) await editCard(cardId);
-                else if (e.target.classList.contains('remove-btn')) await removeCard(cardId);
-                else if (e.target.classList.contains('fullscreen-btn')) {
-                    const cardDiv = e.target.closest('.card-wrapper').querySelector('.rpg-card');
-                    if (document.fullscreenElement) document.exitFullscreen();
-                    else cardDiv.requestFullscreen().catch(err => console.error(`Erro: ${err.message}`));
-                }
-            });
-
             async function removeCard(cardId) { await removeData(CARD_STORE_NAME, cardId); await renderCardsAndThumbnails(); }
             
             // --- Funções CRUD para Magias/Habilidades ---
@@ -1064,6 +1155,170 @@
                 showSpellDisplayView();
             });
 
+            // --- ATUALIZADO: Lógica de Exibição de Magias em Tela Cheia ---
+
+            // Função para criar a visualização detalhada da magia (idêntica ao grimório)
+            async function createExpandedSpellView(spellData) {
+                let imageURL = 'https://placehold.co/400x650/14b8a6/1f2937?text=Magia';
+                if (spellData.image) {
+                    imageURL = URL.createObjectURL(bufferToBlob(spellData.image, spellData.imageMimeType));
+                    console.log(spellData.image);
+                }
+                
+                let palette = { cardBg: 'rgba(17, 24, 39, 0.9)', highlightColor: '#2dd4bf', textColor: '#e5e7eb', borderColor: '#0d9488' };
+                if (imageURL && !imageURL.includes('placehold.co')) {
+                    try {
+                        palette = await getPredominantColorAndPalette(imageURL);
+                    } catch (e) {
+                        console.error('Falha ao gerar paleta para magia.', e);
+                    }
+                }
+
+                const cardElement = document.createElement('div');
+                cardElement.className = 'rounded-3xl border-2 w-full h-full';
+                cardElement.style.borderColor = palette.borderColor;
+                cardElement.style.background = `url(${imageURL})`;
+                cardElement.style.backgroundSize = 'cover';
+                cardElement.style.backgroundPosition = 'center';
+                
+                cardElement.innerHTML = `
+                    <div class="rounded-3xl relative w-full h-full p-4 ex-max"  style="background-image:url(${spellData.image}) !important; background-position: center; height: 650px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; background-color: rgb(0 0 0 / 50%); background-blend-mode: multiply;">
+                        <div class="text-center w-full"><h3 class="text-2xl font-bold" style="color: ${palette.highlightColor};">${spellData.name}</h3><div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent); width: 100%"></div></div>
+                         <div class="text-xs text-gray-400 mb-3" style="position: absolute; margin-top: 55px; left: 15px;">
+                                <p class="text-left"><strong>Execução:</strong> ${spellData.execution || '-'}</p>
+                                <p class="text-left"><strong>Alcance:</strong> ${spellData.range || '-'}</p>
+                                <p class="text-left"><strong>Alvo:</strong> ${spellData.target || '-'}</p>
+                                <p class="text-left"><strong>Duração:</strong> ${spellData.duration || '-'}</p>
+                        </div>
+                        <div class="w-full">                                       
+                            <div class="text-sm text-left">
+                                <div class="mb-4 p-3 rounded-3xl w-full rpg-card-frame" style="border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
+                                    <h4 class="font-semibold rounded-3xl text-gray-300" style="position: absolute; top: -10px; background: ${palette.highlightColor}; padding: 0 10px;">Descrição</h4>
+                                    <p class="text-gray-300 text-xs">${spellData.description || 'Nenhuma descrição.'}</p>
+                                </div>                                            
+                                <div class="mb-4 p-3 rounded-3xl w-full rpg-card-frame" style="border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
+                                    <h4 class="font-semibold rounded-3xl text-gray-300" style="position: absolute; top: -10px; background: ${palette.highlightColor}; padding: 0 10px;">Aprimorar</h4>
+                                    <p class="text-gray-300 text-xs">${spellData.enhance}</p>
+                                </div>
+                                <div class="p-3 rounded-3xl w-full rpg-card-frame" style="border-color: ${palette.borderColor}; position: relative; z-index: 1; overflow-y: visible;">
+                                    <h4 class="font-semibold rounded-3xl text-gray-300" style="position: absolute; top: -10px; background: ${palette.highlightColor}; padding: 0 10px;">Verdadeiro</h4>
+                                    <p class="text-gray-300 text-xs">${spellData.true}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                
+                
+                return cardElement;
+            }
+
+            // Função para exibir a lista de magias retrátil na tela cheia
+            async function displaySpellsInFullscreen(fullscreenElement) {
+                const allSpells = await getData(SPELL_STORE_NAME);
+                if (allSpells.length === 0) return;
+
+                const spellBar = document.createElement('div');
+                spellBar.className = 'fullscreen-spell-bar collapsed'; // Inicia recolhida
+
+                const spellListContainer = document.createElement('div');
+                spellListContainer.className = 'fullscreen-spell-list';
+
+                allSpells.forEach(spell => {
+                    let imageURL = 'https://placehold.co/60x60/14b8a6/1f2937?text=M';
+                    if (spell.image) {
+                        imageURL = URL.createObjectURL(bufferToBlob(spell.image, spell.imageMimeType));
+                    }
+                    
+                    const spellItem = document.createElement('div');
+                    spellItem.className = 'spell-list-item';
+                    spellItem.dataset.spellId = spell.id;
+                    spellItem.innerHTML = `<img src="${imageURL}" alt="${spell.name}"><p>${spell.name}</p>`;
+                    spellListContainer.appendChild(spellItem);
+                });
+                
+                const toggler = document.createElement('button');
+                toggler.className = 'spell-list-toggler';
+                toggler.style.display="block";
+                toggler.innerHTML = `<span>Grimório</span> <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>`;
+                toggler.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Impede que o clique feche o card expandido
+                    spellBar.classList.toggle('collapsed');
+                });
+
+                spellBar.appendChild(toggler);
+                spellBar.appendChild(spellListContainer);
+                fullscreenElement.appendChild(spellBar);
+
+                // Adiciona um único ouvinte de eventos ao contêiner
+                spellListContainer.addEventListener('click', async (e) => {
+                    const spellItem = e.target.closest('.spell-list-item');
+                    if (!spellItem) return;
+
+                    const spellId = spellItem.dataset.spellId;
+                    const allSpells = await getData(SPELL_STORE_NAME);
+                    const spellData = allSpells.find(s => s.id === spellId);
+                    if (!spellData) return;
+                    
+                    const existingCard = fullscreenElement.querySelector('.expanded-spell-card-container');
+                    if (existingCard) existingCard.remove();
+
+                    const expandedContainer = document.createElement('div');
+                    expandedContainer.className = 'expanded-spell-card-container';
+                    
+                    const cardHolder = document.createElement('div');
+                    cardHolder.className = 'expanded-spell-card';
+                    
+                    const spellCardContent = await createExpandedSpellView(spellData);
+                    cardHolder.appendChild(spellCardContent);
+                    expandedContainer.appendChild(cardHolder);
+                    fullscreenElement.appendChild(expandedContainer);
+
+                    setTimeout(() => expandedContainer.classList.add('visible'), 2);
+
+                    expandedContainer.addEventListener('click', function(event) {
+                        if (event.target === expandedContainer) {
+                            expandedContainer.classList.remove('visible');
+                            expandedContainer.addEventListener('transitionend', () => expandedContainer.remove(), { once: true });
+                        }
+                    });
+                });
+            }
+
+            // --- ATUALIZADO: Ouvinte de eventos dos cards de personagem ---
+            cardsContainer.addEventListener('click', async (e) => {
+                const cardId = e.target.dataset.cardId;
+                if (!cardId) return;
+
+                if (e.target.classList.contains('edit-btn')) {
+                    await editCard(cardId);
+                } else if (e.target.classList.contains('remove-btn')) {
+                    await removeCard(cardId);
+                } else if (e.target.classList.contains('fullscreen-btn')) {
+                    const cardDiv = e.target.closest('.card-wrapper').querySelector('.rpg-card');
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    } else {
+                        cardDiv.requestFullscreen().catch(err => console.error(`Erro ao entrar em tela cheia: ${err.message}`));
+                        
+                        // Ao entrar em tela cheia, exibe a lista de magias
+                        displaySpellsInFullscreen(cardDiv);
+                        
+                        // Limpa os elementos ao sair da tela cheia
+                        const onFullscreenChange = () => {
+                            if (!document.fullscreenElement) {
+                                const spellBar = cardDiv.querySelector('.fullscreen-spell-bar');
+                                if (spellBar) spellBar.remove();
+                                const expandedCard = cardDiv.querySelector('.expanded-spell-card-container');
+                                if (expandedCard) expandedCard.remove();
+                                document.removeEventListener('fullscreenchange', onFullscreenChange);
+                            }
+                        };
+                        document.addEventListener('fullscreenchange', onFullscreenChange);
+                    }
+                }
+            });
+
+
             // Inicialização
             async function initializeApp() {
                 showSplash();
@@ -1073,7 +1328,6 @@
                     await renderCardsAndThumbnails();
                     await renderSpellCards();
                     showDisplayView();
-                     //part();
                     setTimeout(hideSplash, 1000);
                 } catch (e) {
                     console.error("Falha ao inicializar o app:", e);
