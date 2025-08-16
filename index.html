@@ -5,24 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criador de Cartões Estilo RPG</title>
     <!-- Adicionando a fonte Inter do Google Fonts -->
-    <link href="https://fonts.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
     <!-- Adicionando o Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     
     <style>
+        /* Estilos gerais e de animação (sem alterações) */
         .divPartculas h2 {
             font-size: 2em;
             margin: 0 0 10px;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
         }
-
-        .divPartculas p {
-            font-size: 1em;
-        }
-
-        /* Estilo para as partículas douradas */
+        .divPartculas p { font-size: 1em; }
         .sparkle {
             position: absolute;
             border-radius: 50%;
@@ -30,16 +26,9 @@
             z-index: 0; 
             animation: disperse var(--duration) forwards; 
         }
-        
         @keyframes disperse {
-            0% {
-                transform: translate(0, 0) scale(1) rotate(0deg);
-                opacity: .3;
-            }
-            100% {
-                transform: translate(var(--x), var(--y)) scale(0) rotate(var(--r));
-                opacity: 0;
-            }
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: .3; }
+            100% { transform: translate(var(--x), var(--y)) scale(0) rotate(var(--r)); opacity: 0; }
         }
         .back-content{
             width: 100%;
@@ -47,12 +36,7 @@
             margin: 15px;
             border-radius: 7px;
         }
-        .card-3d-container {
-            perspective: 1500px; 
-            width: 100%;
-            height: 650px;
-        }
-
+        .card-3d-container { perspective: 1500px; width: 100%; height: 600px; }
         .card-3d {
             width: 100%;
             height: 100%;
@@ -60,9 +44,7 @@
             transform-style: preserve-3d; 
             transition: transform 0.6s;
             cursor: pointer;
-            
         }
-
         .card-front, .card-back {
             position: absolute;
             width: 100%;
@@ -71,7 +53,6 @@
             border-radius: 20px;
             box-shadow: 0px 0px 6px 0px #0f1908;
         }
-
         .card-back {
             transform: rotateY(180deg); 
             color: white;
@@ -79,24 +60,15 @@
             justify-content: center;
             align-items: center;
         }
-
-        .rpg-card .ex-max
-        {
-            background-size: cover;
-            background-blend-mode: multiply;
-        }
-    
+        .rpg-card .ex-max { background-size: cover; background-blend-mode: multiply; }
         .rpg-card:fullscreen .card-3d-container{ width: 90%;}
-        .rpg-card:fullscreen .ex-max, .rpg-card:fullscreen .card-3d-container
-        {
+        .rpg-card:fullscreen .ex-max, .rpg-card:fullscreen .card-3d-container {
             display: flex;
             border-radius: 10px;
             justify-content: center;
             background-size: cover !important;
         }
-
-        .rpg-card:fullscreen .img-max
-        {
+        .rpg-card:fullscreen .img-max {
             width: 200px !important;
             height: 200px;
             position: absolute;
@@ -104,16 +76,14 @@
             right: 0;
             margin: auto;
         }
-
-        .rpg-card:fullscreen .img-max img
-        {
-            width: 100%;
-            height: 100%;
-        }
-
+        .rpg-card:fullscreen .img-max img { width: 100%; height: 100%; }
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(to bottom right, #f3f4f6, #e5e7eb);
+            background: linear-gradient(to bottom right, #111827, #1f2937);
+            color: #d1d5db;
+        }
+        #mainContent {
+             padding-bottom: 70px; /* Adiciona espaço para o menu fixo */
         }
         input:focus, textarea:focus {
             box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.5);
@@ -156,17 +126,10 @@
             background-position: center;
             border: 0;
             border-radius: 0;
-            background-size: cover;
             background-blend-mode: multiply;
         }
-        .rpg-card:fullscreen .rpg-card-frame {
-            max-width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        .rpg-card:fullscreen button, .rpg-card:fullscreen .swiper-navigation {
-            display: none;
-        }
+        .rpg-card:fullscreen .rpg-card-frame { max-width: 100%; max-height: 90vh; overflow-y: auto; }
+        .rpg-card:fullscreen button, .rpg-card:fullscreen .swiper-navigation { display: none; }
         .rpg-card-title-divider {
             height: 2px;
             width: 80%;
@@ -174,380 +137,275 @@
             margin-top: 0.5rem;
             margin-bottom: 0.5rem;
         }
-        .rpg-card-stat-divider {
-            height: 1px;
-            width: 100%;
-            background-color: var(--border-color, #4b5563);
-        }
         .file-upload-input {
-            width: 100%;
-            padding: 0.5rem 1rem;
-            margin-top: 0.25rem;
-            background-color: #4b5563;
-            color: white;
-            border-radius: 0.5rem;
-            border: 1px solid #4b5563;
-            transition-property: all;
-            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            transition-duration: 200ms;
+            width: 100%; padding: 0.5rem 1rem; margin-top: 0.25rem; background-color: #4b5563;
+            color: white; border-radius: 0.5rem; border: 1px solid #4b5563;
+            transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .file-upload-input:hover {
-            border-color: #6b7280; 
-        }
+        .file-upload-input:hover { border-color: #6b7280; }
         .file-upload-input::-webkit-file-upload-button {
-            background-color: #6366f1; 
-            color: white;
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 9999px;
-            font-weight: 600;
-            margin-right: 1rem;
-            cursor: pointer;
+            background-color: #6366f1; color: white; padding: 0.5rem 1rem; border: none;
+            border-radius: 9999px; font-weight: 600; margin-right: 1rem; cursor: pointer;
         }
-        .file-upload-input::-webkit-file-upload-button:hover {
-            background-color: #4f46e5;
-        }
-        .swiper-button-next:after, .swiper-button-prev:after {
-            color: #4f46e5;
-        }
-        .swiper-slide {
-            display: flex;
-            justify-content: center;
-        }
+        .file-upload-input::-webkit-file-upload-button:hover { background-color: #4f46e5; }
+        .swiper-button-next:after, .swiper-button-prev:after { color: #4f46e5; }
+        .swiper-slide { display: flex; justify-content: center; }
         small {
-            position: absolute;
-            left: -10px;
-            top: -10px;            
-            padding: 5px;
-            border-radius: 50px;
-            font-size: 11px !important;
-            width: 30px;
-            height: 30px;
-            display: flex;            
-            align-items: center;
-            justify-content: center;            
-            transform: scale(0.8);
+            position: absolute; left: -10px; top: -10px; padding: 5px; border-radius: 50px;
+            font-size: 11px !important; width: 30px; height: 30px; display: flex;            
+            align-items: center; justify-content: center; transform: scale(0.8);
         }
-        #thumbnail-list {
-            max-height: 8rem;
-            overflow: scroll;
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;            
-            justify-content: flex-start;
+        #thumbnail-list, #spell-thumbnail-list {
+            min-height: 7rem;
+            max-height: 8rem; overflow-y: hidden; overflow-x: auto; display: flex; flex-direction: row;
+            flex-wrap: nowrap; justify-content: flex-start; align-items: center;
             background-color: rgb(30 41 59 / var(--tw-bg-opacity, 1));
         }
-
-        /* ESTILOS DA TELA DE SPLASH PERSONALIZADA */
         .splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #1f2937;
-            color: #f3f4f6;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 1s ease-in-out;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #1f2937, #3730a3, #1e3a8a);
+            color: #f3f4f6; display: flex; flex-direction: column; justify-content: center;
+            align-items: center; z-index: 9999; transition: opacity 1s ease-in-out;
         }
-
-        .splash-screen.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        .loading-icon {
-            animation: spin-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-        @keyframes spin-pulse {
-            0% { transform: rotate(0deg); opacity: 1; }
-            50% { transform: rotate(180deg); opacity: 0.8; }
-            100% { transform: rotate(360deg); opacity: 1; }
-        }
-
-        .progress-bar-container {
-            width: 80%;
-            max-width: 400px;
-            height: 12px;
-            background-color: #374151;
-            border-radius: 6px;
-            margin-top: 20px;
-            overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
-        }
-
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #6366f1, #8b5cf6);
-            transition: width 0.5s ease-in-out;
-            box-shadow: 0 0 10px #8b5cf6, 0 0 5px #6366f1;
-        }
-
-        .progress-text {
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-        }
-
-         .stat-fill {
-            height: 100%;
-            background-color: #eab308;
-            border-radius: 9999px;
+        .splash-screen.hidden { opacity: 0; pointer-events: none; }
+        #loaderClipRect { transition: height 0.5s ease-in-out; }
+        .progress-text { text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
+        .stat-fill {
+            height: 100%; background-color: #eab308; border-radius: 9999px;
             transition: width 0.5s ease-in-out;
         }
-         
         .stat-bar {
-            background-color: #4a5568;
-            border-radius: 9999px;
-            height: 8px;
-            margin-top: 0.25rem;
-            position: relative;
+            background-color: #4a5568; border-radius: 9999px; height: 8px;
+            margin-top: 0.25rem; position: relative;
+        }
+        /* Estilos para o novo menu de navegação */
+        .nav-button {
+            transition: all 0.3s ease-in-out;
+            color: #d1d5db; /* gray-300 */
+        }
+        .nav-button.active {
+            background-color: #4f46e5; /* indigo-600 */
+            color: white;
+            box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.5);
+        }
+        .nav-button:not(.active):hover {
+            background-color: #374151; /* gray-700 */
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-2">
 
-    <!-- Tela de Splash Personalizada -->
+    <!-- Tela de Splash -->
     <div id="splashScreen" class="splash-screen divPartculas">
-        <!-- Ícone SVG de carregamento (miniatura de cartão) -->
         <svg xmlns="http://www.w3.org/2000/svg" class="loading-icon text-indigo-400 w-20 h-20" viewBox="0 0 24 24" fill="currentColor">
-            <!-- Card Outline -->
-            <rect x="5" y="2" width="14" height="20" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/>
-            <!-- Card Symbol (Star) -->
-            <path d="M12 7.74l1.39 2.82 3.12.45-2.26 2.2.53 3.11-2.78-1.46-2.78 1.46.53-3.11-2.26-2.2 3.12-.45L12 7.74z" fill="currentColor"/>
+            <defs><clipPath id="loaderClipPath"><rect id="loaderClipRect" x="0" y="0" width="24" height="0" /></clipPath></defs>
+            <g clip-path="url(#loaderClipPath)">
+                <rect x="5" y="2" width="14" height="20" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 7.74l1.39 2.82 3.12.45-2.26 2.2.53 3.11-2.78-1.46-2.78 1.46.53-3.11-2.26-2.2 3.12-.45L12 7.74z" fill="currentColor"/>
+            </g>
         </svg>
         <h1 class="text-3xl font-bold mt-4">Forjando Cartões...</h1>
-        <div class="progress-bar-container">
-            <div id="progressBar" class="progress-bar"></div>
-        </div>
         <p id="progressText" class="text-sm mt-2 font-medium progress-text">Preparando...</p>
         <div class="divPartculas absolute inset-0"></div>
     </div>
 
     <!-- Conteúdo Principal (Inicialmente escondido) -->
     <div id="mainContent" class="w-full max-w-5xl hidden">
-        <!-- Título principal -->
-        <header class="text-center my-8">
-            <h1 class="text-4xl font-bold text-gray-800">Crie seus próprios Cartões</h1>
-            <p class="text-lg text-gray-600 mt-2">Personalize e adicione novos cartões à sua coleção.</p>
-        </header>
-
-        <!-- Seção do formulário para criar/editar cartões -->
-        <div class="bg-slate-800 text-white p-4 rounded-3xl shadow-2xl mb-8">
-            <h2 class="text-2xl font-bold mb-6 text-indigo-300">Novo Cartão</h2>
-            <form id="cardForm" class="space-y-6">
-                <div>
-                    <label for="cardTitle" class="block text-sm font-semibold mb-1">Nome</label>
-                    <input type="text" id="cardTitle" placeholder="Ex: Guerreiro Lendário" required
-                           class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
-                </div>
-                <div>
-                    <label for="cardSubTitle" class="block text-sm font-semibold mb-1">Raça e Classe</label>
-                    <input type="text" id="cardSubTitle" placeholder="Ex: Humano Mago" required
-                           class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
-                </div>
-                <div>
-                    <label for="cardLevel" class="block text-sm font-semibold mb-1">Nível</label>
-                    <input type="number" id="cardLevel" placeholder="1" required
-                           class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
-                </div>
-
-                <!-- Seção para upload da imagem do personagem com pré-visualização -->
-                <div>
-                    <h3 class="text-xl font-bold text-indigo-300 mb-2">Imagem do Personagem</h3>
-                    <div class="mt-4 text-center">
-                        <label for="characterImageUpload" class="block text-sm font-semibold mb-1 cursor-pointer">
-                            Faça upload de uma imagem do seu PC:
-                        </label>
-                        <input type="file" id="characterImageUpload" accept="image/*" class="file-upload-input">
-                        <img id="characterImagePreview" class="mt-4 mx-auto w-32 h-32 object-cover rounded-full border-4 border-gray-600 hidden" alt="Pré-visualização do Personagem">
-                    </div>
-                </div>
-
-                <!-- Seção para upload da imagem de fundo com pré-visualização -->
-                <div>
-                    <h3 class="text-xl font-bold text-indigo-300 mb-2">Imagem de Fundo</h3>
-                    <div class="mt-4 text-center">
-                        <label for="backgroundImageUpload" class="block text-sm font-semibold mb-1 cursor-pointer">
-                            Faça upload de uma imagem do seu PC:
-                        </label>
-                        <input type="file" id="backgroundImageUpload" accept="image/*" class="file-upload-input">
-                        <div id="backgroundImagePreview" class="mt-4 mx-auto w-full h-48 rounded-lg border-4 border-gray-600 hidden bg-cover bg-center"></div>
-                    </div>
-                </div>
-                
-                <!-- Seção para Atributos -->
-                <div class="grid grid-cols-2 gap-4">
-                    <h3 class="col-span-2 text-xl font-bold text-indigo-300">Atributos</h3>
-                    <div>
-                        <label for="vida" class="block text-sm font-semibold mb-1">Vida (PV)</label>
-                        <input type="number" id="vida" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
-                    </div>
-                    <div>
-                        <label for="mana" class="block text-sm font-semibold mb-1">Mana (PM)</label>
-                        <input type="number" id="mana" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
-                    </div>
-                    <div>
-                        <label for="agilidade" class="block text-sm font-semibold mb-1">Agilidade (AGI)</label>
-                        <input type="number" id="agilidade" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
-                    </div>
-                    <div>
-                        <label for="carisma" class="block text-sm font-semibold mb-1">Carisma (CAR)</label>
-                        <input type="number" id="carisma" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
-                    </div>
-                    <div>
-                        <label for="forca" class="block text-sm font-semibold mb-1">Força (FOR)</label>
-                        <input type="number" id="forca" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
-                    </div>
-                    <div>
-                        <label for="inteligencia" class="block text-sm font-semibold mb-1">Inteligência (INT)</label>
-                        <input type="number" id="inteligencia" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
-                    </div>
-                    <div>
-                        <label for="sabedoria" class="block text-sm font-semibold mb-1">Sabedoria (SAB)</label>
-                        <input type="number" id="sabedoria" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
-                    </div>
-                    <div>
-                        <label for="vigor" class="block text-sm font-semibold mb-1">Vigor (VIG)</label>
-                        <input type="number" id="vigor" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 transition-colors duration-200">
-                    </div>
-                </div>
-                <!-- Seção para Perícias com checkboxes dinâmicos -->
-                <div>
-                    <h3 class="text-xl font-bold text-indigo-300 mb-2">Perícias</h3>
-                    <div id="pericias-checkboxes-container" class="space-y-2">
-                        <!-- Checkboxes de perícias serão injetados aqui via JS -->
-                    </div>
-                    <div id="pericia-description-display" class="mt-4 p-4 rounded-lg bg-gray-700 hidden">
-                        <h4 id="periciaDescriptionTitle" class="font-bold text-indigo-300"></h4>
-                        <p id="periciaDescriptionText" class="text-sm text-gray-300 mt-2"></p>
-                    </div>
-                </div>
-                <button type="submit" id="submitButton"
-                        class="w-full py-3 px-4 rounded-full text-lg font-bold text-white bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 focus:outline-none transition duration-300 ease-in-out transform hover:scale-105 shadow-xl btn-gradient-pulse">
-                    Criar Cartão
-                </button>
-            </form>
-        </div>
         
-        <!-- Lista de miniaturas para carregamento -->
-        <h2 class="text-2xl font-bold text-gray-800 text-center mt-12 mb-4">Seus Cartões Salvos</h2>
-        <div id="thumbnail-list" class="flex flex-wrap justify-center gap-4 p-4 bg-gray-100 rounded-xl shadow-inner mb-8">
-            <p class="text-gray-500">Nenhum cartão salvo ainda. Crie um para começar!</p>
-        </div>
-
-        <!-- Carrossel de cartões -->
-        <div class="cards-container w-full max-w-lg mx-auto mb-1">
-            <h2 class="text-2xl font-bold text-gray-800 text-center mb-4">Visualização dos Cartões</h2>
-            <div class="swiper mySwiper">
-                <div class="swiper-wrapper" id="cardsContainer" >
-                    <!-- Cards serão injetados aqui -->
-                </div>
-                <!-- Botões de navegação do Swiper -->
-                <div class="swiper-button-next" style="opacity: 0;"></div>
-                <div class="swiper-button-prev" style="opacity: 0;"></div>
+        <!-- Seção de Criação de Cartão de Personagem -->
+        <div id="creation-section" class="hidden">
+            <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-2xl">
+                <h2 id="form-title" class="text-2xl font-bold mb-6 text-indigo-300">Novo Cartão de Personagem</h2>
+                <form id="cardForm" class="space-y-6">
+                    <!-- Campos do formulário de cartão -->
+                    <div>
+                        <label for="cardTitle" class="block text-sm font-semibold mb-1">Nome</label>
+                        <input type="text" id="cardTitle" placeholder="Ex: Guerreiro Lendário" required class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600">
+                    </div>
+                    <div>
+                        <label for="cardSubTitle" class="block text-sm font-semibold mb-1">Raça e Classe</label>
+                        <input type="text" id="cardSubTitle" placeholder="Ex: Humano Mago" required class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600">
+                    </div>
+                    <div>
+                        <label for="cardLevel" class="block text-sm font-semibold mb-1">Nível</label>
+                        <input type="number" id="cardLevel" placeholder="1" required class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-indigo-300 mb-2">Imagem do Personagem</h3>
+                        <div class="mt-4 text-center">
+                            <label for="characterImageUpload" class="block text-sm font-semibold mb-1 cursor-pointer">Faça upload de uma imagem:</label>
+                            <input type="file" id="characterImageUpload" accept="image/*" class="file-upload-input">
+                            <img id="characterImagePreview" class="mt-4 mx-auto w-32 h-32 object-cover rounded-full border-4 border-gray-600 hidden" alt="Pré-visualização do Personagem">
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-indigo-300 mb-2">Imagem de Fundo</h3>
+                        <div class="mt-4 text-center">
+                            <label for="backgroundImageUpload" class="block text-sm font-semibold mb-1 cursor-pointer">Faça upload de uma imagem:</label>
+                            <input type="file" id="backgroundImageUpload" accept="image/*" class="file-upload-input">
+                            <div id="backgroundImagePreview" class="mt-4 mx-auto w-full h-48 rounded-lg border-4 border-gray-600 hidden bg-cover bg-center"></div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <h3 class="col-span-2 text-xl font-bold text-indigo-300">Atributos</h3>
+                        <div><label for="vida" class="block text-sm font-semibold mb-1">Vida (PV)</label><input type="number" id="vida" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></div>
+                        <div><label for="mana" class="block text-sm font-semibold mb-1">Mana (PM)</label><input type="number" id="mana" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></div>
+                        <div><label for="agilidade" class="block text-sm font-semibold mb-1">Agilidade (AGI)</label><input type="number" id="agilidade" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></div>
+                        <div><label for="carisma" class="block text-sm font-semibold mb-1">Carisma (CAR)</label><input type="number" id="carisma" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></div>
+                        <div><label for="forca" class="block text-sm font-semibold mb-1">Força (FOR)</label><input type="number" id="forca" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></div>
+                        <div><label for="inteligencia" class="block text-sm font-semibold mb-1">Inteligência (INT)</label><input type="number" id="inteligencia" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></div>
+                        <div><label for="sabedoria" class="block text-sm font-semibold mb-1">Sabedoria (SAB)</label><input type="number" id="sabedoria" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></div>
+                        <div><label for="vigor" class="block text-sm font-semibold mb-1">Vigor (VIG)</label><input type="number" id="vigor" placeholder="1" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-indigo-300 mb-2">Perícias</h3>
+                        <div id="pericias-checkboxes-container" class="space-y-2"></div>
+                        <div id="pericia-description-display" class="mt-4 p-4 rounded-lg bg-gray-700 hidden">
+                            <h4 id="periciaDescriptionTitle" class="font-bold text-indigo-300"></h4>
+                            <p id="periciaDescriptionText" class="text-sm text-gray-300 mt-2"></p>
+                        </div>
+                    </div>
+                    <button type="submit" id="submitButton" class="w-full py-3 px-4 rounded-full text-lg font-bold text-white bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 focus:outline-none transition duration-300 ease-in-out transform hover:scale-105 shadow-xl btn-gradient-pulse">
+                        Criar Cartão
+                    </button>
+                </form>
             </div>
         </div>
+        
+        <!-- Seção de Visualização de Cartões de Personagem -->
+        <div id="display-section">
+            <div id="thumbnail-list" class="flex flex-wrap justify-center gap-4 p-4 bg-gray-900/50 rounded-xl shadow-inner mb-4">
+                <p class="text-gray-500">Nenhum cartão salvo ainda. Crie um para começar!</p>
+            </div>
+            <div class="cards-container w-full max-w-lg mx-auto mb-1">
+                <div class="swiper mySwiper">
+                    <div class="swiper-wrapper" id="cardsContainer"></div>
+                    <div class="swiper-button-next" style="opacity: 0;"></div>
+                    <div class="swiper-button-prev" style="opacity: 0;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção de Criação de Magia/Habilidade -->
+        <div id="spell-creation-section" class="hidden">
+            <div class="bg-slate-800 text-white p-6 rounded-3xl shadow-2xl">
+                <h2 id="spell-form-title" class="text-2xl font-bold mb-6 text-teal-300">Nova Magia ou Habilidade</h2>
+                <form id="spellForm" class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-teal-300 mb-2">Ícone da Magia</h3>
+                        <div class="mt-4 text-center">
+                            <label for="spellImageUpload" class="block text-sm font-semibold mb-1 cursor-pointer">Faça upload de uma imagem:</label>
+                            <input type="file" id="spellImageUpload" accept="image/*" class="file-upload-input">
+                            <img id="spellImagePreview" class="mt-4 mx-auto w-32 h-32 object-cover rounded-full border-4 border-gray-600 hidden" alt="Pré-visualização da Magia">
+                        </div>
+                    </div>
+                    <div><label for="spellName" class="block text-sm font-semibold mb-1">Nome</label><input type="text" id="spellName" placeholder="Ex: Curar Ferimentos 1° Círculo" required class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></div>
+                    <div><label for="spellExecution" class="block text-sm font-semibold mb-1">Execução</label><input type="text" id="spellExecution" placeholder="Ex: padrão" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></div>
+                    <div><label for="spellRange" class="block text-sm font-semibold mb-1">Alcance</label><input type="text" id="spellRange" placeholder="Ex: toque" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></div>
+                    <div><label for="spellTarget" class="block text-sm font-semibold mb-1">Alvo</label><input type="text" id="spellTarget" placeholder="Ex: 1 ser" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></div>
+                    <div><label for="spellDuration" class="block text-sm font-semibold mb-1">Duração</label><input type="text" id="spellDuration" placeholder="Ex: instantânea" class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></div>
+                    <div><label for="spellDescription" class="block text-sm font-semibold mb-1">Descrição</label><textarea id="spellDescription" rows="4" placeholder="Ex: Você canaliza energia positiva para curar..." class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></textarea></div>
+                    <div><label for="spellEnhance" class="block text-sm font-semibold mb-1">Aprimorar</label><textarea id="spellEnhance" rows="3" placeholder="Ex: (+2 PM): A cura aumenta para 2d10+2..." class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></textarea></div>
+                    <div><label for="spellTrue" class="block text-sm font-semibold mb-1">Verdadeiro</label><textarea id="spellTrue" rows="3" placeholder="Ex: (+9 PM): muda o alcance para 'curto'..." class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600"></textarea></div>
+                    <button type="submit" id="spellSubmitButton" class="w-full py-3 px-4 rounded-full text-lg font-bold text-white bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 focus:outline-none transition duration-300 ease-in-out transform hover:scale-105 shadow-xl">
+                        Salvar Magia
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Seção de Visualização de Magias -->
+        <div id="spell-display-section" class="hidden">
+            <h2 class="text-3xl font-bold text-center text-teal-300 my-6">Grimório de Magias</h2>
+            <div id="spell-thumbnail-list" class="flex flex-wrap justify-center gap-4 p-4 bg-gray-900/50 rounded-xl shadow-inner mb-8 mt-8">
+                <p class="text-gray-500">Nenhuma magia salva ainda. Crie uma para começar!</p>
+            </div>
+            <div class="cards-container w-full max-w-lg mx-auto mb-1">
+                <div class="swiper mySpellSwiper">
+                    <div class="swiper-wrapper" id="spellCardsContainer"></div>
+                    <div class="swiper-button-next spell-nav" style="opacity: 0;"></div>
+                    <div class="swiper-button-prev spell-nav" style="opacity: 0;"></div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Script do Swiper -->
+    <!-- Menu de Navegação Fixo -->
+    <nav class="fixed bottom-4 left-1/2 -translate-x-1/2 bg-gray-800/80 backdrop-blur-sm rounded-full p-2 flex items-center gap-2 z-50 shadow-lg">
+        <button id="showDisplayBtn" class="nav-button px-4 py-2 text-sm md:px-6 md:py-3 md:text-lg font-semibold rounded-full focus:outline-none flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a1 1 0 011-1h14a1 1 0 110 2H3a1 1 0 01-1-1z" /></svg>
+            <span class="hidden md:inline">Personagens</span>
+        </button>
+        <button id="showCreationBtn" class="nav-button px-4 py-2 text-sm md:px-6 md:py-3 md:text-lg font-semibold rounded-full focus:outline-none flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" /></svg>
+            <span class="hidden md:inline">Add Personagem</span>
+        </button>
+        <button id="showSpellCreationBtn" class="nav-button px-4 py-2 text-sm md:px-6 md:py-3 md:text-lg font-semibold rounded-full focus:outline-none flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+            <span class="hidden md:inline">Add Magia</span>
+        </button>
+        <button id="showSpellDisplayBtn" class="nav-button px-4 py-2 text-sm md:px-6 md:py-3 md:text-lg font-semibold rounded-full focus:outline-none flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" /></svg>
+            <span class="hidden md:inline">Grimório</span>
+        </button>
+    </nav>
+
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script>
+        // Função de partículas (sem alterações)
         function part() {
             const divsParticulas = document.querySelectorAll('.divPartculas');
             divsParticulas.forEach(divParticulas => {
                 const estilos = window.getComputedStyle(divParticulas);
-                const maxParticles = 80;
-                let currentParticles = 0;
-
+                const maxParticles = 80; let currentParticles = 0;
                 function createSparkle() {
                     if (currentParticles >= maxParticles) return;
                     const sparkle = document.createElement('div');
                     sparkle.classList.add('sparkle');
-                    divParticulas.appendChild(sparkle);
-                    currentParticles++;
-
+                    divParticulas.appendChild(sparkle); currentParticles++;
                     const rect = divParticulas.getBoundingClientRect();
-                    const spawnX = Math.random() * rect.width;
-                    const spawnY = Math.random() * rect.height;
-
+                    const spawnX = Math.random() * rect.width; const spawnY = Math.random() * rect.height;
                     sparkle.style.opacity = (0.1 + Math.random() * 0.4).toFixed(2);
-                    sparkle.style.left = `${spawnX}px`;
-                    sparkle.style.top = `${spawnY}px`;
+                    sparkle.style.left = `${spawnX}px`; sparkle.style.top = `${spawnY}px`;
                     sparkle.style.backgroundColor = `${estilos.borderColor}`;
                     sparkle.style.boxShadow = `0 0 5px 2px ${estilos.borderColor}, 0 0 10px 4px ${estilos.borderColor}`;
-
                     const size = Math.random() * 1.5 + 0.5;
-                    sparkle.style.width = `${size}px`;
-                    sparkle.style.height = `${size}px`;
-
+                    sparkle.style.width = `${size}px`; sparkle.style.height = `${size}px`;
                     const directionX = (spawnX - rect.width / 2) * 4;
                     const directionY = (spawnY - rect.height / 2) * 4;
-
                     sparkle.style.setProperty('--x', `${directionX}px`);
                     sparkle.style.setProperty('--y', `${directionY}px`);
                     sparkle.style.setProperty('--r', `${Math.random() * 720}deg`);
                     sparkle.style.setProperty('--duration', `${Math.random() * 15 + 10}s`);
-
-                    sparkle.addEventListener('animationend', () => {
-                        sparkle.remove();
-                        currentParticles--;
-                    });
+                    sparkle.addEventListener('animationend', () => { sparkle.remove(); currentParticles--; });
                 }
                 setInterval(createSparkle, 100);
             });
         }
-           // Dados das perícias para o seletor
+
         const periciasData = {
-            "🏃‍♂️ AGILIDADE": {
-                "Acrobacia": "Capacidade de realizar movimentos ágeis e controlados com o corpo. Permite executar saltos, rolamentos, cambalhotas, equilibrar-se em superfícies estreitas (como cordas ou parapeitos), escapar de armadilhas com destreza, e cair de grandes alturas sem se machucar seriamente. Muito usada por ladinos, artistas de circo, ladrões e monges guerreiros.",
-                "Iniciativa": "Esta perícia representa a velocidade de reação de um personagem quando o combate começa. Um personagem com alta Iniciativa é mais rápido para perceber o perigo e tomar uma ação decisiva antes dos demais. É usada principalmente para determinar a ordem de ações no início dos combates.",
-                "Montaria": "Controle de veículos e montarias complexas. Essa perícia mede a habilidade do personagem em conduzir carruagens, trenós, navios, dirigíveis mágicos ou bestas voadoras/domadas. Pode abranger desde cavalgar grifos até manejar uma biga em alta velocidade. Envolve coordenação, controle e capacidade de reação sob pressão. (Somente Treinada)",
-                "Furtividade": "A arte de mover-se sem ser notado. Esta perícia cobre tanto o andar silencioso quanto a habilidade de esconder-se nas sombras, atrás de objetos ou em multidões. Ideal para emboscadas, fugas furtivas ou infiltrações em ambientes hostis. O menor ruído pode denunciar sua presença e selar seu destino.",
-                "Pontaria": "Precisão com armas de longo alcance. Pontaria mede a capacidade do personagem de mirar e disparar com eficácia projéteis, como flechas, virotes, lanças arremessadas, dardos, pedras de funda ou até mesmo artefatos mágicos de disparo. É uma perícia essencial para arqueiros, caçadores e guerreiros de cerco. Você usa Pontaria para fazer ataques à distância. Se passar na Classe de Armadura (CA) do alvo, você acerta e causa dano de acordo com a arma utilizada.",
-                "Ladinagem": "Manipulação veloz e precisa com as mãos. Englobando truques de ilusionismo, carteado, pequenas trapaças, furto de bolsos e ações rápidas com objetos (como sacar uma arma oculta ou plantar algo em alguém). Em um mundo de mágicas e mistérios, é o talento dos charlatães, trapaceiros e artistas de rua. (Somente Treinada)",
-                "Reflexos": "Rapidez em reagir a estímulos. Envolve esquiva de ataques, defesa contra armadilhas ativadas subitamente, reações a eventos inesperados e ações de reflexo. Um reflexo afiado pode significar escapar de uma flecha ou agarrar algo antes de cair num abismo. Reação “Esquiva”. Sempre que estiver em um combate, e escolher a reação “Esquiva”’ você soma o bônus de seu Reflexos em sua Classe de Armadura (CA)."
-            },
-            "✨ CARISMA": {
-                "Adestramento": "Treinamento e comando de animais. Esta perícia representa a capacidade de domar, treinar, acalmar e comandar criaturas animais, desde cavalos e cães até bestas selvagens ou criaturas mágicas domesticáveis, como lobos-fantasma, grifos ou wyverns. Com Adestramento, um personagem pode ensinar truques, manter a calma de um animal em situações de estresse, ou até usá-lo em combate. (Somente Treinada)",
-                "Enganação": "A arte de manipular a verdade. Seja por mentiras diretas, disfarces convincentes ou atuação dramática, quem domina a enganação consegue escapar de interrogatórios, roubar com astúcia ou seduzir com falsidade. Um talento sombrio, mas poderoso.",
-                "Intimidação": "Uso da força de personalidade para impor medo. Pode envolver ameaças veladas, posturas dominantes, gritos ou gestos agressivos. Serve tanto em interrogatórios quanto em negociações tensas. Uma ferramenta dos brutais, ou dos desesperados.",
-                "Persuasão": "A habilidade de influenciar e inspirar. Persuasão é usada para negociar paz, inspirar aliados, convencer multidões ou manipular emoções. É a arma dos reis, sacerdotes, líderes e diplomatas. Carisma não é só beleza, é poder de alma."
-            },
-            "🧠 INTELIGÊNCIA": {
-                "Arcanismo": "Conhecimento teórico e prático das artes místicas. Permite identificar feitiços, decifrar runas arcanas, compreender grimórios, detectar perturbações mágicas e avaliar a origem de encantamentos. Magos, feiticeiros, sábios e escribas dependem desta perícia para navegar pelo tecido da realidade. (Somente treinada)",
-                "História": "Memória de tempos antigos. Conhecimento sobre civilizações passadas, linhagens nobres, guerras históricas, ruínas esquecidas e lendas ancestrais. Essencial para compreender o passado e como ele molda o presente. Os bardos e estudiosos valorizam muito essa habilidade.",
-                "Investigação": "Capacidade de analisar cenários, reunir pistas, cruzar informações e chegar a conclusões lógicas. Essencial em investigações de assassinato, quebra-cabeças antigos, armadilhas complexas ou tramas ocultas. Aqueles que buscam verdades escondidas são mestres em investigação.",
-                "Ofício": "Criação, manutenção e reparo de objetos físicos. Ofício representa o conhecimento técnico e prático de um personagem em artesanato, manufatura e produção de bens materiais. É uma perícia ampla, que abrange diferentes especializações, como carpintaria, forja, alquimia, ourivesaria, tesselagem, cerâmica, etc. Pode ser usada para: Criar itens como armas, armaduras, poções, ferramentas, joias ou obras de arte. Reparar equipamentos danificados ou enfraquecidos. Avaliar a qualidade e o valor de objetos artesanais. Fornecer rendimentos com trabalho durante tempos de descanso ou entre aventuras. Nota: o jogador deve especificar qual tipo de ofício domina ao investir nessa perícia (Ex: Ofício (Ferreiro), Ofício (Alquimista), Ofício (Carpinteiro), Ofício (Cervejeiro), etc). O Mestre pode permitir generalizações caso apropriado. (Somente treinada)",
-                "Religião": "Conhecimento sobre divindades, dogmas, rituais, cultos e símbolos sagrados ou profanos. Permite reconhecer práticas religiosas, interpretar escrituras, compreender profecias e resistir a corrupções espirituais. Clérigos, inquisidores e ocultistas têm na religião seu campo de estudo. (Somente treinada)",
-                "Tecnologia": "Compreensão de mecanismos, engrenagens, armas de pólvora, máquinas, golems ou autômatos. Serve para desmontar, sabotar ou construir engenhocas, desativar dispositivos complexos ou consertar artefatos arcanomecânicos. Ideal para inventores, artífices e engenheiros arcanos."
-            },
-            "🏋️ FORÇA": {
-                "Atletismo": "Medida da força bruta aplicada com técnica. Escalar penhascos, nadar em correntezas, arrombar portas, correr longas distâncias, saltar abismos e resistir ao cansaço físico são exemplos do uso de Atletismo. Guerreiros, bárbaros e aventureiros de corpo robusto são peritos nessa perícia.",
-                "Luta": "Combate corpo a corpo com armas simples, improvisadas ou sem técnica refinada. Diferente de “Pontaria”, Luta cobre o combate bruto e direto, incluindo socos, chutes, agarrões, cabeçadas ou o uso de objetos improvisados como armas. Um personagem que cresceu brigando em tavernas, ringues clandestinos ou treinado em pancadaria usaria Luta. Pode também ser usada em situações de agarrão, desarme ou quando estiver desarmado. Você usa Luta para fazer ataques corpo a corpo. Se passar na Classe de Armadura (CA) do alvo, você acerta e causa dano de acordo com a arma utilizada. Reação “Bloqueio”. Sempre que estiver em um combate, e escolher a reação “Bloqueio”’ você soma o bônus de seu Luta em sua Classe de Armadura (CA)."
-            },
-            "🦉 SABEDORIA": {
-                "Intuição": "Habilidade de ler emoções, detectar mentiras, perceber intenções ocultas ou sentir más vibrações. Intuição é o instinto afinado que diz quando algo está errado, mesmo sem provas. Empatas, inquisidores e detetives sensíveis dominam esta arte.",
-                "Percepção": "Capacidade de notar detalhes ao redor. Envolve detectar armadilhas, ouvir passos distantes, sentir cheiros suspeitos, ver além do óbvio. Percepção é a vigilância constante dos sentidos. Caçadores e sentinelas contam com ela para sobreviver.",
-                "Medicina": "Conhecimento de curas, ervas, tratamento de feridas, estabilização de moribundos, identificação de doenças e venenos. Em tempos onde magia curativa nem sempre está disponível, a medicina pode ser a diferença entre a vida e a morte. Primeiros Socorros (CD 20). Um personagem adjacente que esteja morrendo e inconsciente perde essas condições e fica com 1 PV. A CD aumenta em +5 para cada vez que ele tiver sido estabilizado na cena. Este uso gasta uma ação padrão. (Somente Treinada)",
-                "Natureza": "Sabedoria sobre o mundo natural. Inclui plantas, animais, clima, ecossistemas e perigos naturais. Ajuda a identificar criaturas selvagens, prever tempestades, encontrar ervas raras ou rastrear seres no mato. Druidas, caçadores e herbalistas são mestres nesta área.",
-                "Sobrevivência": "A perícia de se adaptar aos perigos do mundo selvagem. Desde acender fogueiras, montar acampamentos, caçar e rastrear presas até prever perigos naturais ou evitar áreas amaldiçoadas. Uma habilidade vital para quem trilha caminhos fora das cidades ou foge delas.",
-                "Vontade": "Representa a força interior e a estabilidade emocional. Resistir a encantamentos, manter a sanidade diante do horror, resistir a tortura psíquica, controlar impulsos destrutivos e manter-se fiel a seus ideais mesmo diante da corrupção. Monges, mártires e paladinos são exemplo de mentes inquebrantáveis."
-            },
-            "❤️ VIGOR": {
-                "Fortitude": "Representa a resistência física e imunológica do personagem. É a capacidade de resistir a doenças, venenos, fadiga extrema, torturas, fome e frio intenso. Também usada em testes de esforço corporal contínuo, como manter-se consciente após ferimentos graves."
-            }
+            "🏃‍♂️ AGILIDADE": { "Acrobacia": "Capacidade de realizar movimentos ágeis e controlados...", "Iniciativa": "Velocidade de reação quando o combate começa...", "Montaria": "Controle de veículos e montarias complexas...", "Furtividade": "A arte de mover-se sem ser notado...", "Pontaria": "Precisão com armas de longo alcance...", "Ladinagem": "Manipulação veloz e precisa com as mãos...", "Reflexos": "Rapidez em reagir a estímulos..." },
+            "✨ CARISMA": { "Adestramento": "Treinamento e comando de animais...", "Enganação": "A arte de manipular a verdade...", "Intimidação": "Uso da força de personalidade para impor medo...", "Persuasão": "A habilidade de influenciar e inspirar..." },
+            "🧠 INTELIGÊNCIA": { "Arcanismo": "Conhecimento das artes místicas...", "História": "Memória de tempos antigos...", "Investigação": "Capacidade de analisar cenários e reunir pistas...", "Ofício": "Criação, manutenção e reparo de objetos...", "Religião": "Conhecimento sobre divindades e rituais...", "Tecnologia": "Compreensão de mecanismos e engenhocas..." },
+            "🏋️ FORÇA": { "Atletismo": "Medida da força bruta aplicada com técnica...", "Luta": "Combate corpo a corpo com armas simples ou improvisadas..." },
+            "🦉 SABEDORIA": { "Intuição": "Habilidade de ler emoções e detectar mentiras...", "Percepção": "Capacidade de notar detalhes ao redor...", "Medicina": "Conhecimento de curas e tratamento de feridas...", "Natureza": "Sabedoria sobre o mundo natural...", "Sobrevivência": "A perícia de se adaptar ao mundo selvagem...", "Vontade": "Força interior e estabilidade emocional..." },
+            "❤️ VIGOR": { "Fortitude": "Resistência física e imunológica do personagem..." }
         };
+
         document.addEventListener('DOMContentLoaded', () => {
+            // Referências aos elementos do DOM
             const cardForm = document.getElementById('cardForm');
+            const spellForm = document.getElementById('spellForm');
             const cardsContainer = document.getElementById('cardsContainer');
+            const spellCardsContainer = document.getElementById('spellCardsContainer');
             const submitButton = document.getElementById('submitButton');
+            const spellSubmitButton = document.getElementById('spellSubmitButton');
             const thumbnailList = document.getElementById('thumbnail-list');
+            const spellThumbnailList = document.getElementById('spell-thumbnail-list');
+            const formTitle = document.getElementById('form-title');
+            const spellFormTitle = document.getElementById('spell-form-title');
 
             const cardTitleInput = document.getElementById('cardTitle');
             const cardSubTitleInput = document.getElementById('cardSubTitle');
@@ -558,9 +416,9 @@
             const characterImagePreview = document.getElementById('characterImagePreview');
             const backgroundImagePreview = document.getElementById('backgroundImagePreview');
             
-            const agilidadeInput = document.getElementById('agilidade');
-            const manaInput = document.getElementById('mana');
             const vidaInput = document.getElementById('vida');
+            const manaInput = document.getElementById('mana');
+            const agilidadeInput = document.getElementById('agilidade');
             const carismaInput = document.getElementById('carisma');
             const forcaInput = document.getElementById('forca');
             const inteligenciaInput = document.getElementById('inteligencia');
@@ -568,31 +426,113 @@
             const vigorInput = document.getElementById('vigor');
             
             const periciasCheckboxesContainer = document.getElementById('pericias-checkboxes-container');
+            const periciaDescriptionDisplay = document.getElementById('pericia-description-display');
             const periciaDescriptionTitle = document.getElementById('periciaDescriptionTitle');
             const periciaDescriptionText = document.getElementById('periciaDescriptionText');
-            const periciaDescriptionDisplay = document.getElementById('pericia-description-display');
 
-            // Novos elementos da tela de splash
+            const spellImageUpload = document.getElementById('spellImageUpload');
+            const spellImagePreview = document.getElementById('spellImagePreview');
+
             const splashScreen = document.getElementById('splashScreen');
-            const progressBar = document.getElementById('progressBar');
+            const loaderClipRect = document.getElementById('loaderClipRect');
             const progressText = document.getElementById('progressText');
             const mainContent = document.getElementById('mainContent');
-            const loadingMessages = [
-                'Invocando o Grimório...',
-                'Forjando Cartões...',
-                'Organizando o Inventário...',
-                'Sincronizando com os Reinos...'
-            ];
 
+            // Elementos do menu e seções
+            const showDisplayBtn = document.getElementById('showDisplayBtn');
+            const showCreationBtn = document.getElementById('showCreationBtn');
+            const showSpellCreationBtn = document.getElementById('showSpellCreationBtn');
+            const showSpellDisplayBtn = document.getElementById('showSpellDisplayBtn');
+            
+            const creationSection = document.getElementById('creation-section');
+            const displaySection = document.getElementById('display-section');
+            const spellCreationSection = document.getElementById('spell-creation-section');
+            const spellDisplaySection = document.getElementById('spell-display-section');
+
+            const loadingMessages = ['Invocando o Grimório...', 'Forjando Cartões...', 'Organizando o Inventário...', 'Sincronizando com os Reinos...'];
+
+            // Funções para controlar a visibilidade das seções
+            function showDisplayView() {
+                displaySection.classList.remove('hidden');
+                creationSection.classList.add('hidden');
+                spellCreationSection.classList.add('hidden');
+                spellDisplaySection.classList.add('hidden');
+                showDisplayBtn.classList.add('active');
+                showCreationBtn.classList.remove('active');
+                showSpellCreationBtn.classList.remove('active');
+                showSpellDisplayBtn.classList.remove('active');
+            }
+
+            function showCreationView(isEditing = false) {
+                creationSection.classList.remove('hidden');
+                displaySection.classList.add('hidden');
+                spellCreationSection.classList.add('hidden');
+                spellDisplaySection.classList.add('hidden');
+                showCreationBtn.classList.add('active');
+                showDisplayBtn.classList.remove('active');
+                showSpellCreationBtn.classList.remove('active');
+                showSpellDisplayBtn.classList.remove('active');
+                
+                if (!isEditing) {
+                    formTitle.textContent = "Criar Novo Cartão de Personagem";
+                    submitButton.textContent = 'Criar Cartão';
+                    submitButton.classList.add('btn-gradient-pulse');
+                    cardForm.reset();
+                    showImagePreview(characterImagePreview, null, true);
+                    showImagePreview(backgroundImagePreview, null, false);
+                    currentEditingCardId = null;
+                }
+            }
+            
+            function showSpellCreationView(isEditing = false) {
+                spellCreationSection.classList.remove('hidden');
+                displaySection.classList.add('hidden');
+                creationSection.classList.add('hidden');
+                spellDisplaySection.classList.add('hidden');
+                showSpellCreationBtn.classList.add('active');
+                showDisplayBtn.classList.remove('active');
+                showCreationBtn.classList.remove('active');
+                showSpellDisplayBtn.classList.remove('active');
+
+                if (!isEditing) {
+                    spellFormTitle.textContent = "Nova Magia ou Habilidade";
+                    spellSubmitButton.textContent = 'Salvar Magia';
+                    spellForm.reset();
+                    showImagePreview(spellImagePreview, null, true);
+                    currentEditingSpellId = null;
+                }
+            }
+
+            function showSpellDisplayView() {
+                spellDisplaySection.classList.remove('hidden');
+                displaySection.classList.add('hidden');
+                creationSection.classList.add('hidden');
+                spellCreationSection.classList.add('hidden');
+                showSpellDisplayBtn.classList.add('active');
+                showDisplayBtn.classList.remove('active');
+                showCreationBtn.classList.remove('active');
+                showSpellCreationBtn.classList.remove('active');
+                if(mySpellSwiper) mySpellSwiper.update();
+            }
+
+            showDisplayBtn.addEventListener('click', showDisplayView);
+            showCreationBtn.addEventListener('click', () => showCreationView(false));
+            showSpellCreationBtn.addEventListener('click', () => showSpellCreationView(false));
+            showSpellDisplayBtn.addEventListener('click', showSpellDisplayView);
+
+            // Funções da tela de splash
             function showSplash() {
                 splashScreen.classList.remove('hidden');
                 mainContent.classList.add('hidden');
-                progressBar.style.width = '0%';
+                if (loaderClipRect) loaderClipRect.setAttribute('height', '0');
                 progressText.textContent = 'Iniciando aventura...';
             }
 
             function updateProgress(percentage, message) {
-                progressBar.style.width = `${percentage}%`;
+                if (loaderClipRect) {
+                    const newHeight = 24 * (percentage / 100);
+                    loaderClipRect.setAttribute('height', newHeight);
+                }
                 if (message) {
                     progressText.textContent = `${message} (${percentage}%)`;
                 }
@@ -605,262 +545,108 @@
 
             function populatePericiasCheckboxes() {
                 periciasCheckboxesContainer.innerHTML = '';
-                
                 for (const attribute in periciasData) {
-                    if (periciasData.hasOwnProperty(attribute)) {
-                        const details = document.createElement('details');
-                        details.className = 'bg-gray-700 rounded-lg p-2 transition-all duration-300';
-                        details.innerHTML = `
-                            <summary class="flex items-center justify-between cursor-pointer font-semibold text-indigo-200">
-                                <span>${attribute}</span>
-                                <svg class="w-4 h-4 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </summary>
-                            <div class="mt-2 space-y-2 pl-4 border-l border-gray-600 pericias-list"></div>
-                        `;
-                        
-                        const periciasList = details.querySelector('.pericias-list');
-                        details.querySelector('summary').addEventListener('click', () => {
-                            setTimeout(() => {
-                                details.querySelector('svg').style.transform = details.open ? 'rotate(90deg)' : 'rotate(0deg)';
-                            }, 300);
+                    const details = document.createElement('details');
+                    details.className = 'bg-gray-700 rounded-lg p-2 transition-all duration-300';
+                    details.innerHTML = `<summary class="flex items-center justify-between cursor-pointer font-semibold text-indigo-200"><span>${attribute}</span><svg class="w-4 h-4 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg></summary><div class="mt-2 space-y-2 pl-4 border-l border-gray-600 pericias-list"></div>`;
+                    const periciasList = details.querySelector('.pericias-list');
+                    details.querySelector('summary').addEventListener('click', () => { setTimeout(() => { details.querySelector('svg').style.transform = details.open ? 'rotate(90deg)' : 'rotate(0deg)'; }, 300); });
+                    for (const periciaName in periciasData[attribute]) {
+                        const periciaItem = document.createElement('div');
+                        periciaItem.className = 'flex items-center pericia-item rounded-md p-1 cursor-pointer';
+                        periciaItem.innerHTML = `<input type="checkbox" id="pericia-${periciaName.replace(/\s+/g, '-')}" name="pericia" value="${periciaName}" class="form-checkbox h-4 w-4 text-indigo-500 rounded border-gray-600 focus:ring-indigo-500"><label for="pericia-${periciaName.replace(/\s+/g, '-')}" class="ml-2 text-sm text-gray-200 cursor-pointer">${periciaName}</label>`;
+                        periciasList.appendChild(periciaItem);
+                        periciaItem.addEventListener('click', (e) => {
+                            if (e.target.tagName !== 'INPUT') { const checkbox = periciaItem.querySelector('input'); checkbox.checked = !checkbox.checked; }
+                            periciaDescriptionTitle.textContent = periciaName;
+                            periciaDescriptionText.textContent = periciasData[attribute][periciaName];
+                            periciaDescriptionDisplay.classList.remove('hidden');
                         });
-
-                        for (const periciaName in periciasData[attribute]) {
-                            if (periciasData[attribute].hasOwnProperty(periciaName)) {
-                                const periciaItem = document.createElement('div');
-                                periciaItem.className = 'flex items-center pericia-item rounded-md p-1 cursor-pointer';
-                                periciaItem.innerHTML = `
-                                    <input type="checkbox" id="pericia-${periciaName.replace(/\s+/g, '-')}" name="pericia" value="${periciaName}"
-                                           class="form-checkbox h-4 w-4 text-indigo-500 rounded border-gray-600 focus:ring-indigo-500">
-                                    <label for="pericia-${periciaName.replace(/\s+/g, '-')}" class="ml-2 text-sm text-gray-200 cursor-pointer">${periciaName}</label>
-                                `;
-                                periciasList.appendChild(periciaItem);
-
-                                periciaItem.addEventListener('click', (e) => {
-                                    if (e.target.tagName !== 'INPUT') {
-                                        const checkbox = periciaItem.querySelector('input');
-                                        checkbox.checked = !checkbox.checked;
-                                    }
-                                    periciaDescriptionTitle.textContent = periciaName;
-                                    periciaDescriptionText.textContent = periciasData[attribute][periciaName];
-                                    periciaDescriptionDisplay.classList.remove('hidden');
-                                });
-                            }
-                        }
-                        periciasCheckboxesContainer.appendChild(details);
                     }
+                    periciasCheckboxesContainer.appendChild(details);
                 }
             }
 
+            // Variáveis de estado e IndexedDB
             let currentEditingCardId = null;
+            let currentEditingSpellId = null;
             let mySwiper = null;
+            let mySpellSwiper = null;
             let db;
-            const DB_NAME = 'rpgCardCreatorDB';
-            const DB_VERSION = 1;
-            const STORE_NAME = 'rpgCards';
-            let characterImageUrl = '';
-            let backgroundImageUrl = '';
-            let characterImageFile = null;
-            let backgroundImageFile = null;
+            const DB_NAME = 'rpgCreatorDB', DB_VERSION = 2;
+            const CARD_STORE_NAME = 'rpgCards';
+            const SPELL_STORE_NAME = 'rpgSpells';
+            let characterImageFile = null, backgroundImageFile = null, spellImageFile = null;
 
-            function bufferToBlob(buffer, mimeType) {
-                return new Blob([buffer], { type: mimeType });
-            }
-
-            function rgbToHsl(r, g, b) {
-                r /= 255; g /= 255; b /= 255;
-                let max = Math.max(r, g, b), min = Math.min(r, g, b);
-                let h, s, l = (max + min) / 2;
-                if (max === min) {
-                    h = s = 0;
-                } else {
-                    let d = max - min;
-                    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-                    switch (max) {
-                        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-                        case g: h = (b - r) / d + 2; break;
-                        case b: h = (r - g) / d + 4; break;
-                    }
-                    h /= 6;
-                }
-                return [h, s, l];
-            }
-
-            function hslToRgb(h, s, l) {
-                let r, g, b;
-                if (s === 0) {
-                    r = g = b = l;
-                } else {
-                    const hue2rgb = (p, q, t) => {
-                        if (t < 0) t += 1;
-                        if (t > 1) t -= 1;
-                        if (t < 1 / 6) return p + (q - p) * 6 * t;
-                        if (t < 1 / 2) return q;
-                        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-                        return p;
-                    };
-                    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-                    const p = 2 * l - q;
-                    r = hue2rgb(p, q, h + 1 / 3);
-                    g = hue2rgb(p, q, h);
-                    b = hue2rgb(p, q, h - 1 / 3);
-                }
-                return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
-            }
-
-            function getPredominantColorAndPalette(imageUrl) {
-                return new Promise((resolve, reject) => {
-                    const img = new Image();
-                    img.crossOrigin = "Anonymous";
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-                        ctx.drawImage(img, 0, 0, img.width, img.height);
-                        
-                        try {
-                            const imageData = ctx.getImageData(0, 0, img.width, img.height).data;
-                            let r = 0, g = 0, b = 0, count = 0;
-                            const step = 4 * 10;
-                            for (let i = 0; i < imageData.length; i += step) {
-                                r += imageData[i];
-                                g += imageData[i + 1];
-                                b += imageData[i + 2];
-                                count++;
-                            }
-
-                            const avgR = Math.floor(r / count);
-                            const avgG = Math.floor(g / count);
-                            const avgB = Math.floor(b / count);
-                            let [h, s, l] = rgbToHsl(avgR, avgG, avgB);
-                            const isLightBackground = l > 0.5;
-                            const textColor = isLightBackground ? 'rgb(31, 41, 55)' : 'rgb(243, 244, 246)';
-                            const cardBg = isLightBackground ? 'rgba(255, 255, 255, 0.8)' : 'rgba(31, 41, 55, 0.9)';
-
-                            const palette = {
-                                cardBg: cardBg,
-                                highlightColor: hslToRgb(h, Math.min(s * 1.5, 1), isLightBackground ? Math.max(l * 0.7, 0.3) : Math.min(l * 1.5, 0.7)),
-                                textColor: textColor,
-                                borderColor: hslToRgb(h, s, isLightBackground ? Math.max(l * 0.7, 0.3) : Math.min(l * 1.5, 0.7)),
-                            };
-                            
-                            resolve(palette);
-                        } catch (e) {
-                            console.error('Erro ao processar imagem para paleta:', e);
-                            reject(e);
+            function bufferToBlob(buffer, mimeType) { return new Blob([buffer], { type: mimeType }); }
+            function rgbToHsl(r, g, b) { r /= 255; g /= 255; b /= 255; let max = Math.max(r, g, b), min = Math.min(r, g, b); let h, s, l = (max + min) / 2; if (max === min) { h = s = 0; } else { let d = max - min; s = l > 0.5 ? d / (2 - max - min) : d / (max + min); switch (max) { case r: h = (g - b) / d + (g < b ? 6 : 0); break; case g: h = (b - r) / d + 2; break; case b: h = (r - g) / d + 4; break; } h /= 6; } return [h, s, l]; }
+            function hslToRgb(h, s, l) { let r, g, b; if (s === 0) { r = g = b = l; } else { const hue2rgb = (p, q, t) => { if (t < 0) t += 1; if (t > 1) t -= 1; if (t < 1 / 6) return p + (q - p) * 6 * t; if (t < 1 / 2) return q; if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6; return p; }; const q = l < 0.5 ? l * (1 + s) : l + s - l * s; const p = 2 * l - q; r = hue2rgb(p, q, h + 1 / 3); g = hue2rgb(p, q, h); b = hue2rgb(p, q, h - 1 / 3); } return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`; }
+            function getPredominantColorAndPalette(imageUrl) { return new Promise((resolve, reject) => { const img = new Image(); img.crossOrigin = "Anonymous"; img.onload = () => { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); canvas.width = img.width; canvas.height = img.height; ctx.drawImage(img, 0, 0, img.width, img.height); try { const imageData = ctx.getImageData(0, 0, img.width, img.height).data; let r = 0, g = 0, b = 0, count = 0; const step = 4 * 10; for (let i = 0; i < imageData.length; i += step) { r += imageData[i]; g += imageData[i + 1]; b += imageData[i + 2]; count++; } const avgR = Math.floor(r / count), avgG = Math.floor(g / count), avgB = Math.floor(b / count); let [h, s, l] = rgbToHsl(avgR, avgG, avgB); const isLight = l > 0.5; resolve({ cardBg: isLight ? 'rgba(255, 255, 255, 0.8)' : 'rgba(31, 41, 55, 0.9)', highlightColor: hslToRgb(h, Math.min(s*1.5,1), isLight ? Math.max(l*0.7,0.3) : Math.min(l*1.5,0.7)), textColor: isLight ? 'rgb(31, 41, 55)' : 'rgb(243, 244, 246)', borderColor: hslToRgb(h, s, isLight ? Math.max(l*0.7,0.3) : Math.min(l*1.5,0.7)) }); } catch (e) { reject(e); } }; img.onerror = (e) => reject(e); img.src = imageUrl; }); }
+            
+            function openDatabase() { 
+                return new Promise((resolve, reject) => { 
+                    const req = indexedDB.open(DB_NAME, DB_VERSION); 
+                    req.onsuccess = (e) => { db = e.target.result; resolve(db); }; 
+                    req.onerror = (e) => reject(e.target.error); 
+                    req.onupgradeneeded = (e) => { 
+                        db = e.target.result; 
+                        if (!db.objectStoreNames.contains(CARD_STORE_NAME)) { 
+                            db.createObjectStore(CARD_STORE_NAME, { keyPath: 'id' }); 
                         }
-                    };
-                    img.onerror = (e) => reject(e);
-                    img.src = imageUrl;
-                });
-            }
-
-            function openDatabase() {
-                return new Promise((resolve, reject) => {
-                    const request = indexedDB.open(DB_NAME, DB_VERSION);
-                    request.onsuccess = (event) => {
-                        db = event.target.result;
-                        console.log('IndexedDB aberto com sucesso');
-                        resolve(db);
-                    };
-                    request.onerror = (event) => {
-                        console.error('Erro ao abrir o IndexedDB:', event.target.error);
-                        reject(event.target.error);
-                    };
-                    request.onupgradeneeded = (event) => {
-                        db = event.target.result;
-                        if (!db.objectStoreNames.contains(STORE_NAME)) {
-                            db.createObjectStore(STORE_NAME, { keyPath: 'id' });
-                            console.log('Object store criado com sucesso.');
+                        if (!db.objectStoreNames.contains(SPELL_STORE_NAME)) {
+                            db.createObjectStore(SPELL_STORE_NAME, { keyPath: 'id' });
                         }
-                    };
-                });
+                    }; 
+                }); 
+            }
+            
+            async function saveData(storeName, data) { 
+                const tx = db.transaction([storeName], 'readwrite'); 
+                const store = tx.objectStore(storeName); 
+                return new Promise((resolve, reject) => { 
+                    const req = store.put(data); 
+                    req.onsuccess = () => resolve(); 
+                    req.onerror = (e) => reject(e.target.error); 
+                }); 
+            }
+            async function getData(storeName) { 
+                const tx = db.transaction([storeName], 'readonly'); 
+                const store = tx.objectStore(storeName); 
+                return new Promise((resolve, reject) => { 
+                    const req = store.getAll(); 
+                    req.onsuccess = (e) => resolve(e.target.result); 
+                    req.onerror = (e) => reject(e.target.error); 
+                }); 
+            }
+            async function removeData(storeName, id) { 
+                const tx = db.transaction([storeName], 'readwrite'); 
+                const store = tx.objectStore(storeName); 
+                return new Promise((resolve, reject) => { 
+                    const req = store.delete(id); 
+                    req.onsuccess = () => resolve(); 
+                    req.onerror = (e) => reject(e.target.error); 
+                }); 
             }
 
-            async function saveCard(cardData) {
-                const transaction = db.transaction([STORE_NAME], 'readwrite');
-                const store = transaction.objectStore(STORE_NAME);
-                
-                return new Promise((resolve, reject) => {
-                    const request = store.put(cardData);
-                    request.onsuccess = () => {
-                        console.log('Cartão salvo no IndexedDB.');
-                        resolve();
-                    };
-                    request.onerror = (event) => {
-                        console.error('Erro ao salvar cartão:', event.target.error);
-                        reject(event.target.error);
-                    };
-                });
-            }
+            function initSwiper() { if (mySwiper) mySwiper.destroy(true, true); mySwiper = new Swiper('.mySwiper', { slidesPerView: 1, spaceBetween: 30, loop: false, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' } }); }
+            function initSpellSwiper() { if (mySpellSwiper) mySpellSwiper.destroy(true, true); mySpellSwiper = new Swiper('.mySpellSwiper', { slidesPerView: 1, spaceBetween: 30, loop: false, navigation: { nextEl: '.spell-nav.swiper-button-next', prevEl: '.spell-nav.swiper-button-prev' } }); }
 
-            async function getCards() {
-                const transaction = db.transaction([STORE_NAME], 'readonly');
-                const store = transaction.objectStore(STORE_NAME);
-
-                return new Promise((resolve, reject) => {
-                    const request = store.getAll();
-                    request.onsuccess = (event) => {
-                        resolve(event.target.result);
-                    };
-                    request.onerror = (event) => {
-                        console.error('Erro ao obter cartões:', event.target.error);
-                        reject(event.target.error);
-                    };
-                });
-            }
-
-            async function removeCardFromDB(cardId) {
-                const transaction = db.transaction([STORE_NAME], 'readwrite');
-                const store = transaction.objectStore(STORE_NAME);
-                return new Promise((resolve, reject) => {
-                    const request = store.delete(cardId);
-                    request.onsuccess = () => {
-                        console.log('Cartão removido do IndexedDB.');
-                        resolve();
-                    };
-                    request.onerror = (event) => {
-                        console.error('Erro ao remover cartão:', event.target.error);
-                        reject(event.target.error);
-                    };
-                });
-            }
-
-            function initSwiper() {
-                if (mySwiper) {
-                    mySwiper.destroy(true, true);
-                }
-                mySwiper = new Swiper('.mySwiper', {
-                    slidesPerView: 1,
-                    spaceBetween: 30,
-                    loop: false,
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true,
-                    },
-                    navigation: {
-                        nextEl: '.swiper-button-next',
-                        prevEl: '.swiper-button-prev',
-                    },
-                });
-            }
-
+            // --- Funções CRUD para Cartões de Personagem ---
             async function editCard(cardId) {
-                const allCards = await getCards();
+                const allCards = await getData(CARD_STORE_NAME);
                 const cardData = allCards.find(card => card.id === cardId);
                 if (!cardData) return;
                 
-                currentEditingCardId = cardId;
+                showCreationView(true);
+                formTitle.textContent = `Editando: ${cardData.title}`;
                 
+                currentEditingCardId = cardId;
                 cardTitleInput.value = cardData.title;
                 cardSubTitleInput.value = cardData.subTitle;
                 cardLevelInput.value = cardData.level;
-                agilidadeInput.value = cardData.attributes.agilidade;
-                manaInput.value = cardData.attributes.mana;
                 vidaInput.value = cardData.attributes.vida;
+                manaInput.value = cardData.attributes.mana;
+                agilidadeInput.value = cardData.attributes.agilidade;
                 carismaInput.value = cardData.attributes.carisma;
                 forcaInput.value = cardData.attributes.forca;
                 inteligenciaInput.value = cardData.attributes.inteligencia;
@@ -877,26 +663,17 @@
 
                 if (cardData.image) {
                     const imageBlob = bufferToBlob(cardData.image, cardData.imageMimeType);
-                    characterImageUrl = URL.createObjectURL(imageBlob);
-                    showImagePreview(characterImagePreview, characterImageUrl, true);
+                    showImagePreview(characterImagePreview, URL.createObjectURL(imageBlob), true);
                     characterImageFile = null;
-                } else {
-                    characterImageUrl = '';
-                    showImagePreview(characterImagePreview, null, true);
-                }
+                } else { showImagePreview(characterImagePreview, null, true); }
 
                 if (cardData.backgroundImage) {
                     const backgroundBlob = bufferToBlob(cardData.backgroundImage, cardData.backgroundMimeType);
-                    backgroundImageUrl = URL.createObjectURL(backgroundBlob);
-                    showImagePreview(backgroundImagePreview, backgroundImageUrl, false);
-                } else {
-                    backgroundImageUrl = '';
-                    showImagePreview(backgroundImagePreview, null, false);
-                }
+                    showImagePreview(backgroundImagePreview, URL.createObjectURL(backgroundBlob), false);
+                } else { showImagePreview(backgroundImagePreview, null, false); }
 
                 characterImageUpload.value = null;
                 backgroundImageUpload.value = null;
-
                 submitButton.textContent = 'Salvar Edição';
                 submitButton.classList.remove('btn-gradient-pulse');
             }
@@ -904,42 +681,28 @@
             async function renderCardsAndThumbnails() {
                 cardsContainer.innerHTML = '';
                 thumbnailList.innerHTML = '';
-                
-                const allCards = await getCards();
-                
+                const allCards = await getData(CARD_STORE_NAME);
                 if (allCards.length === 0) {
-                    thumbnailList.innerHTML = '<p class="text-gray-500 text-center w-full">Nenhum cartão salvo ainda. Crie um para começar!</p>';
+                    thumbnailList.innerHTML = '<p class="text-gray-500 text-center w-full">Nenhum personagem salvo. Crie um para começar!</p>';
                 } else {
                     let cardsLoaded = 0;
-                    const totalCards = allCards.length;
-                    
                     for (const cardData of allCards) {
                         let imageURL = 'https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';
-                        let backgroundURL = 'https://placehold.co/400x600/1e293b/d1d5db?text=Fundo+do+Cartão';
-
-                        if (cardData.image && cardData.imageMimeType) {
-                            const imageBlob = bufferToBlob(cardData.image, cardData.imageMimeType);
-                            imageURL = URL.createObjectURL(imageBlob);
-                        }
-                        if (cardData.backgroundImage && cardData.backgroundMimeType) {
-                            const backgroundBlob = bufferToBlob(cardData.backgroundImage, cardData.backgroundMimeType);
-                            backgroundURL = URL.createObjectURL(backgroundBlob);
-                        }
-
+                        let backgroundURL = 'https://placehold.co/400x600/1e293b/d1d5db?text=Fundo';
+                        if (cardData.image) imageURL = URL.createObjectURL(bufferToBlob(cardData.image, cardData.imageMimeType));
+                        if (cardData.backgroundImage) backgroundURL = URL.createObjectURL(bufferToBlob(cardData.backgroundImage, cardData.backgroundMimeType));
+                        
                         const cardWrapper = await createCardElement({...cardData, imageURL, backgroundURL});
                         cardsContainer.appendChild(cardWrapper);
-                        
                         const thumbnail = createThumbnailElement({...cardData, imageURL, backgroundURL});
                         thumbnailList.appendChild(thumbnail);
                         
                         cardsLoaded++;
-                        const percentage = Math.round((cardsLoaded / totalCards) * 100);
+                        const percentage = Math.round((cardsLoaded / allCards.length) * 50); // 0 to 50% for characters
                         updateProgress(percentage, loadingMessages[Math.floor(Math.random() * loadingMessages.length)]);
                     }
                 }
                 initSwiper();
-                part();
-                setTimeout(hideSplash, 1000); // Esconde a tela de splash após 1 segundo
             }
 
             async function createCardElement(cardData) {
@@ -949,340 +712,319 @@
                 cardDiv.className = 'w-full h-auto rounded-3xl shadow-2xl rpg-card';
                 cardDiv.dataset.cardId = cardData.id;
                 cardDiv.style.backgroundImage = `url(${cardData.backgroundURL})`;
-                let palette = {
-                    cardBg: 'rgba(31, 41, 55, 0.9)',
-                    highlightColor: '#6366f1',
-                    textColor: '#e5e7eb',
-                    borderColor: '#4b5563'
-                };
+                let palette = { cardBg: 'rgba(31,41,55,0.9)', highlightColor: '#6366f1', textColor: '#e5e7eb', borderColor: '#4b5563' };
                 if (cardData.backgroundURL && !cardData.backgroundURL.includes('placehold.co')) {
-                    try {
-                        palette = await getPredominantColorAndPalette(cardData.backgroundURL);
-                    } catch (e) {
-                        console.error('Falha ao gerar paleta de cores, usando padrão.', e);
-                    }
+                    try { palette = await getPredominantColorAndPalette(cardData.backgroundURL); } catch (e) { console.error('Falha ao gerar paleta.', e); }
                 }
-                const periciasString = Array.isArray(cardData.attributes.pericias) && cardData.attributes.pericias.length > 0
-                            ? cardData.attributes.pericias.join(', ')
-                            : 'Nenhuma';
+                const periciasString = Array.isArray(cardData.attributes.pericias) && cardData.attributes.pericias.length > 0 ? cardData.attributes.pericias.join(', ') : 'Nenhuma';
                 cardDiv.innerHTML = `
-                <div class="card-3d-container">
-                    <div class="card-3d divPartculas">
-                        <div class="card-front" style="border-color: ${palette.borderColor}">
-                            <div class=" rounded-3xl relative w-full h-full p-4 ex-max" style="background-image:url(${cardData.backgroundURL}) !important; background-size: cover !important; height: 650px; display: flex; flex-direction: column; align-items: center; background-color: rgb(0 0 0 / 50%); background-blend-mode: multiply; justify-content: space-between;">
-                                <div class="absolute top-4 left-4 rounded-full w-14 h-14 flex items-center justify-center font-bold" style="z-index: 1; border: 2px solid ${palette.highlightColor}; background-color: #1f2937; color: ${palette.textColor}; display: flex; flex-direction: column; justify-content: center; padding: 5px; align-content: center; align-items: center;">
-                                    <small style="background: #1f2937; border: 2px solid ${palette.highlightColor}; border-bottom: 0; border-right: 0;">PM</small>
-                                    ${cardData.attributes.mana || '?'} 
-                                </div>
-                                <div class="absolute top-4 right-4 rounded-full w-14 h-14 flex items-center justify-center font-bold" style="z-index: 1;border: 2px solid ${palette.highlightColor}; background-color: #1f2937; color: ${palette.textColor}; display: flex; flex-direction: column; justify-content: center; padding: 5px; align-content: center; align-items: center;">
-                                    <small  style="background: #1f2937; left: auto; right: -10px;  border: 2px solid ${palette.highlightColor}; border-bottom: 0; border-left: 0;"">PV</small>
-                                    ${cardData.attributes.vida || '?'} 
-                                </div>
-                                <div class="text-center" style="width: 60%;">
-                                    <h3 class="text-2xl font-bold" style="color: ${palette.highlightColor};">${cardData.title || 'Novo Cartão'}</h3>
-                                    <div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent); width: 100%"></div>
-                                    <p class="text-sm italic" style="color: ${palette.highlightColor};">${cardData.subTitle || 'Subtítulo'}</p>
-                                </div>
-                                <div class="wave-container flex justify-center img-max" style="position: relative; width: 200px !important; height: 200px;">
-                                    <img style="border-color: ${palette.borderColor}; z-index: 1; height: 200px" src="${cardData.imageURL}" onerror="this.onerror=null;this.src='https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';" alt="Imagem do personagem" class="object-cover rounded-full border-4 border-white shadow-lg w-full h-full">
-                                </div>
-                                <div class="p-3 rounded-3xl text-center w-full rpg-card-frame" style="--card-bg-color: ${palette.cardBg}; z-index: 1; --text-color: ${palette.textColor}; --border-color: ${palette.borderColor};">
-                                    <h4 class="text-base font-bold" style="color: ${palette.textColor};">Nível: <span style="color: ${palette.highlightColor};">${cardData.level || '?'}</span></h4>
-                                    <div class="flex items-center justify-center w-full">
-                                        <div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent);"></div>
-                                    </div>
-                                    
-                                    <div class="mt-2 flex flex-col space-y-2 text-xs">
-                                        <div class="flex items-center space-x-2">
-                                            <span class="font-bold">AGI</span>
-                                            <div class="stat-bar flex-grow" style="margin-top: 0">
-                                                <div class="stat-fill" style="width: ${(cardData.attributes.agilidade * 100)/ 3}%; background: ${palette.borderColor}"></div>
-                                            </div>
-                                            <span class="text-xs font-bold ml-auto">${cardData.attributes.agilidade} / 3</span>
-                                        </div>                                   
-                                    </div>
-                                    <div class="mt-2 flex flex-col space-y-2 text-xs">
-                                        <div class="flex items-center space-x-2">
-                                            <span class="font-bold">CAR</span>
-                                            <div class="stat-bar flex-grow" style="margin-top: 0">
-                                                <div class="stat-fill" style="width: ${(cardData.attributes.carisma * 100) / 3}%; background: ${palette.borderColor}"></div>
-                                            </div>
-                                            <span class="text-xs font-bold ml-auto">${cardData.attributes.carisma} / 3</span>
-                                        </div>                                   
-                                    </div>
-                                    <div class="mt-2 flex flex-col space-y-2 text-xs">
-                                        <div class="flex items-center space-x-2">
-                                            <span class="font-bold">FOR</span>
-                                            <div class="stat-bar flex-grow" style="margin-top: 0">
-                                                <div class="stat-fill" style="width: ${(cardData.attributes.forca * 100) / 3}%; background: ${palette.borderColor}"></div>
-                                            </div>
-                                            <span class="text-xs font-bold ml-auto">${cardData.attributes.forca} / 3</span>
-                                        </div>                                   
-                                    </div>
-                                    <div class="mt-2 flex flex-col space-y-2 text-xs">
-                                        <div class="flex items-center space-x-2">
-                                            <span class="font-bold">INT</span>
-                                            <div class="stat-bar flex-grow" style="margin-top: 0">
-                                                <div class="stat-fill" style="width: ${(cardData.attributes.inteligencia * 100) / 3}%; background: ${palette.borderColor}"></div>
-                                            </div>
-                                            <span class="text-xs font-bold ml-auto">${cardData.attributes.inteligencia} / 3</span>
-                                        </div>                                   
-                                    </div>
-                                    <div class="mt-2 flex flex-col space-y-2 text-xs">
-                                        <div class="flex items-center space-x-2">
-                                            <span class="font-bold">SAB</span>
-                                            <div class="stat-bar flex-grow" style="margin-top: 0">
-                                                <div class="stat-fill" style="width: ${(cardData.attributes.sabedoria * 100) / 3}%; background: ${palette.borderColor}"></div>
-                                            </div>
-                                            <span class="text-xs font-bold ml-auto">${cardData.attributes.sabedoria} / 3</span>
-                                        </div>                                   
-                                    </div>
-                                    <div class="mt-2 flex flex-col space-y-2 text-xs">
-                                        <div class="flex items-center space-x-2">
-                                            <span class="font-bold">VIG</span>
-                                            <div class="stat-bar flex-grow" style="margin-top: 0">
-                                                <div class="stat-fill" style="width: ${(cardData.attributes.vigor * 100) / 3}%; background: ${palette.borderColor}"></div>
-                                            </div>
-                                            <span class="text-xs font-bold ml-auto">${cardData.attributes.vigor} / 3</span>
-                                        </div>                                   
-                                    </div>
-                                    <div class="flex flex-col gap-2">                                       
-                                        <div class="flex items-center justify-center w-full">
-                                            <div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent);"></div>
-                                        </div>
-                                        <p class="text-xs text-gray-400 italic">Perícias</p>                                      
-                                        <p class="text-xs text-gray-400 italic" style="font-size: 11px;">${periciasString}</p>                                   
+                    <div class="card-3d-container">
+                        <div class="card-3d divPartculas">
+                            <div class="card-front" style="border-color: ${palette.borderColor}">
+                                <div class="rounded-3xl relative w-full h-full p-4 ex-max" style="background-image:url(${cardData.backgroundURL}) !important; height: 600px; display: flex; flex-direction: column; align-items: center; background-color: rgb(0 0 0 / 50%); justify-content: space-between;">
+                                    <div class="absolute top-4 left-4 rounded-full w-14 h-14 flex items-center justify-center font-bold" style="z-index: 1; border: 2px solid ${palette.highlightColor}; background-color: #1f2937; color: ${palette.textColor};"><small style="background: #1f2937; border: 2px solid ${palette.highlightColor}; border-bottom: 0; border-right: 0;">PM</small>${cardData.attributes.mana || '?'}</div>
+                                    <div class="absolute top-4 right-4 rounded-full w-14 h-14 flex items-center justify-center font-bold" style="z-index: 1;border: 2px solid ${palette.highlightColor}; background-color: #1f2937; color: ${palette.textColor};"><small style="background: #1f2937; left: auto; right: -10px; border: 2px solid ${palette.highlightColor}; border-bottom: 0; border-left: 0;">PV</small>${cardData.attributes.vida || '?'}</div>
+                                    <div class="text-center" style="width: 60%;"><h3 class="text-2xl font-bold" style="color: ${palette.highlightColor};">${cardData.title}</h3><div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent); width: 100%"></div><p class="text-sm italic" style="color: ${palette.highlightColor};">${cardData.subTitle}</p></div>
+                                    <div class="wave-container flex justify-center img-max" style="position: relative; width: 200px !important; height: 200px;"><img style="border-color: ${palette.borderColor}; z-index: 1; height: 200px" src="${cardData.imageURL}" onerror="this.src='https://placehold.co/160x160/E5E7EB/4B5563?text=Personagem';" alt="Imagem do personagem" class="object-cover rounded-full border-4 border-white shadow-lg w-full h-full"></div>
+                                    <div class="p-3 rounded-3xl text-center w-full rpg-card-frame" style="--card-bg-color: ${palette.cardBg}; z-index: 1; --text-color: ${palette.textColor}; --border-color: ${palette.borderColor};">
+                                        <h4 class="text-base font-bold" style="color: ${palette.textColor};">Nível: <span style="color: ${palette.highlightColor};">${cardData.level}</span></h4>
+                                        <div class="flex items-center justify-center w-full"><div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent);"></div></div>
+                                        ${Object.entries(cardData.attributes).filter(([key]) => !['vida', 'mana', 'pericias'].includes(key)).map(([key, value]) => `<div class="mt-2 flex items-center space-x-2 text-xs"><span class="font-bold w-8">${key.slice(0,3).toUpperCase()}</span><div class="stat-bar flex-grow" style="margin-top: 0"><div class="stat-fill" style="width: ${(value * 100) / 3}%; background: ${palette.borderColor}"></div></div><span class="text-xs font-bold ml-auto">${value} / 3</span></div>`).join('')}
+                                        <div class="flex flex-col gap-2 mt-4"><div class="flex items-center justify-center w-full"><div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent);"></div></div><p class="text-xs text-gray-400 italic">Perícias</p><p class="text-xs text-gray-400 italic" style="font-size: 11px;">${periciasString}</p></div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="card-back divPartculas" style="background-image:url(${cardData.backgroundURL}) !important; background-size: cover !important; background-color: rgb(0 0 0 / 50%);background-blend-mode: multiply;"><div class="back-content" style="border: 5px solid ${palette.borderColor};"><h2>Detalhes</h2><p>Informações adicionais ou lore do personagem aqui.</p></div></div>
                         </div>
-                        <div class="card-back divPartculas" style="background-image:url(${cardData.backgroundURL}) !important; background-size: cover !important; background-color: rgb(0 0 0 / 50%);background-blend-mode: multiply;">
-                            <div class="back-content " style="border: 5px solid ${palette.borderColor};">
-                                <h2></h2>
-                                <p></p>
-                            </div>
-                        </div>
-                    </div>
-                </div> `;
-                
+                    </div>`;
                 const buttonsDiv = document.createElement('div');
                 buttonsDiv.className = 'flex justify-center space-x-2 w-full';
-                buttonsDiv.innerHTML = `
-                    <button class="w-1/3 py-3 px-4 rounded-full text-sm font-bold text-white bg-indigo-500 hover:bg-indigo-600 transition-colors duration-200 edit-btn" data-card-id="${cardData.id}" style="border-radius: 50px 0px 0px 50px; background-color: ${palette.cardBg};">
-                        Editar
-                    </button>
-                    <button class="w-1/3 py-3 px-4 rounded-full text-sm font-bold text-white bg-red-500 hover:bg-red-600 transition-colors duration-200 remove-btn" data-card-id="${cardData.id}"  style="border-radius: 0; background-color: ${palette.highlightColor};">
-                        Excluir
-                    </button>
-                    <button class="w-1/3 py-3 px-4 rounded-full text-sm font-bold text-white bg-purple-500 hover:bg-purple-600 transition-colors duration-200 fullscreen-btn" data-card-id="${cardData.id}" style="border-radius: 0px 50px 50px 0px; background-color: ${palette.cardBg};">
-                        Expandir
-                    </button>
-                `;
-
+                buttonsDiv.innerHTML = `<button class="w-1/3 py-3 px-4 text-sm font-bold text-white transition-colors duration-200 edit-btn" data-card-id="${cardData.id}" style="border-radius: 50px 0 0 50px; background-color: ${palette.cardBg};">Editar</button><button class="w-1/3 py-3 px-4 text-sm font-bold text-white transition-colors duration-200 remove-btn" data-card-id="${cardData.id}" style="border-radius: 0; background-color: ${palette.highlightColor};">Excluir</button><button class="w-1/3 py-3 px-4 text-sm font-bold text-white transition-colors duration-200 fullscreen-btn" data-card-id="${cardData.id}" style="border-radius: 0 50px 50px 0; background-color: ${palette.cardBg};">Expandir</button>`;
                 cardWrapper.appendChild(cardDiv);
                 const card3d = cardDiv.querySelector('.card-3d');
-                if (card3d) {
-                    card3d.addEventListener('click', () => {
-                        if (card3d.style.transform === 'rotateY(180deg)') {
-                            card3d.style.transform = 'rotateY(0deg)';
-                        } else {
-                            card3d.style.transform = 'rotateY(180deg)';
-                        }
-                    });
-
-                    card3d.addEventListener('mousemove', (e) => {
-                        const rect = card3d.getBoundingClientRect();
-                        const x = e.clientX - rect.left - rect.width / 2;
-                        const y = e.clientY - rect.top - rect.height / 2;
-                        const rotateX = (-y / rect.height) * 20;
-                        const rotateY = (x / rect.width) * 20;
-                        card3d.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
-                    });
-
-                    card3d.addEventListener('mouseleave', () => {
-                        card3d.style.transform = 'rotateY(0deg) rotateX(0deg)';
-                    });
-                }
+                if(card3d){card3d.addEventListener('click',()=>card3d.style.transform=card3d.style.transform==='rotateY(180deg)'?'rotateY(0deg)':'rotateY(180deg)');card3d.addEventListener('mousemove',(e)=>{const rect=card3d.getBoundingClientRect();const x=e.clientX-rect.left-rect.width/2;const y=e.clientY-rect.top-rect.height/2;card3d.style.transform=`rotateY(${(x/rect.width)*20}deg) rotateX(${(-y/rect.height)*20}deg)`;});card3d.addEventListener('mouseleave',()=>card3d.style.transform='rotateY(0deg) rotateX(0deg)');}
                 cardWrapper.appendChild(buttonsDiv);
                 return cardWrapper;
             }
 
             function createThumbnailElement(cardData) {
-                const thumbnailWrapper = document.createElement('div');
-                thumbnailWrapper.className = 'relative w-20 h-24 rounded-lg overflow-hidden shadow-lg border-2 border-gray-400 cursor-pointer hover:border-indigo-500 transition-colors duration-200';
-                thumbnailWrapper.dataset.cardId = cardData.id;
-                thumbnailWrapper.style.backgroundImage = `url(${cardData.backgroundURL})`;
-                thumbnailWrapper.style.backgroundSize = 'cover';
-                thumbnailWrapper.style.backgroundPosition = 'center';
-                thumbnailWrapper.style.minWidth = '5rem';
-                thumbnailWrapper.innerHTML = `
-                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                        <img src="${cardData.imageURL}" onerror="this.onerror=null;this.src='https://placehold.co/40x40/E5E7EB/4B5563?text=P';" alt="Miniatura do personagem" class="w-10 h-10 object-cover rounded-full border-2 border-white">
-                    </div>
-                    <div class="absolute bottom-1 left-1 bg-gray-800 text-white text-xs px-2 py-1 rounded-full font-bold">
-                        Lv.${cardData.level || '?'}
-                    </div>
-                `;
-                thumbnailWrapper.addEventListener('click', async () => {
-                    await editCard(cardData.id);
-                    const allCards = await getCards();
+                const thumb = document.createElement('div');
+                thumb.className = 'relative w-20 h-24 rounded-lg overflow-hidden shadow-lg border-2 border-gray-400 cursor-pointer hover:border-indigo-500 transition-colors duration-200';
+                thumb.dataset.cardId = cardData.id;
+                thumb.style.backgroundImage = `url(${cardData.backgroundURL})`;
+                thumb.style.backgroundSize = 'cover';
+                thumb.style.backgroundPosition = 'center';
+                thumb.style.minWidth = '5rem';
+                thumb.innerHTML = `<div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center"><img src="${cardData.imageURL}" onerror="this.src='https://placehold.co/40x40/E5E7EB/4B5563?text=P';" alt="Miniatura" class="w-10 h-10 object-cover rounded-full border-2 border-white"></div><div class="absolute bottom-1 left-1 bg-gray-800 text-white text-xs px-2 py-1 rounded-full font-bold">Lv.${cardData.level}</div>`;
+                thumb.addEventListener('click', async () => {
+                    const allCards = await getData(CARD_STORE_NAME);
                     const cardIndex = allCards.findIndex(c => c.id === cardData.id);
-                    if (cardIndex !== -1) {
-                        mySwiper.slideTo(cardIndex);
-                    }
+                    if (cardIndex !== -1 && mySwiper) mySwiper.slideTo(cardIndex);
                 });
-                return thumbnailWrapper;
+                return thumb;
             }
 
             cardsContainer.addEventListener('click', async (e) => {
-                const target = e.target;
-                const buttonsDiv = target.closest('.buttons-div');
-                const cardWrapper = target.closest('.card-wrapper');
-                const cardDiv = cardWrapper ? cardWrapper.querySelector('.rpg-card') : null;
-                const cardId = cardDiv ? cardDiv.dataset.cardId : null;
+                const cardId = e.target.dataset.cardId;
                 if (!cardId) return;
-                if (target.classList.contains('edit-btn')) {
-                    await editCard(cardId);
-                } else if (target.classList.contains('remove-btn')) {
-                    await removeCard(cardId);
-                } else if (target.classList.contains('fullscreen-btn')) {
-                    if (document.fullscreenElement) {
-                        document.exitFullscreen();
-                    } else {
-                        cardDiv.requestFullscreen().catch(err => {
-                            console.error(`Erro ao entrar em modo de tela cheia: ${err.message}`);
-                        });
-                    }
+                if (e.target.classList.contains('edit-btn')) await editCard(cardId);
+                else if (e.target.classList.contains('remove-btn')) await removeCard(cardId);
+                else if (e.target.classList.contains('fullscreen-btn')) {
+                    const cardDiv = e.target.closest('.card-wrapper').querySelector('.rpg-card');
+                    if (document.fullscreenElement) document.exitFullscreen();
+                    else cardDiv.requestFullscreen().catch(err => console.error(`Erro: ${err.message}`));
                 }
             });
 
-            async function removeCard(cardId) {
-                await removeCardFromDB(cardId);
-                renderCardsAndThumbnails();
-            }
+            async function removeCard(cardId) { await removeData(CARD_STORE_NAME, cardId); await renderCardsAndThumbnails(); }
+            
+            // --- Funções CRUD para Magias/Habilidades ---
 
-            characterImageUpload.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    characterImageFile = file;
-                    characterImageUrl = URL.createObjectURL(file);
-                    showImagePreview(characterImagePreview, characterImageUrl, true);
-                }
-            });
+            async function renderSpellCards() {
+                spellCardsContainer.innerHTML = '';
+                spellThumbnailList.innerHTML = '';
+                const allSpells = await getData(SPELL_STORE_NAME);
 
-            backgroundImageUpload.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    backgroundImageFile = file;
-                    backgroundImageUrl = URL.createObjectURL(file);
-                    showImagePreview(backgroundImagePreview, backgroundImageUrl, false);
-                }
-            });
-
-            function showImagePreview(element, url, isImageElement) {
-                if (url) {
-                    if (isImageElement) {
-                        element.src = url;
-                    } else {
-                        element.style.backgroundImage = `url(${url})`;
-                    }
-                    element.classList.remove('hidden');
+                if (allSpells.length === 0) {
+                    spellThumbnailList.innerHTML = '<p class="text-gray-500 text-center w-full">Nenhuma magia salva. Crie uma para começar!</p>';
                 } else {
-                    element.classList.add('hidden');
+                     let spellsLoaded = 0;
+                    for (const spellData of allSpells) {
+                        let imageURL = 'https://placehold.co/160x160/14b8a6/1f2937?text=Magia';
+                        if (spellData.image) imageURL = URL.createObjectURL(bufferToBlob(spellData.image, spellData.imageMimeType));
+                        
+                        const spellCardWrapper = createSpellCardElement({...spellData, imageURL});
+                        spellCardsContainer.appendChild(spellCardWrapper);
+
+                        const spellThumbnail = createSpellThumbnailElement({...spellData, imageURL});
+                        spellThumbnailList.appendChild(spellThumbnail);
+
+                        spellsLoaded++;
+                        const percentage = 50 + Math.round((spellsLoaded / allSpells.length) * 50); // 50 to 100% for spells
+                        updateProgress(percentage, loadingMessages[Math.floor(Math.random() * loadingMessages.length)]);
+                    }
                 }
+                initSpellSwiper();
             }
 
-            function readFileAsArrayBuffer(file) {
-                return new Promise((resolve, reject) => {
-                    if (!file) {
-                        resolve(null);
-                        return;
-                    }
-                    const reader = new FileReader();
-                    reader.onload = (e) => resolve(e.target.result);
-                    reader.onerror = (e) => reject(e.target.error);
-                    reader.readAsArrayBuffer(file);
-                });
+            function createSpellCardElement(spellData) {
+                const cardWrapper = document.createElement('div');
+                cardWrapper.className = 'swiper-slide card-wrapper flex flex-col items-center gap-4';
+                const cardDiv = document.createElement('div');
+                cardDiv.className = 'w-full h-auto rounded-3xl shadow-2xl rpg-card';
+                cardDiv.dataset.spellId = spellData.id;
+                // Usando um gradiente padrão para magias
+                cardDiv.style.background = 'linear-gradient(45deg, #0f172a, #1e293b, #334155)';
+                
+                let palette = { cardBg: 'rgba(31,41,55,0.9)', highlightColor: '#6366f1', textColor: '#e5e7eb', borderColor: '#4b5563' };
+                if (spellData.imageURL && !spellData.imageURL.includes('placehold.co')) {
+                    try { palette = getPredominantColorAndPalette(spellData.imageURL); } catch (e) { console.error('Falha ao gerar paleta.', e); }
+                }
+                cardDiv.innerHTML = `
+                    <div class="card-3d-container">
+                        <div class="card-3d divPartculas">
+                            <div class="card-front" style="border-color: ${palette.borderColor}">
+                                <div class="rounded-3xl relative w-full h-full p-4 ex-max" style="background: url(${spellData.imageURL}); background-size: cover; height: 600px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; background-color: rgb(0 0 0 / 50%); background-blend-mode: multiply;">
+                                    <div class="text-center w-full"><h3 class="text-2xl font-bold" style="color: ${palette.highlightColor};">${spellData.name}</h3><div class="rpg-card-title-divider" style="background: linear-gradient(to right, transparent, ${palette.borderColor}, transparent); width: 100%"></div></div>
+                                   
+                                    <div class="p-3 rounded-3xl w-full rpg-card-frame overflow-y-auto" style="z-index: 1;">
+                                         <div class="text-xs mb-3">
+                                            <p class="text-left"><strong>Execução:</strong> ${spellData.execution || '-'}</p>
+                                            <p class="text-left"><strong>Alcance:</strong> ${spellData.range || '-'}</p>
+                                            <p class="text-left"><strong>Alvo:</strong> ${spellData.target || '-'}</p>
+                                            <p class="text-left"><strong>Duração:</strong> ${spellData.duration || '-'}</p>
+                                        </div>
+                                        <div class="space-y-2 text-sm text-left">
+                                            <div><h4 class="font-semibold text-teal-400">Descrição</h4><p class="text-gray-300 text-xs">${spellData.description || 'Nenhuma descrição.'}</p></div>
+                                            ${spellData.enhance ? `<div><h4 class="font-semibold text-teal-400">Aprimorar</h4><p class="text-gray-300 text-xs">${spellData.enhance}</p></div>` : ''}
+                                            ${spellData.true ? `<div><h4 class="font-semibold text-teal-400">Verdadeiro</h4><p class="text-gray-300 text-xs">${spellData.true}</p></div>` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-back divPartculas" style="background: url(${spellData.imageURL}); background-size: cover;">
+                                <div class="back-content" style="border: 5px solid ${palette.borderColor};">
+                                    <h2></h2><p></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+
+                const buttonsDiv = document.createElement('div');
+                buttonsDiv.className = 'flex justify-center space-x-2 w-full';
+                buttonsDiv.innerHTML = `<button class="w-1/3 py-3 px-4 text-sm font-bold text-white transition-colors duration-200 edit-spell-btn" data-spell-id="${spellData.id}" style="border-radius: 50px 0 0 50px; background-color: ${palette.cardBg};">Editar</button><button class="w-1/3 py-3 px-4 text-sm font-bold text-white transition-colors duration-200 remove-spell-btn" data-spell-id="${spellData.id}" style="border-radius: 0; background-color: #dc2626;">Excluir</button><button class="w-1/3 py-3 px-4 text-sm font-bold text-white transition-colors duration-200 fullscreen-spell-btn" data-spell-id="${spellData.id}" style="border-radius: 0 50px 50px 0; background-color: ${palette.cardBg};">Expandir</button>`;
+                
+                cardWrapper.appendChild(cardDiv);
+                const card3d = cardDiv.querySelector('.card-3d');
+                if(card3d){card3d.addEventListener('click',()=>card3d.style.transform=card3d.style.transform==='rotateY(180deg)'?'rotateY(0deg)':'rotateY(180deg)');card3d.addEventListener('mousemove',(e)=>{const rect=card3d.getBoundingClientRect();const x=e.clientX-rect.left-rect.width/2;const y=e.clientY-rect.top-rect.height/2;card3d.style.transform=`rotateY(${(x/rect.width)*20}deg) rotateX(${(-y/rect.height)*20}deg)`;});card3d.addEventListener('mouseleave',()=>card3d.style.transform='rotateY(0deg) rotateX(0deg)');}
+                cardWrapper.appendChild(buttonsDiv);
+                return cardWrapper;
             }
+
+            function createSpellThumbnailElement(spellData) {
+                const thumb = document.createElement('div');
+                thumb.className = 'relative w-20 h-24 rounded-lg overflow-hidden shadow-lg border-2 border-gray-400 cursor-pointer hover:border-teal-500 transition-colors duration-200';
+                thumb.dataset.spellId = spellData.id;
+                thumb.style.background = 'linear-gradient(45deg, #0f172a, #1e293b)';
+                thumb.style.minWidth = '5rem';
+                thumb.innerHTML = `<div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center"><img src="${spellData.imageURL}" onerror="this.src='https://placehold.co/40x40/14b8a6/1f2937?text=M';" alt="Miniatura da Magia" class="w-10 h-10 object-cover rounded-full border-2 border-teal-400"></div>`;
+                thumb.addEventListener('click', async () => {
+                    const allSpells = await getData(SPELL_STORE_NAME);
+                    const spellIndex = allSpells.findIndex(s => s.id === spellData.id);
+                    if (spellIndex !== -1 && mySpellSwiper) mySpellSwiper.slideTo(spellIndex);
+                });
+                return thumb;
+            }
+
+            async function editSpell(spellId) {
+                const allSpells = await getData(SPELL_STORE_NAME);
+                const spellData = allSpells.find(s => s.id === spellId);
+                if (!spellData) return;
+
+                showSpellCreationView(true);
+                spellFormTitle.textContent = `Editando: ${spellData.name}`;
+                currentEditingSpellId = spellId;
+
+                document.getElementById('spellName').value = spellData.name;
+                document.getElementById('spellExecution').value = spellData.execution;
+                document.getElementById('spellRange').value = spellData.range;
+                document.getElementById('spellTarget').value = spellData.target;
+                document.getElementById('spellDuration').value = spellData.duration;
+                document.getElementById('spellDescription').value = spellData.description;
+                document.getElementById('spellEnhance').value = spellData.enhance;
+                document.getElementById('spellTrue').value = spellData.true;
+                
+                if (spellData.image) {
+                    const imageBlob = bufferToBlob(spellData.image, spellData.imageMimeType);
+                    showImagePreview(spellImagePreview, URL.createObjectURL(imageBlob), true);
+                    spellImageFile = null;
+                } else {
+                    showImagePreview(spellImagePreview, null, true);
+                }
+                spellImageUpload.value = null;
+                spellSubmitButton.textContent = 'Salvar Edição';
+            }
+
+            async function removeSpell(spellId) {
+                await removeData(SPELL_STORE_NAME, spellId);
+                await renderSpellCards();
+            }
+
+            spellCardsContainer.addEventListener('click', e => {
+                const spellId = e.target.dataset.spellId;
+                if (!spellId) return;
+
+                if (e.target.classList.contains('edit-spell-btn')) {
+                    editSpell(spellId);
+                } else if (e.target.classList.contains('remove-spell-btn')) {
+                    removeSpell(spellId);
+                } else if (e.target.classList.contains('fullscreen-spell-btn')) {
+                    const cardDiv = e.target.closest('.card-wrapper').querySelector('.rpg-card');
+                    if (document.fullscreenElement) document.exitFullscreen();
+                    else cardDiv.requestFullscreen().catch(err => console.error(`Erro: ${err.message}`));
+                }
+            });
+
+            // --- Gerenciamento de Imagens e Formulários ---
+            characterImageUpload.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { characterImageFile = file; showImagePreview(characterImagePreview, URL.createObjectURL(file), true); } });
+            backgroundImageUpload.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { backgroundImageFile = file; showImagePreview(backgroundImagePreview, URL.createObjectURL(file), false); } });
+            spellImageUpload.addEventListener('change', (e) => { const file = e.target.files[0]; if (file) { spellImageFile = file; showImagePreview(spellImagePreview, URL.createObjectURL(file), true); } });
+
+            function showImagePreview(element, url, isImageElement) { if (url) { if (isImageElement) element.src = url; else element.style.backgroundImage = `url(${url})`; element.classList.remove('hidden'); } else { element.classList.add('hidden'); } }
+            function readFileAsArrayBuffer(file) { return new Promise((resolve, reject) => { if (!file) { resolve(null); return; } const reader = new FileReader(); reader.onload = (e) => resolve(e.target.result); reader.onerror = (e) => reject(e.target.error); reader.readAsArrayBuffer(file); }); }
 
             cardForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                const title = cardTitleInput.value;
-                const subTitle = cardSubTitleInput.value;
-                const level = cardLevelInput.value;
-                const selectedPericias = Array.from(document.querySelectorAll('#pericias-checkboxes-container input[name="pericia"]:checked'))
-                    .map(cb => cb.value);
-                const attributes = {
-                    agilidade: agilidadeInput.value || '-',
-                    mana: manaInput.value || '-',
-                    vida: vidaInput.value || '-',
-                    carisma: carismaInput.value || '-',
-                    forca: forcaInput.value || '-',
-                    inteligencia: inteligenciaInput.value || '-',
-                    sabedoria: sabedoriaInput.value || '-',
-                    vigor: vigorInput.value || '-',
-                    pericias: selectedPericias
-                };
-                let allCards = await getCards();
+                const selectedPericias = Array.from(document.querySelectorAll('#pericias-checkboxes-container input:checked')).map(cb => cb.value);
+                const attributes = { vida: vidaInput.value, mana: manaInput.value, agilidade: agilidadeInput.value, carisma: carismaInput.value, forca: forcaInput.value, inteligencia: inteligenciaInput.value, sabedoria: sabedoriaInput.value, vigor: vigorInput.value, pericias: selectedPericias };
                 let cardData;
                 if (currentEditingCardId) {
+                    const allCards = await getData(CARD_STORE_NAME);
                     cardData = allCards.find(card => card.id === currentEditingCardId);
                     if (!cardData) return;
-                    cardData.title = title;
-                    cardData.subTitle = subTitle;
-                    cardData.level = level;
-                    cardData.attributes = attributes;
-                    if (characterImageFile) {
-                        cardData.image = await readFileAsArrayBuffer(characterImageFile);
-                        cardData.imageMimeType = characterImageFile.type;
-                    }
-                    if (backgroundImageFile) {
-                        cardData.backgroundImage = await readFileAsArrayBuffer(backgroundImageFile);
-                        cardData.backgroundMimeType = backgroundImageFile.type;
-                    }
-                    await saveCard(cardData);
-                    currentEditingCardId = null;
-                    submitButton.textContent = 'Criar Cartão';
-                    submitButton.classList.add('btn-gradient-pulse');
+                    Object.assign(cardData, { title: cardTitleInput.value, subTitle: cardSubTitleInput.value, level: cardLevelInput.value, attributes });
                 } else {
-                    const newCardId = Date.now().toString();
-                    const newCardData = { 
-                        id: newCardId, 
-                        title, 
-                        subTitle, 
-                        level, 
-                        attributes 
-                    };
-                    if (characterImageFile) {
-                        newCardData.image = await readFileAsArrayBuffer(characterImageFile);
-                        newCardData.imageMimeType = characterImageFile.type;
-                    }
-                    if (backgroundImageFile) {
-                        newCardData.backgroundImage = await readFileAsArrayBuffer(backgroundImageFile);
-                        newCardData.backgroundMimeType = backgroundImageFile.type;
-                    }
-                    await saveCard(newCardData);
+                    cardData = { id: Date.now().toString(), title: cardTitleInput.value, subTitle: cardSubTitleInput.value, level: cardLevelInput.value, attributes };
                 }
+                if (characterImageFile) { cardData.image = await readFileAsArrayBuffer(characterImageFile); cardData.imageMimeType = characterImageFile.type; }
+                if (backgroundImageFile) { cardData.backgroundImage = await readFileAsArrayBuffer(backgroundImageFile); cardData.backgroundMimeType = backgroundImageFile.type; }
+                await saveData(CARD_STORE_NAME, cardData);
+                
                 cardForm.reset();
-                if (characterImageUrl) URL.revokeObjectURL(characterImageUrl);
-                if (backgroundImageUrl) URL.revokeObjectURL(backgroundImageUrl);
-                characterImageUrl = '';
-                backgroundImageFile = null;
-                backgroundImageFile = null;
+                characterImageFile = null; backgroundImageFile = null;
                 showImagePreview(characterImagePreview, null, true);
                 showImagePreview(backgroundImagePreview, null, false);
-                renderCardsAndThumbnails();
+                currentEditingCardId = null;
+                
+                await renderCardsAndThumbnails();
+                showDisplayView();
             });
 
-            // Inicia o IndexedDB e depois renderiza os cartões, mostrando a tela de splash
-            showSplash();
-            openDatabase().then(() => {
-                populatePericiasCheckboxes();
-                renderCardsAndThumbnails();
-            }).catch(e => {
-                console.error("Falha ao inicializar o app:", e);
-                hideSplash();
+            spellForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                let spellData;
+
+                if (currentEditingSpellId) {
+                    const allSpells = await getData(SPELL_STORE_NAME);
+                    spellData = allSpells.find(s => s.id === currentEditingSpellId);
+                    if (!spellData) return;
+                    Object.assign(spellData, {
+                        name: document.getElementById('spellName').value,
+                        execution: document.getElementById('spellExecution').value,
+                        range: document.getElementById('spellRange').value,
+                        target: document.getElementById('spellTarget').value,
+                        duration: document.getElementById('spellDuration').value,
+                        description: document.getElementById('spellDescription').value,
+                        enhance: document.getElementById('spellEnhance').value,
+                        true: document.getElementById('spellTrue').value,
+                    });
+                } else {
+                    spellData = {
+                        id: Date.now().toString(),
+                        name: document.getElementById('spellName').value,
+                        execution: document.getElementById('spellExecution').value,
+                        range: document.getElementById('spellRange').value,
+                        target: document.getElementById('spellTarget').value,
+                        duration: document.getElementById('spellDuration').value,
+                        description: document.getElementById('spellDescription').value,
+                        enhance: document.getElementById('spellEnhance').value,
+                        true: document.getElementById('spellTrue').value,
+                    };
+                }
+
+                if (spellImageFile) {
+                    spellData.image = await readFileAsArrayBuffer(spellImageFile);
+                    spellData.imageMimeType = spellImageFile.type;
+                }
+
+                await saveData(SPELL_STORE_NAME, spellData);
+                
+                spellForm.reset();
+                spellImageFile = null;
+                currentEditingSpellId = null;
+                showImagePreview(spellImagePreview, null, true);
+                await renderSpellCards();
+                showSpellDisplayView();
             });
+
+            // Inicialização
+            async function initializeApp() {
+                showSplash();
+                try {
+                    await openDatabase();
+                    populatePericiasCheckboxes();
+                    await renderCardsAndThumbnails();
+                    await renderSpellCards();
+                    showDisplayView();
+                    part();
+                    setTimeout(hideSplash, 1000);
+                } catch (e) {
+                    console.error("Falha ao inicializar o app:", e);
+                    hideSplash();
+                }
+            }
+
+            initializeApp();
         });
     </script>
 </body>
