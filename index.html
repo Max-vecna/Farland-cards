@@ -207,7 +207,7 @@
             left: 50%;
             transform: translateX(-50%);
             padding: 8px 20px;
-            background-color: #202a38;
+            background-color: rgba(79, 70, 229, 0.9);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-bottom: none;
@@ -471,18 +471,13 @@
 
         <!-- SEÇÃO DE EXIBIÇÃO DE MAGIAS MODIFICADA -->
         <div id="spell-display-section" class="hidden">
-            <button id="toggle-spells" class="section-toggle-btn">
-                <span>Grimório</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-            </button>
-            <div id="spell-content" class="collapsible-content">
+           
                 <div id="spell-thumbnail-list" class="flex flex-wrap justify-center gap-4 p-4 bg-gray-900/50 rounded-xl shadow-inner mb-4">
                     <p class="text-gray-500">Nenhuma magia salva ainda. Crie uma para começar!</p>
                 </div>
                 <div id="spell-card-display-area" class="w-full max-w-lg mx-auto mb-1 items-center justify-center" style="min-height: 720px;">
                     <p class="text-gray-400">Selecione uma magia na lista acima para ver os detalhes.</p>
                 </div>
-            </div>
         </div>
 
         <!-- NOVA SEÇÃO: CRIAÇÃO DE ITENS -->
@@ -520,18 +515,13 @@
 
         <!-- NOVA SEÇÃO: EXIBIÇÃO DE ITENS MODIFICADA -->
         <div id="item-display-section" class="hidden">
-             <button id="toggle-items" class="section-toggle-btn">
-                <span>Inventário</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-            </button>
-            <div id="item-content" class="collapsible-content">
+           
                 <div id="item-thumbnail-list" class="flex flex-wrap justify-center gap-4 p-4 bg-gray-900/50 rounded-xl shadow-inner mb-4">
                     <p class="text-gray-500">Nenhum item salvo ainda. Crie um para começar!</p>
                 </div>
                 <div id="item-card-display-area" class="w-full max-w-lg mx-auto mb-1 items-center justify-center" style="min-height: 720px;">
                     <p class="text-gray-400">Selecione um item na lista acima para ver os detalhes.</p>
                 </div>
-            </div>
         </div>
 
 
@@ -554,6 +544,10 @@
         <button id="saveDbBtn" class="nav-button px-4 py-2 text-sm md:px-6 md:py-3 md:text-lg font-semibold rounded-full focus:outline-none flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
             <span class="hidden md:inline">Ficha</span>
+        </button>
+        <button id="cleanupBtn" class="nav-button px-4 py-2 text-sm md:px-6 md:py-3 md:text-lg font-semibold rounded-full focus:outline-none flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-1 1v1a1 1 0 002 0V3a1 1 0 00-1-1zM4 4a1 1 0 00-1 1v1a1 1 0 002 0V5a1 1 0 00-1-1zm12 0a1 1 0 00-1 1v1a1 1 0 002 0V5a1 1 0 00-1-1zM4 9a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zm1 5a1 1 0 100 2h8a1 1 0 100-2H5z" clip-rule="evenodd" /></svg>
+            <span class="hidden md:inline">Limpar</span>
         </button>
     </nav>
 
@@ -687,6 +681,7 @@
             const showSpellDisplayBtn = document.getElementById('showSpellDisplayBtn');
             const showItemDisplayBtn = document.getElementById('showItemDisplayBtn');
             const saveDbBtn = document.getElementById('saveDbBtn');
+            const cleanupBtn = document.getElementById('cleanupBtn');
             
             const creationSection = document.getElementById('creation-section');
             const displaySection = document.getElementById('display-section');
@@ -695,9 +690,7 @@
             const spellCreationSection = document.getElementById('spell-creation-section');
             const itemCreationSection = document.getElementById('item-creation-section');
 
-            const toggleSpellsBtn = document.getElementById('toggle-spells');
             const spellContent = document.getElementById('spell-content');
-            const toggleItemsBtn = document.getElementById('toggle-items');
             const itemContent = document.getElementById('item-content');
 
 
@@ -815,15 +808,7 @@
                 });
             });
 
-            toggleSpellsBtn.addEventListener('click', () => {
-                spellContent.classList.toggle('expanded');
-                toggleSpellsBtn.classList.toggle('active');
-            });
-
-            toggleItemsBtn.addEventListener('click', () => {
-                itemContent.classList.toggle('expanded');
-                toggleItemsBtn.classList.toggle('active');
-            });
+         
 
 
             // Funções da tela de splash
@@ -939,6 +924,22 @@
                     req.onsuccess = () => resolve(); 
                     req.onerror = (e) => reject(e.target.error); 
                 }); 
+            }
+
+            async function deleteOldDatabases() {
+                try {
+                    if (indexedDB.databases) {
+                        const databases = await indexedDB.databases();
+                        for (const dbInfo of databases) {
+                            if (dbInfo.name !== DB_NAME) {
+                                console.log(`Excluindo banco de dados antigo: ${dbInfo.name}`);
+                                indexedDB.deleteDatabase(dbInfo.name);
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.error("Seu navegador não suporta a listagem de bancos de dados. A limpeza automática não funcionará.", e);
+                }
             }
 
             // --- Funções CRUD para Cartões de Personagem ---
@@ -1709,8 +1710,8 @@
                 toggler.className = 'tab-list-toggler';
                 toggler.innerHTML = `
                     <div class="flex gap-2">
-                        <button data-tab="spell" class="px-3 py-1 rounded-lg bg-indigo-600 text-white" style="display: block; border-radius: 0.5rem .5rem 0 0;">Grimório</button>
-                        <button data-tab="item" class="px-3 py-1 rounded-lg bg-gray-600 text-white" style="display: block; border-radius: 0.5rem .5rem 0 0;">Inventário</button>
+                        <button data-tab="spell" class="px-3 py-1 rounded-lg bg-indigo-600 text-white">Grimório</button>
+                        <button data-tab="item" class="px-3 py-1 rounded-lg bg-gray-600 text-white">Inventário</button>
                     </div>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
                 `;
@@ -1889,12 +1890,22 @@
                 URL.revokeObjectURL(url);
             });
 
+            cleanupBtn.addEventListener('click', async () => {
+                await deleteOldDatabases();
+                const originalText = cleanupBtn.innerHTML;
+                cleanupBtn.innerHTML = '<span>Limpo!</span>';
+                setTimeout(() => {
+                    cleanupBtn.innerHTML = originalText;
+                }, 2000);
+            });
+
 
             // Inicialização
             async function initializeApp() {
                 showSplash();
                 try {
                     await openDatabase();
+                    await deleteOldDatabases();
                     populatePericiasCheckboxes();
                     await renderCardsAndThumbnails();
                     await renderSpellCards();
