@@ -514,6 +514,9 @@
                         currentParticles--; 
                     });
                 }
+                 // Store the interval ID so we can clear it later
+                //const intervalId = setInterval(createSparkle, 100);
+                //particleIntervals.push(intervalId);
             });
         }
 
@@ -907,8 +910,12 @@
                 buttonsDiv.className = 'flex justify-center space-x-2 w-full';
                 buttonsDiv.innerHTML = `<button class="w-1/3 py-3 px-4 text-sm font-bold text-white transition-colors duration-200 edit-btn" data-card-id="${cardData.id}" style="border-radius: 50px 0 0 50px; background-color: #23426d;">Editar</button><button class="w-1/3 py-3 px-4 text-sm font-bold text-white transition-colors duration-200 remove-btn" data-card-id="${cardData.id}" style="border-radius: 0; background-color: ${palette.highlightColor};">Excluir</button><button class="w-1/3 py-3 px-4 text-sm font-bold text-white transition-colors duration-200 fullscreen-btn" data-card-id="${cardData.id}" style="border-radius: 0 50px 50px 0; background-color: #23426d;">Expandir</button>`;
                 cardWrapper.appendChild(cardDiv);
+
                 const card3d = cardDiv.querySelector('.card-3d');
-                if(card3d){card3d.addEventListener('click',()=>card3d.style.transform=card3d.style.transform==='rotateY(180deg)'?'rotateY(0deg)':'rotateY(180deg)');card3d.addEventListener('mousemove',(e)=>{const rect=card3d.getBoundingClientRect();const x=e.clientX-rect.left-rect.width/2;const y=e.clientY-rect.top-rect.height/2;card3d.style.transform=`rotateY(${(x/rect.width)*20}deg) rotateX(${(-y/rect.height)*20}deg)`;});card3d.addEventListener('mouseleave',()=>card3d.style.transform='rotateY(0deg) rotateX(0deg)');}
+                if(card3d)
+                {
+                    card3d.addEventListener('click',()=> card3d.style.transform=card3d.style.transform==='rotateY(180deg)'?'rotateY(0deg)':'rotateY(180deg)');
+                }
                 cardWrapper.appendChild(buttonsDiv);
                 return cardWrapper;
             }
@@ -1044,8 +1051,8 @@
                 buttonsDiv.innerHTML = `<button class="w-1/3 py-3 px-4 text-sm font-bold text-white transition-colors duration-200 edit-spell-btn" data-spell-id="${spellData.id}" style="border-radius: 50px 0 0 50px; background-color: #23426d;">Editar</button><button class="w-1/3 py-3 px-4 text-sm font-bold text-white transition-colors duration-200 remove-spell-btn" data-spell-id="${spellData.id}" style="border-radius: 0; background-color: #dc2626;">Excluir</button><button class="w-1/3 py-3 px-4 text-sm font-bold text-white transition-colors duration-200 fullscreen-spell-btn" data-spell-id="${spellData.id}" style="border-radius: 0 50px 50px 0; background-color: #23426d;">Expandir</button>`;
                 
                 cardWrapper.appendChild(cardDiv);
-                const card3d = cardDiv.querySelector('.card-3d');
-                if(card3d){card3d.addEventListener('click',()=>card3d.style.transform=card3d.style.transform==='rotateY(180deg)'?'rotateY(0deg)':'rotateY(180deg)');card3d.addEventListener('mousemove',(e)=>{const rect=card3d.getBoundingClientRect();const x=e.clientX-rect.left-rect.width/2;const y=e.clientY-rect.top-rect.height/2;card3d.style.transform=`rotateY(${(x/rect.width)*20}deg) rotateX(${(-y/rect.height)*20}deg)`;});card3d.addEventListener('mouseleave',()=>card3d.style.transform='rotateY(0deg) rotateX(0deg)');}
+                 const card3d = cardDiv.querySelector('.card-3d');
+                if(card3d){card3d.addEventListener('click',()=>card3d.style.transform=card3d.style.transform==='rotateY(180deg)'?'rotateY(0deg)':'rotateY(180deg)');}
                 cardWrapper.appendChild(buttonsDiv);
                 return cardWrapper;
             }
